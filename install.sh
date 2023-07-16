@@ -24,7 +24,7 @@ _install() {
   cp "${HOME}/${_rc}" "${HOME}/.config/backup/${_rc}.$(date +%s)"
   mv /etc/nanorc /etc/nanorc.bak
   ln -s $(pwd)/nanorc /etc/nanorc
-  echo '. $HOME/.config/'"$startup_script" > "${HOME}/${_rc}"
+  echo '. $HOME/.config/startup.rc' > "${HOME}/${_rc}"
   echo "Synced.  Source ${_rc} when ready."
 }
 
