@@ -43,6 +43,15 @@ _make_startuprc() {
 EOF
 }
 
+_make_links(){
+  ln -s ~/.config/dotfiles/defaults.sh ~/.config/
+  ln -s ~/.config/dotfiles/prompt.sh ~/.config/
+  ln -s ~/.config/dotfiles/exports.sh ~/.config/
+  ln -s ~/.config/dotfiles/functions.sh ~/.config/
+  ln -s ~/.config/dotfiles/aliases.sh ~/.config/
+  ln -s ~/.config/dotfiles/path.sh ~/.config/
+}
+
 _install() {
   [[ "$(uname)" == "Darwin" ]] && _rc=".zshrc" || _rc=".bashrc"
   _make_directories
@@ -51,6 +60,7 @@ _install() {
   ln -s $(pwd)/nanorc /etc/nanorc
   echo '. $HOME/.config/startup.rc' > "${HOME}/${_rc}"
   _make_startuprc
+  _make_links
   echo "Synced.  Source ${_rc} when ready."
 }
 
