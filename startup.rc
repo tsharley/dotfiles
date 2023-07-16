@@ -3,12 +3,12 @@
 [ -z "$PS1" ] && return
 
 # Source files
-. defaults.sh
-. prompt.sh
-. exports.sh
-. functions.sh
-. aliases.sh
-. path.sh
+. ~/.config/defaults.sh
+. ~/.config/prompt.sh
+. ~/.config/exports.sh
+. ~/.config/functions.sh
+. ~/.config/aliases.sh
+. ~/.config/path.sh
 
 # In case additional local scripts are needed
 run_scripts(){
