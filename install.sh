@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-_make_directories() {
+function _make_directories() {
   dirs_list=(
     .config/backup
     .config/startup.d
@@ -18,7 +18,7 @@ _make_directories() {
   done
 }
 
-_make_startuprc() {
+function _make_startuprc() {
   cat << 'EOF' >> ~/.config/startup.rc
   #!/usr/bin/env bash  
   # If not running interactively, don't do anything
@@ -43,7 +43,7 @@ _make_startuprc() {
 EOF
 }
 
-_make_links(){
+function _make_links(){
   ln -s ~/.config/dotfiles/defaults.sh ~/.config/
   ln -s ~/.config/dotfiles/prompt.sh ~/.config/
   ln -s ~/.config/dotfiles/exports.sh ~/.config/
@@ -52,12 +52,12 @@ _make_links(){
   ln -s ~/.config/dotfiles/path.sh ~/.config/
 }
 
-_install_required_packages() {
+function _install_required_packages() {
   apt update
   apt -y install $(cat packages.list)
 }
 
-_install_docker() {
+function _install_docker() {
   for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do apt-get remove $pkg; done
   apt-get update
   apt-get install ca-certificates curl gnupg
@@ -69,7 +69,7 @@ _install_docker() {
   apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 }
 
-_install() {
+function _main() {
   [[ "$(uname)" == "Darwin" ]] && _rc=".zshrc" || _rc=".bashrc"
   _make_directories
   cp "${HOME}/${_rc}" "${HOME}/.config/backup/${_rc}.$(date +%s)"
@@ -83,4 +83,4 @@ _install() {
   echo "Synced.  Source ${_rc} when ready."
 }
 
-_install
+_main
