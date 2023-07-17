@@ -52,6 +52,23 @@ _make_links(){
   ln -s ~/.config/dotfiles/path.sh ~/.config/
 }
 
+_install_required_packages() {
+  apt update
+  apt -y install $(cat packages.list)
+}
+
+_install_docker() {
+  for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do apt-get remove $pkg; done
+  apt-get update
+  apt-get install ca-certificates curl gnupg
+  install -m 0755 -d /etc/apt/keyrings
+  curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+  chmod a+r /etc/apt/keyrings/docker.gpg
+  echo "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+  apt-get update
+  apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+}
+
 _install() {
   [[ "$(uname)" == "Darwin" ]] && _rc=".zshrc" || _rc=".bashrc"
   _make_directories
@@ -61,6 +78,8 @@ _install() {
   echo '. $HOME/.config/startup.rc' > "${HOME}/${_rc}"
   _make_startuprc
   _make_links
+  _install_required_packages
+  _install_docker
   echo "Synced.  Source ${_rc} when ready."
 }
 
