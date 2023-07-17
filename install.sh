@@ -70,6 +70,8 @@ function _install_docker() {
 }
 
 function _main() {
+  apt update
+  apt upgrade -y
   [[ "$(uname)" == "Darwin" ]] && _rc=".zshrc" || _rc=".bashrc"
   _make_directories
   cp "${HOME}/${_rc}" "${HOME}/.config/backup/${_rc}.$(date +%s)"
@@ -80,6 +82,7 @@ function _main() {
   _make_links
   _install_required_packages
   _install_docker
+  apt autoremove
   echo "Synced.  Source ${_rc} when ready."
 }
 
