@@ -18,6 +18,7 @@ set_common_aliases(){
   alias cfgf="nano ${XDG_CONFIG_HOME}/functions"
   alias cfgx="nano ${XDG_CONFIG_HOME}/exports"
   alias dot=". $HOME/.config/startup.rc"
+  alias sbrc='. ~/.bashrc'
 }
 
 set_docker_aliases(){
