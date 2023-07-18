@@ -1,4 +1,6 @@
-#!/usr/bin/env bashif tput setaf 1 &> /dev/nullthen	tput sgr0; # reset colors
+#!/usr/bin/env bash
+if tput setaf 1 &> /dev/null
+then	tput sgr0; # reset colors
 	bold=$(tput bold);
 	reset=$(tput sgr0);
 	# Solarized colors, taken from http://git.io/solarized-colors.
