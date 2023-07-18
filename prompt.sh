@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 if tput setaf 1 &> /dev/null
-then	tput sgr0; # reset colors
-	bold=$(tput bold);
+then	
+    tput sgr0; # reset colors
+    bold=$(tput bold);
 	reset=$(tput sgr0);
 	# Solarized colors, taken from http://git.io/solarized-colors.
 	black=$(tput setaf 0);
@@ -36,15 +37,15 @@ fi;
 #custom_prompt
 
 function set_prompt() {
-  PS1='';
-  PS1+='\n ${cyan}(${purple}${cyan}) ';
-  PS1+='${cyan}\u'; # username
-  PS1+='${purple}@'; # '@'
-  PS1+='${cyan}\H'; # hostname (H=full, h=short)
-  PS1+='${purple}: \w    ${green}\d, \@${reset}\n'; # working directory full path
-  PS1+='${purple} (\s)${reset}'; # shell
-  PS1+='${cyan}-\$ ${reset}'; # prompt sign
-  export PS1;
+    PS1='';
+    PS1+='\n ${cyan}(${purple}${cyan}) ';
+    PS1+='${cyan}\u'; # username
+    PS1+='${purple}@'; # '@'
+    PS1+='${cyan}\H'; # hostname (H=full, h=short)
+    PS1+='${purple}: \w    ${green}\d, \@${reset}\n'; # working directory full path
+    PS1+='${purple} (\s)${reset}'; # shell
+    PS1+='${cyan}-\$ ${reset}'; # prompt sign
+    export PS1;
 }
 
 set_prompt
