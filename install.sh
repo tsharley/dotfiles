@@ -20,26 +20,26 @@ function _make_directories() {
 
 function _make_startuprc() {
   cat << 'EOF' >> ~/.config/startup.rc
-  #!/usr/bin/env bash  
-  # If not running interactively, don't do anything
-  [ -z "$PS1" ] && return
-  
-  # Source files
-  . ~/.config/defaults.sh
-  . ~/.config/prompt.sh
-  . ~/.config/exports.sh
-  . ~/.config/functions.sh
-  . ~/.config/aliases.sh
-  . ~/.config/path.sh
-  
-  # In case additional local scripts are needed
-  run_scripts(){
-    for script in $1/*; do
-      [ -x "$script" ] || continue
-      . $script
-    done
-  }
-  run_scripts $HOME/.bashrc.d
+#!/usr/bin/env bash  
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+# Source files
+. ~/.config/defaults.sh
+. ~/.config/prompt.sh
+. ~/.config/exports.sh
+. ~/.config/functions.sh
+. ~/.config/aliases.sh
+. ~/.config/path.sh
+
+# In case additional local scripts are needed
+run_scripts(){
+  for script in $1/*; do
+    [ -x "$script" ] || continue
+    . $script
+  done
+}
+run_scripts $HOME/.bashrc.d
 EOF
 }
 
@@ -77,7 +77,7 @@ function _main() {
   cp "${HOME}/${_rc}" "${HOME}/.config/backup/${_rc}.$(date +%s)"
   mv /etc/nanorc /etc/nanorc.bak
   ln -s $(pwd)/nanorc /etc/nanorc
-  echo '. $HOME/.config/startup.rc' > "${HOME}/${_rc}"
+  echo '. ~/.config/startup.rc' > "${HOME}/${_rc}"
   _make_startuprc
   _make_links
   _install_required_packages
