@@ -1,0 +1,13 @@
+00_admin
+01_projects
+02_areas
+03_resources
+04_archive
+.cache
+.config
+.config/nano
+.local
+.local/share
+.local/state
+.local/bin
+.local/bin/run

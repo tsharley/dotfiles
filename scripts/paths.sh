@@ -2,7 +2,7 @@
 
 pathmaker() {
   paths=(
-    $HOME/.local/bin
+    ~/.local/bin
     /usr/local/sbin
     /usr/local/bin
     /usr/sbin
