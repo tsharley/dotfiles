@@ -1,0 +1,11 @@
+rsync
+git
+curl
+sudo
+tree
+exa
+lsm
+unzip
+apt-file
+auto-apt-proxy
+python3-venv

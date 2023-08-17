@@ -4,27 +4,138 @@
 ######################    Autoloaded Shell Functions    #######################
 ########################                               ########################
 
+
 #------------------------------------------------------------------------------
-# COPI_CURL_CERT: View target's SSL certificate and save to file
+# Display bash test operators
+# Arguments: none;          Return: none
+function sts() {
+	cat << 'EOF'
+
+     ----------------------------------------------------
+    |      Operator  -->  Description                    |
+    |--------------  ---  -------------------------------|
+    |        ! EXPR  -->  EXPR is false                  |
+    |        -n STR  -->  length of STR is > 0           |
+    |        -z STR  -->  length of STR is 0 (empty)     |
+    |   STR1 = STR2  -->  STR1 is equal to STR2          |
+    |  STR1 != STR2  -->  STR1 is not equal to STR2      |
+    | INT1 -eq INT2  -->  INT1 is equal to INT2          |
+    | INT1 -gt INT2  -->  INT1 is greater than INT2      |
+    | INT1 -lt INT2  -->  INT1 is less than INT2         |
+    |       -d FILE  -->  FILE exists and is a directory |
+    |       -e FILE  -->  FILE exists                    |
+    |       -r FILE  -->  FILE exists and is readable    |
+    |       -s FILE  -->  FILE exists and is not empty   |
+    |       -w FILE  -->  FILE exists and is writeable   |
+    |       -x FILE  -->  FILE exists and is executable  |
+     ----------------------------------------------------
+
+  Ex: [ -d "${my_var}" ] && echo "${my_var}" is a directory!
+      [ -n "$(ls ${my_var})" ] && echo ...and it\'s not empty!
+EOF
+}
+
+
+function _run_scripts(){
+  for script in $1/*; do
+    [ -x "$script" ] || continue
+    . $script
+  done
+}
+
+#'------------------------------------------------------------------------------
+# Reads a file and returns content of a secret to stdout
+# Arguments: name of secret;          Return: prints to stdout
+function _get_secret() {
+	uvicorn "${1:-main}":app --reload
+}
+
+#'------------------------------------------------------------------------------
+# Start Uvicorn as a dev server watching $1 or default main.py
+# Arguments: file to watch (optional);          Return: none
+function uc() {
+	uvicorn "${1:-main}":app --reload
+}
+
+#'------------------------------------------------------------------------------
+# Edit with designated text editor
+# Arguments: target file;          Return: none
+function edit() {
+	micro "${@}"
+}
+
+#------------------------------------------------------------------------------
+# RELOAD: Source sub-rc files (aliases, exports, functions) to reinitialize
+# most properties of the shell.  Does not rerun bashrc.
+# Arguments: none;          Return: none
+function xaf() {
+    set -v
+	local _element
+	for _element in exports aliases functions ; do
+		# shellcheck source=/dev/null
+        . "${XDG_CONFIG_HOME}/${_element}"
+	done
+	echo "User exports, aliases and functions reloaded"
+	set +v
+}
+
+#------------------------------------------------------------------------------
+# TMPNAME: Create a time-based name for a temp file or directory
+# Arguments: $1='f' (file) or 'd' (dir)         Return: "tmp########"
+function tmpname() {
+    str_time='tmp'"$(date +%s)"
+    if [[ "$1" == '-d' ]]
+    then
+        mkdir -p "$str_time"
+        echo "Created directory: $str_time"
+    elif [[ "$1" == '-f' ]]
+    then
+        touch "$str_time"
+        echo "Created file: $str_time"
+    else
+        return
+    fi
+}
+
+#------------------------------------------------------------------------------
+# GG (get git): clone a git hub repository and cd to it
+# Arguments: $1 -> ghuser, ghrepo;      Return: none
+function gg() {
+    if [ $# == 2 ]; then
+        ghuser=$1
+        ghrepo=$2
+    elif [ $# == 1 ]; then
+        ghuser=tsharley
+        ghrepo=$1
+    else
+        echo 1 or 2 arguments required
+        return 1
+    fi
+	git clone https://github.com/"${ghuser}"/"${ghrepo}".git
+	cd "${ghrepo}" || return
+}
+
+#------------------------------------------------------------------------------
+# COPI_CURL_CERT: View target SSL certificate and save to file
 # Arguments: $1 -> hostname;      Return: Text of certificate and local copy
 function copi_curl-cert() {
-        openssl s_client -showcerts -connect "${1}":443 -servername ${1} \
-    </dev/null 2>/dev/null | openssl x509 -outform PEM | tee ${1}.pem
+	openssl s_client -showcerts -connect "${1}":443 -servername "${1}" \
+    </dev/null 2>/dev/null | openssl x509 -outform PEM | tee "${1}".pem
 }
 
 #------------------------------------------------------------------------------
 # CURL_CERT: View target's SSL certificate
 # Arguments: $1 -> hostname;      Return: Text of certificate (single or chain)
 function curl-cert() {
-        openssl s_client -showcerts -connect "${1}":443 -servername ${1}
+	openssl s_client -showcerts -connect "${1}":443 -servername "${1}"
 }
 
 #------------------------------------------------------------------------------
 # MCD: Make directory, including any intermediate directories, and cd to it
 # Arguments: $1 -> dir name/path;        Return: 0
 function mcd() {
-        mkdir -p "$1"
-        cd "$1"
+	mkdir -p "$1"
+	cd "$1" || return
 }
 
 #------------------------------------------------------------------------------
@@ -35,27 +146,61 @@ function cmx() {
 }
 
 #------------------------------------------------------------------------------
-# RAND_UP_TO: Prints a random number between 0 and the argument
-# Arguments: $1 -> max of range;          Return: 0
-function rand_up_to() {
-    _cap=$1
-    echo $[${RANDOM}%_cap]     # random between 0-999
+# NNX: Create file, make it executable and open in nano
+# Arguments: $1 -> filename;          Return: 0
+function nnx() {
+    filename="$1"
+    touch "$filename"
+    chmod +x "$filename"
+    nano "$filename"
 }
 
 #------------------------------------------------------------------------------
-# SHOUT: Echo with color
-# Arguments: $1 -> color, $2 -> characters to echo;          Return: 0
-function shout() {
-    echo "$fg[$1] $2 $reset_color"
+# MACNST: (Mac Netstat) List listening ports on localhost
+# Arguments: None;          Return: 0
+function macnst() {
+    netstat -Watnlv | grep LISTEN | awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; print colred "proto: " colclr $1 colred " | addr.port: " colclr $4 colred " | pid: " colclr $9 colred " | name: " colclr procname;  }' | column -t -s "|"
+}
+
+#------------------------------------------------------------------------------
+# PYSERV: Stand up a web server from the current dir, port optional
+# Arguments: $1 -> port, default 8080;          Return: 0
+function pyserv() {
+    port=${1:-8080}
+    python3 -m http.server "$port"
+}
+
+
+#------------------------------------------------------------------------------
+# Load .env
+# Arguments: none								  ;          Return: 0
+function _env_() {
+    # shellcheck source=/dev/null
+    . ~/.config/secrets/.env
+}
+
+#------------------------------------------------------------------------------
+# Web Page
+# Arguments: path								  ;          Return: 0
+function _webpage() {
+    target_path="${1:-.}"
+    cat << EOF >> "${target_path}/index.html"
+    <html>
+      <header></header>
+        <body>
+          <h1>TEST PAGE</h1>
+        </body>
+    </html>
+EOF
 }
 
 #------------------------------------------------------------------------------
 # UP: cd up n levels
-# Arguments: $1 -> levels (default=1);                                   Return: 0
+# Arguments: $1 -> levels (default=1);				         Return: 0
 function up(){
   if [[ "$#" -ne 1 ]]; then
     cd ..
-  elif ! [[ $1 =~ '^[0-9]+$' ]]; then
+  elif ! [[ $1 =~ ^[0-9]+$ ]]; then
     echo "Error: up should be called with the number of directories to go up. The default is 1."
   else
     local d=""
@@ -65,28 +210,8 @@ function up(){
         d=$d/..
       done
     d=$(echo $d | sed 's/^\///')
-    cd $d
+    cd "$d" || return
   fi
-}
-
-#------------------------------------------------------------------------------
-# Start an HTTP server from a directory, optionally specifying the port
-function server() {
-local port="${1:-8000}";
-	sleep 1 && open "http://localhost:${port}/" &
-	# Set the default Content-Type to `text/plain` instead of `application/octet-stream`
-	# And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
-	python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port";
-}
-
-#------------------------------------------------------------------------------
-# Start a PHP server from a directory, optionally specifying the port
-# (Requires PHP 5.4.0+.)
-function phpserver() {
-	local port="${1:-4000}";
-	local ip=$(ipconfig getifaddr en1);
-	sleep 1 && open "http://${ip}:${port}/" &
-	php -S "${ip}:${port}";
 }
 
 #####  TODO:  Past this point are functions I have not yet tested or cleaned up.
@@ -175,3 +300,44 @@ function phpserver() {
 #  One Two Three Four
 
 #------------------------------------------------------------------------------
+# FH: List most frequently used commands (from shell history)
+# Arguments: none;          Return: List of commands and % of use
+#function fh() {
+#    eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | \
+#    fzf +s --tac | sed 's/ *[0-9]* *//')
+#}
+#
+#------------------------------------------------------------------------------
+# : List most frequently used commands (from shell history)
+# Arguments: none;          Return: List of commands and % of use
+# for FILE in $(ls -1); do
+#     # :r takes filename and removes extension
+#     # :e takes extension without filename
+#     # :l lowercases text
+#     mv ${FILE} ${FILE:r}.${FILE:e:l}
+# done
+
+
+function it2_profile() {
+    it2profile -s "$1"
+}
+
+function sfa() {
+    # shellcheck source=/dev/null
+    source ~/.config/aliases;
+    # shellcheck source=/dev/null
+    source ~/.config/functions
+}
+
+function cl() {
+    clear
+    echo
+	echo
+    hr _
+    echo
+    tree -alFAC -L 5 --dirsfirst --noreport
+    echo
+    hr _
+    echo
+    echo
+}

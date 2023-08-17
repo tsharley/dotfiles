@@ -1,33 +1,67 @@
 #!/usr/bin/env bash
 
-# common
+# Cross-platform Aliases
+################################################
+
+# ls, file-ops and movement
+alias edit='micro'
+alias l='ls -GIOpP'
+alias la='ls -lAhFG'
+alias ll="exa -a --long --tree --level=2 --header --inode --icons --group-directories-first --sort=name --color=always"
+alias lll="exa -a --long --tree --level=5 --header --inode --icons --group-directories-first --sort=name --color=always"
+function cdls() {
+  cd "$@" && ls -GIOpP
+}
+alias cd=cdls
 alias ..='cd ..'
 alias ss="sudo "
 alias c="clear"
-alias l="ls -lAhF --color=auto"
-alias ll="exa -TFlahi -L=2 --color=always --header --inode --group-directories-first --sort=name"
-alias lll="exa -TFlahi -L=3 --color=always --header --inode --group-directories-first --sort=name"
-alias gc="git clone"
-alias p8="ping 8.8.8.8"
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+alias bin='cd $HOME/.local/bin'
+
+# git
+alias gc='git clone'
+alias ga.="git add ."
+
+# network and comms
+alias ping="prettyping -c 5"
+alias p8="prettyping -c 5 8.8.8.8"
 alias pubkey="pbcopy < ~/.ssh/id_rsa.pub && echo \"Public key copied to pasteboard.\""
-alias cfgb="nano ~/.bashrc"
-alias cfga='nano ${XDG_CONFIG_HOME}/aliases'
-alias cfgf='nano ${XDG_CONFIG_HOME}/functions'
-alias cfgx='nano ${XDG_CONFIG_HOME}/exports'
-alias cfgd='code ${XDG_CONFIG_HOME}'
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# config edits
+alias cfgd='code ${DOTDIR}'
+alias cfgb='edit ${HOME}/.bashrc'
+alias cfga='edit ${DOTDIR}/aliases'
+alias cfgf='edit ${DOTDIR}/functions'
+alias cfgx='edit ${DOTDIR}/exports'
+alias cfgs='edit ${HOME}/.ssh/config'
 
 # docker
-alias dpsa='docker ps -a'
 alias dils='docker image ls'
 alias dcls='docker container ls'
-alias dcup='docker compose -f $DOCKER_FILE_DIR/docker-compose.yml up -d' #brings up all containers if one is not defined after dcup
-alias dcdown='docker compose -f $DOCKER_FILE_DIR/docker-compose.yml stop' #brings down all containers if one is not defined after dcdown
-alias dcpull='docker compose -f $DOCKER_FILE_DIR/docker-compose.yml pull' #pulls all new images is specified after dcpull
-alias dclogs='docker compose -f $DOCKER_FILE_DIR/docker-compose.yml logs -tf --tail="50"'
-function dtail() {
-  docker logs -tf --tail="50" "$@"
+alias dpsa='docker ps -a'
+alias dcup='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml up -d'
+alias dcdn='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml stop'
+alias dcpull='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml pull'
+alias dclogs='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml logs -tf --tail=50'
+alias dtail='docker logs -tf --tail=50'
+
+
+set_macos_aliases() {
+  alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
+  alias flushdns="dscacheutil -flushcache"
+  alias mtr="sudo mtr"
+  alias brews="brew search"
+  alias brewf="brew info"
+  alias brewi="brew install"
+  alias brewup="brew update; brew upgrade"
+  alias bsl='brew services list'
+  alias nano="/opt/homebrew/bin/nano"
+  alias tssh="/Applications/Tailscale.app/Contents/MacOS/Tailscale up --ssh"
+  alias ssv="ssh git.charm.sh"
+  alias python="python3.11"
+  alias postg="$/Applications/Postgres.app/Contents/Versions/15/bin/psql -p5432 \"tjsharley\""
 }
+
+[[ $(uname) == Darwin ]] &&  set_macos_aliases
+
+[ "${TESTING}" == true ] && export ALIAS_TEST=true
