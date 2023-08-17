@@ -39,9 +39,9 @@ EOF
 # Run all executable files in a directory
 # Arguments: Path to dir;          Return: none
 function _run_scripts(){
-  for script in $1/*; do
-    [ -x "$script" ] || continue
-    . $script
+  for script in "${1}"/*; do
+    [ -x "${script}" ] || continue
+    . "${script}"
   done
 }
 
@@ -49,7 +49,9 @@ function _run_scripts(){
 # Reads a file and returns content of a secret to stdout
 # Arguments: name of secret;          Return: prints to stdout
 function _get_secret() {
-	uvicorn "${1:-main}":app --reload
+	local secret_file="$1"
+    read -r secret < "${secret_file}"
+    echo "${secret}"
 }
 
 #'------------------------------------------------------------------------------

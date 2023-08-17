@@ -30,5 +30,8 @@ export MICRO_CONFIG_HOME="$XDG_CONFIG_HOME/micro"
 export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
 export DOCKER_CLI_HINTS=false
 
+# Secrets
+export SECRETSDIR="$XDG_CONFIG_HOME/secrets"
+
 # Unittest var
 [ "${TESTING}" == true ] && export EXPORT_TEST=true
