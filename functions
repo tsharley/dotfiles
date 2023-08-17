@@ -35,7 +35,9 @@ function sts() {
 EOF
 }
 
-
+#'------------------------------------------------------------------------------
+# Run all executable files in a directory
+# Arguments: Path to dir;          Return: none
 function _run_scripts(){
   for script in $1/*; do
     [ -x "$script" ] || continue

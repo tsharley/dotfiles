@@ -57,6 +57,9 @@ TESTING
 *.mo
 *.pot
 
+# VS Code stuff
+*.code-workspace
+
 # Django stuff:
 *.log
 local_settings.py
