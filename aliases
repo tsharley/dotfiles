@@ -17,6 +17,7 @@ alias ..='cd ..'
 alias ss="sudo "
 alias c="clear"
 alias bin='cd $HOME/.local/bin'
+alias cs='cheatsheets'
 
 # git
 alias gc='git clone'
