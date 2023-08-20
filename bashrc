@@ -3,11 +3,9 @@
 # Define dotfiles location, exports and command path
 DOTDIR=~/.config/dotfiles
 export DOTDIR
-TESTING=false
-. "${DOTDIR}"/.test_module
 . "${DOTDIR}"/exports
 . "${DOTDIR}"/paths
-export PATH
+#export PATH
 
 
 # Options
@@ -27,8 +25,8 @@ shopt -s checkwinsize
 
 
 # Run any available common startup scripts or local-only scripts
-_run_scripts "${DOTDIR}"/bashrc.d
-_run_scripts "${HOME}"/.local/bashrc.d
+#_run_scripts "${DOTDIR}"/bashrc.d
+#_run_scripts "${HOME}"/.local/bashrc.d
 
 
 # enable color support of ls
@@ -49,5 +47,3 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-BASHRC_TEST=true

@@ -16,6 +16,8 @@ export VISUAL="$EDITOR"
 export SUDO_EDITOR="$EDITOR"
 export SCRATCH_DIR="$HOME/.local/scratch"
 export SECRETS_DIR="$HOME/.config/secrets"
+export PKG_MANAGER="brew"
+export PKG_MANAGER_PREFIX="/opt/homebrew"
 
 # State controls
 export HISTFILE="$XDG_STATE_HOME/.bash_history"   # History filepath
@@ -32,6 +34,3 @@ export DOCKER_CLI_HINTS=false
 
 # Secrets
 export SECRETSDIR="$XDG_CONFIG_HOME/secrets"
-
-# Unittest var
-[ "${TESTING}" == true ] && export EXPORT_TEST=true

@@ -3,5 +3,3 @@
 # shellcheck source=/dev/null
 . ~/.config/gbt/gbt.conf tsm
 PS1='\n$(gbt $?)'
-
-[ "${TESTING}" == true ] && export PROMPT_TEST=true

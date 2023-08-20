@@ -1,26 +1,32 @@
 #!/usr/bin/env bash
 
-# pathmaker() {
-#   paths=(
-#     ~/.local/bin
-#     /usr/local/sbin
-#     /usr/local/bin
-#     /usr/sbin
-#     /usr/bin
-#     /sbin
-#     /bin
-#     )
+declare -a paths
 
-# test=""
-#   for d in ${paths[@]}; do
-#     test="$d:$test"
-#   done
-#   echo $test
-# }
+_pathstring=''
 
-#pathmaker
-#echo $test
-PATH=~/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-[ "$(uname)" == Darwin ] && PATH=/opt/homebrew/bin:$PATH
-export PATH
-[ "${TESTING}" == true ] && export PATH_TEST=true
+function _build_path() {
+    paths=("${PKG_MANAGER_PREFIX}/bin"
+          "${PKG_MANAGER_PREFIX}/sbin"
+                    "$HOME/.local/bin"
+                     "/usr/local/sbin"
+                      "/usr/local/bin"
+                           "/usr/sbin"
+                            "/usr/bin"
+                               "/sbin"
+                                "/bin"
+)
+    for d in "${paths[@]}"; do
+        if [ "${_pathstring}" == '' ]; then
+            _pathstring="${d}"
+            continue
+        else
+            _pathstring="${_pathstring}:${d}"
+        fi
+    done
+    export PATH="${_pathstring}"
+}
+
+_build_path
+
+# PATH=~/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+#[ "$(uname)" == Darwin ] && PATH=/opt/homebrew/bin:$PATH
