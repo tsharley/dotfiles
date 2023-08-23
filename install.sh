@@ -10,7 +10,7 @@ DOTDIR=~/.config/dotfiles
 export DOTDIR
 
 function _install_fonts() {
-    [ -d ~/fonts ] || mkdir -p ~/./fonts
+    [ -d ~/fonts ] || mkdir -p ~/fonts
     cp "$DOTDIR"/fonts/* ~/.local/share/fonts
     fc-cache -fv
 }
@@ -27,15 +27,6 @@ function _make_directories() {
         fi
     done < <(cat "${1}")
 }
-
-# function _save_originals(){
-#     local originals=( ~/.bashrc ~/.config/aliases ~/.config/functions ~/.config/exports )
-#     for file in "${originals[@]}"; do
-#         if [ -f "${file}" ]; then
-#             mv "${file}" ~/.local/backup/
-#         fi
-#     done
-# }
 
 function _make_links(){
     ln -s "${DOTDIR}"/bashrc ~/.bashrc
@@ -69,13 +60,8 @@ function _install_docker() {
     fi
 }
 
-# function _remaining_configs() {
-#     ./"$DOTDIR"/install/editors.sh
-# }
-
 function main() {
     _install_fonts
-    # _save_originals
     _make_directories "${DOTDIR}"/lists/mkdirs.list
     _make_links
     # _install_required_packages "${DOTDIR}"/lists/packages.list
@@ -86,13 +72,6 @@ function main() {
     . "${HOME}"/.bashrc
     echo Completed.
 }
-
-# echo 'Please enter github username: '
-# read -r my_gh_username
-# echo 'Please enter email address: '
-# read -r my_email
-# export my_gh_username
-# export my_email/
 
 
 main
