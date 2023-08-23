@@ -31,6 +31,7 @@ export LESSHISTFILE="$HOME/CACHE/less/history"
 export MICRO_CONFIG_HOME="$XDG_CONFIG_HOME/micro"
 export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
 export DOCKER_CLI_HINTS=false
+export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/starship.toml"
 
 # Secrets
 export SECRETSDIR="$XDG_CONFIG_HOME/secrets"
