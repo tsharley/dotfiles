@@ -40,8 +40,8 @@ function _make_directories() {
 function _make_links(){
     ln -s "${DOTDIR}"/bashrc ~/.bashrc
     ln -s "${DOTDIR}"/.shellcheckrc ~/.shellcheckrc
-    ln -s "${DOTDIR}"/micro/settings.json ~/.config/micro/settings.json
-    ln -s "${DOTDIR}"/micro/bindings.json ~/.config/micro/bindings.json
+    # ln -s "${DOTDIR}"/micro/settings.json ~/.config/micro/settings.json
+    # ln -s "${DOTDIR}"/micro/bindings.json ~/.config/micro/bindings.json
 }
 
 function _install_required_packages() {
@@ -69,18 +69,18 @@ function _install_docker() {
     fi
 }
 
-function _remaining_configs() {
-    ./"$DOTDIR"/install/editors.sh
-}
+# function _remaining_configs() {
+#     ./"$DOTDIR"/install/editors.sh
+# }
 
 function main() {
     _install_fonts
     # _save_originals
     _make_directories "${DOTDIR}"/lists/mkdirs.list
     _make_links
-    _install_required_packages "${DOTDIR}"/lists/packages.list
+    # _install_required_packages "${DOTDIR}"/lists/packages.list
     _install_docker
-    _remaining_configs
+    # _remaining_configs
     apt autoremove
     # shellcheck source=/dev/null
     . "${HOME}"/.bashrc
