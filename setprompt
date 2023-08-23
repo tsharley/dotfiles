@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
 # shellcheck source=/dev/null
-. ~/.config/gbt/gbt.conf tsm
-PS1='\n$(gbt $?)'
+if [ "$(uname)" == Darwin ]; then
+    . ~/.config/gbt/gbt.conf tsm
+    PS1='\n$(gbt $?)'
+else
+    PS1='\[\e[38;5;29;1;2m\]\u\[\e[0;1;38;5;33m\]@\[\e[38;5;29;2m\]\h \[\e[38;5;33;4m\]\w \[\e[24;38;5;29m\]\$ \[\e[0m\]'
+fi
