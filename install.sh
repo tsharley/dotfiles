@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail # fail on error and report it, debug all lines
+# set -eu -o pipefail # fail on error and report it, debug all lines
 
-echo 'Verifying elevated privelege.  Script will abort if not root/sudo.'
-sudo -n true
-test $? -eq 0 || exit 1
+# echo 'Verifying elevated privelege.  Script will abort if not root/sudo.'
+# sudo -n true
+# test $? -eq 0 || exit 1
 
 DOTDIR=~/.config/dotfiles
 export DOTDIR
 
 function _install_fonts() {
-    [ -d ~/fonts ] || mkdir -p ~/fonts
+    [ -d ~/.local/share/fonts ] || mkdir -p ~/.local/share/fonts
     cp "$DOTDIR"/fonts/* ~/.local/share/fonts
     fc-cache -fv
 }
