@@ -2,8 +2,10 @@
 
 # shellcheck source=/dev/null
 if [ "$(uname)" == Darwin ]; then
-    . ~/.config/gbt/gbt.conf tsm
-    PS1='\n$(gbt $?)'
+    #. ~/.config/gbt/gbt.conf tsm
+    #PS1='\n$(gbt $?)'
+    export PS1="\[$(tput setaf 34)\]\u\[$(tput setaf 34)\]@\[$(tput setaf 33)\]\h \[$(tput setaf 197)\]\w \[$(tput sgr0)\]$ "
+    
 else
     PS1='\[\e[38;5;29;1;2m\]\u\[\e[0;1;38;5;33m\]@\[\e[38;5;29;2m\]\h \[\e[38;5;33;4m\]\w \[\e[24;38;5;29m\]\$ \[\e[0m\]'
 fi

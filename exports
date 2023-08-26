@@ -18,6 +18,7 @@ export SCRATCH_DIR="$HOME/.local/scratch"
 export SECRETS_DIR="$HOME/.config/secrets"
 export PKG_MANAGER="brew"
 export PKG_MANAGER_PREFIX="/opt/homebrew"
+export DEV_PROJECT_DIR="$HOME/00/01_projects/dev/sites/tsm"
 
 # State controls
 export HISTFILE="$XDG_STATE_HOME/.bash_history"   # History filepath
@@ -32,6 +33,10 @@ export MICRO_CONFIG_HOME="$XDG_CONFIG_HOME/micro"
 export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
 export DOCKER_CLI_HINTS=false
 export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/starship.toml"
+export BREW_NO_ENV_HINTS=1
+export BREW_NO_EMOJI=1
+export GOPATH="$HOME/.local/go"
+export GOBIN="$HOME/.local/go/bin"
 
 # Secrets
 export SECRETSDIR="$XDG_CONFIG_HOME/secrets"

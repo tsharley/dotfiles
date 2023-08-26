@@ -7,6 +7,7 @@ _pathstring=''
 function _build_path() {
     paths=("${PKG_MANAGER_PREFIX}/bin"
           "${PKG_MANAGER_PREFIX}/sbin"
+					"$HOME/.cargo/bin"
                     "$HOME/.local/bin"
                      "/usr/local/sbin"
                       "/usr/local/bin"
@@ -28,5 +29,3 @@ function _build_path() {
 
 _build_path
 
-# PATH=~/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-#[ "$(uname)" == Darwin ] && PATH=/opt/homebrew/bin:$PATH
