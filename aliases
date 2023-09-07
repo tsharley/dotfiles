@@ -16,6 +16,7 @@ alias cd=cdls
 alias ss="sudo "
 alias c="clear"
 alias cs='cheatsheets'
+alias bin='ls -lAhF ${HOME}/.local/bin'
 
 # git
 alias gc='git clone'
@@ -24,6 +25,7 @@ alias ga="git add ."
 # network and comms
 alias p8="prettyping -c 5 8.8.8.8"
 alias pubkey="pbcopy < ~/.ssh/id_rsa.pub && echo \"Public key copied to pasteboard.\""
+alias fssh='fast-ssh'
 
 # config edits
 alias cfgd='code ${DOTDIR}'
@@ -45,19 +47,17 @@ alias dtail='docker logs -tf --tail=50'
 
 
 set_macos_aliases() {
+  alias kb='open ~/Downloads/kb_L0_4.png'
   alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
   alias flushdns="dscacheutil -flushcache"
   alias mtr="sudo mtr"
-  alias brews="brew search"
-  alias brewf="brew info"
-  alias brewi="brew install"
-  alias brewup="brew update; brew upgrade"
+  alias bsearch="brew search"
+  alias binfo="brew info"
+  alias binstall="brew install"
   alias bsl='brew services list'
   alias nano="/opt/homebrew/bin/nano"
   alias tssh="/Applications/Tailscale.app/Contents/MacOS/Tailscale up --ssh"
-  alias ssv="ssh git.charm.sh"
   alias python="python3.11"
-  alias postg="$/Applications/Postgres.app/Contents/Versions/15/bin/psql -p5432 \"tjsharley\""
 }
 
 [[ $(uname) == Darwin ]] &&  set_macos_aliases

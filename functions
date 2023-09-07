@@ -6,6 +6,20 @@
 
 
 #------------------------------------------------------------------------------
+# Abbreviation for pytest
+# Arguments: testfile;          Return: results
+function _pt() {
+    pytest "${@}"
+}
+
+#------------------------------------------------------------------------------
+# Add a new user is sudo group (debian)
+# Arguments: username (default: ts);          Return: none
+function mkuser() {
+    adduser --ingroup sudo --shell /bin/bash --verbose "${1:-ts}"
+}
+
+#------------------------------------------------------------------------------
 # Display bash test operators
 # Arguments: none;          Return: none
 function sts() {
@@ -36,6 +50,39 @@ EOF
 }
 
 #'------------------------------------------------------------------------------
+# Edit specified config file and source dotfiles
+# Arguments: See case statement;          Return: 0; 1 on err
+function cfg(){
+  case "${1}" in
+    b)
+      _target="${HOME}"/bashrc
+      ;;
+    a)
+      _target="${DOTDIR}"/aliases
+      ;;
+    x)
+      _target="${DOTDIR}"/exports
+      ;;
+    f)
+      _target="${DOTDIR}"/functions
+      ;;
+    s)
+      _target="${SSH_CONFIG_DIR}"/config
+      ;;
+    p)
+      _target="${DOTDIR}"/setprompt
+      ;;
+    e)
+      _target="${ED_CONFIG_DIR}"/settings.json
+      ;;
+    *)
+      echo Unknown target && return 1
+  esac
+  edit "${_target}"
+  . "${HOME}"/.bashrc
+}
+
+#------------------------------------------------------------------------------
 # Run all executable files in a directory
 # Arguments: Path to dir;          Return: none
 function _run_scripts(){
@@ -326,11 +373,13 @@ function it2_profile() {
     it2profile -s "$1"
 }
 
-function sfa() {
+function sfax() {
     # shellcheck source=/dev/null
-    source ~/.config/aliases;
+    source "$DOTDIR"/exports;
     # shellcheck source=/dev/null
-    source ~/.config/functions
+    source "$DOTDIR"/aliases;
+    # shellcheck source=/dev/null
+    source "$DOTDIR"/functions
 }
 
 function cl() {
