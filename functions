@@ -1,0 +1,399 @@
+#!/usr/bin/env bash
+
+########################                               ########################
+######################    Autoloaded Shell Functions    #######################
+########################                               ########################
+
+
+#------------------------------------------------------------------------------
+# Abbreviation for pytest
+# Arguments: testfile;          Return: results
+function _pt() {
+    pytest "${@}"
+}
+
+#------------------------------------------------------------------------------
+# Add a new user is sudo group (debian)
+# Arguments: username (default: ts);          Return: none
+function mkuser() {
+    adduser --ingroup sudo --shell /bin/bash --verbose "${1:-ts}"
+}
+
+#------------------------------------------------------------------------------
+# Display bash test operators
+# Arguments: none;          Return: none
+function sts() {
+	cat << 'EOF'
+
+     ----------------------------------------------------
+    |      Operator  -->  Description                    |
+    |--------------  ---  -------------------------------|
+    |        ! EXPR  -->  EXPR is false                  |
+    |        -n STR  -->  length of STR is > 0           |
+    |        -z STR  -->  length of STR is 0 (empty)     |
+    |   STR1 = STR2  -->  STR1 is equal to STR2          |
+    |  STR1 != STR2  -->  STR1 is not equal to STR2      |
+    | INT1 -eq INT2  -->  INT1 is equal to INT2          |
+    | INT1 -gt INT2  -->  INT1 is greater than INT2      |
+    | INT1 -lt INT2  -->  INT1 is less than INT2         |
+    |       -d FILE  -->  FILE exists and is a directory |
+    |       -e FILE  -->  FILE exists                    |
+    |       -r FILE  -->  FILE exists and is readable    |
+    |       -s FILE  -->  FILE exists and is not empty   |
+    |       -w FILE  -->  FILE exists and is writeable   |
+    |       -x FILE  -->  FILE exists and is executable  |
+     ----------------------------------------------------
+
+  Ex: [ -d "${my_var}" ] && echo "${my_var}" is a directory!
+      [ -n "$(ls ${my_var})" ] && echo ...and it\'s not empty!
+EOF
+}
+
+#'------------------------------------------------------------------------------
+# Edit specified config file and source dotfiles
+# Arguments: See case statement;          Return: 0; 1 on err
+function cfg(){
+  case "${1}" in
+    b)
+      _target="${HOME}"/bashrc
+      ;;
+    a)
+      _target="${DOTDIR}"/aliases
+      ;;
+    x)
+      _target="${DOTDIR}"/exports
+      ;;
+    f)
+      _target="${DOTDIR}"/functions
+      ;;
+    s)
+      _target="${SSH_CONFIG_DIR}"/config
+      ;;
+    p)
+      _target="${DOTDIR}"/setprompt
+      ;;
+    e)
+      _target="${ED_CONFIG_DIR}"/settings.json
+      ;;
+    *)
+      echo Unknown target && return 1
+  esac
+  edit "${_target}"
+  . "${HOME}"/.bashrc
+}
+
+#------------------------------------------------------------------------------
+# Run all executable files in a directory
+# Arguments: Path to dir;          Return: none
+function _run_scripts(){
+  for script in "${1}"/*; do
+    [ -x "${script}" ] || continue
+    . "${script}"
+  done
+}
+
+#'------------------------------------------------------------------------------
+# Reads a file and returns content of a secret to stdout
+# Arguments: name of secret;          Return: prints to stdout
+function _get_secret() {
+	local secret_file="$1"
+    read -r secret < "${secret_file}"
+    echo "${secret}"
+}
+
+#'------------------------------------------------------------------------------
+# Start Uvicorn as a dev server watching $1 or default main.py
+# Arguments: file to watch (optional);          Return: none
+function uc() {
+	uvicorn "${1:-main}":app --reload
+}
+
+#'------------------------------------------------------------------------------
+# Edit with designated text editor
+# Arguments: target file;          Return: none
+function edit() {
+	micro "${@}"
+}
+
+#------------------------------------------------------------------------------
+# RELOAD: Source sub-rc files (aliases, exports, functions) to reinitialize
+# most properties of the shell.  Does not rerun bashrc.
+# Arguments: none;          Return: none
+function xaf() {
+    set -v
+	local _element
+	for _element in exports aliases functions ; do
+		# shellcheck source=/dev/null
+        . "${XDG_CONFIG_HOME}/${_element}"
+	done
+	echo "User exports, aliases and functions reloaded"
+	set +v
+}
+
+#------------------------------------------------------------------------------
+# TMPNAME: Create a time-based name for a temp file or directory
+# Arguments: $1='f' (file) or 'd' (dir)         Return: "tmp########"
+function tmpname() {
+    str_time='tmp'"$(date +%s)"
+    if [[ "$1" == '-d' ]]
+    then
+        mkdir -p "$str_time"
+        echo "Created directory: $str_time"
+    elif [[ "$1" == '-f' ]]
+    then
+        touch "$str_time"
+        echo "Created file: $str_time"
+    else
+        return
+    fi
+}
+
+#------------------------------------------------------------------------------
+# GG (get git): clone a git hub repository and cd to it
+# Arguments: $1 -> ghuser, ghrepo;      Return: none
+function gg() {
+    if [ $# == 2 ]; then
+        ghuser=$1
+        ghrepo=$2
+    elif [ $# == 1 ]; then
+        ghuser=tsharley
+        ghrepo=$1
+    else
+        echo 1 or 2 arguments required
+        return 1
+    fi
+	git clone https://github.com/"${ghuser}"/"${ghrepo}".git
+	cd "${ghrepo}" || return
+}
+
+#------------------------------------------------------------------------------
+# COPI_CURL_CERT: View target SSL certificate and save to file
+# Arguments: $1 -> hostname;      Return: Text of certificate and local copy
+function copi_curl-cert() {
+	openssl s_client -showcerts -connect "${1}":443 -servername "${1}" \
+    </dev/null 2>/dev/null | openssl x509 -outform PEM | tee "${1}".pem
+}
+
+#------------------------------------------------------------------------------
+# CURL_CERT: View target's SSL certificate
+# Arguments: $1 -> hostname;      Return: Text of certificate (single or chain)
+function curl-cert() {
+	openssl s_client -showcerts -connect "${1}":443 -servername "${1}"
+}
+
+#------------------------------------------------------------------------------
+# MCD: Make directory, including any intermediate directories, and cd to it
+# Arguments: $1 -> dir name/path;        Return: 0
+function mcd() {
+	mkdir -p "$1"
+	cd "$1" || return
+}
+
+#------------------------------------------------------------------------------
+# CMX: Make file executable
+# Arguments: $1 -> filename;          Return: 0
+function cmx() {
+    chmod +x "$1"
+}
+
+#------------------------------------------------------------------------------
+# NNX: Create file, make it executable and open in nano
+# Arguments: $1 -> filename;          Return: 0
+function nnx() {
+    filename="$1"
+    touch "$filename"
+    chmod +x "$filename"
+    nano "$filename"
+}
+
+#------------------------------------------------------------------------------
+# MACNST: (Mac Netstat) List listening ports on localhost
+# Arguments: None;          Return: 0
+function macnst() {
+    netstat -Watnlv | grep LISTEN | awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; print colred "proto: " colclr $1 colred " | addr.port: " colclr $4 colred " | pid: " colclr $9 colred " | name: " colclr procname;  }' | column -t -s "|"
+}
+
+#------------------------------------------------------------------------------
+# PYSERV: Stand up a web server from the current dir, port optional
+# Arguments: $1 -> port, default 8080;          Return: 0
+function pyserv() {
+    port=${1:-8080}
+    python3 -m http.server "$port"
+}
+
+
+#------------------------------------------------------------------------------
+# Load .env
+# Arguments: none								  ;          Return: 0
+function _env_() {
+    # shellcheck source=/dev/null
+    . ~/.config/secrets/.env
+}
+
+#------------------------------------------------------------------------------
+# Web Page
+# Arguments: path								  ;          Return: 0
+function _webpage() {
+    target_path="${1:-.}"
+    cat << EOF >> "${target_path}/index.html"
+    <html>
+      <header></header>
+        <body>
+          <h1>TEST PAGE</h1>
+        </body>
+    </html>
+EOF
+}
+
+#------------------------------------------------------------------------------
+# UP: cd up n levels
+# Arguments: $1 -> levels (default=1);				         Return: 0
+function up(){
+  if [[ "$#" -ne 1 ]]; then
+    cd ..
+  elif ! [[ $1 =~ ^[0-9]+$ ]]; then
+    echo "Error: up should be called with the number of directories to go up. The default is 1."
+  else
+    local d=""
+    limit=$1
+    for ((i=1 ; i <= limit ; i++))
+      do
+        d=$d/..
+      done
+    d=$(echo $d | sed 's/^\///')
+    cd "$d" || return
+  fi
+}
+
+#####  TODO:  Past this point are functions I have not yet tested or cleaned up.
+
+# Lists every executable in PATH
+#  $ print -l ${^path}/*(-*N)
+
+# recursive chmod
+#  $ chmod 700 **/(.) # Only files
+#  $ chmod 700 **/(/) # Only directories
+
+#------------------------------------------------------------------------------
+# MULTICOLOR: Customize each element of an array with color
+# Arguments: $1 -> color, $2 -> characters to echo;          Return: 0
+#RunService ()
+#{
+#    case $1 in
+#      start  ) StartService   ;;
+#      stop   ) StopService    ;;
+#      restart) RestartService ;;
+#      *      ) echo "$0: unknown argument: $1";;
+#    esac
+#}
+#
+## Remove a trailing pathname component, leaving the head. This works like
+## `dirname'.
+#  $ echo =ls(:h)
+#  /bin
+#
+## Remove all leading pathname components, leaving the tail. This works
+## like `basename'.
+#  $ echo =ls(:t)
+#  ls
+#
+## Remove the suffix from each file (*.sh in this example)
+#   $f:e is $f file extension
+#   :h --> head (dirname)
+#   :t --> tail (basename)
+#   :r --> rest (extension removed)
+#  $ for f (*.sh) mv $f $f:r
+#
+## Remove a filename extension of the form `.xxx', leaving the root name.
+#  $ echo $PWD
+#  /usr/src/linux
+#  $ echo $PWD:t
+#  linux
+#
+## Remove all but the extension.
+#  $ foo=23.42
+#  $ echo $foo
+#  23.42
+#  $ echo $foo:e
+#  42
+#
+## Print the new command but do not execute it. Only works with history
+## expansion.
+#  $ echo =ls(:h)
+#  /bin
+#  $ !echo:p
+#  $ echo =ls(:h)
+#
+## Quote the substituted words, escaping further substitutions.
+#  $ bar="23'42"
+#  $ echo $bar
+#  23'42
+#  $ echo $bar:q
+#  23\'42
+#
+## Convert the words to all lowercase.
+#  $ bar=FOOBAR
+#  $ echo $bar
+#  FOOBAR
+#  $ echo $bar:l
+#  foobar
+#
+## Convert the words to all uppercase.
+#  $ bar=foobar
+#  $ echo $bar
+#  foobar
+#  $ echo $bar:u
+#  FOOBAR
+#
+## convert 1st char of a word to uppercase
+#  $ foo="one two three four"
+#  $ print -r -- "${(C)foo}"
+#  One Two Three Four
+
+#------------------------------------------------------------------------------
+# FH: List most frequently used commands (from shell history)
+# Arguments: none;          Return: List of commands and % of use
+#function fh() {
+#    eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | \
+#    fzf +s --tac | sed 's/ *[0-9]* *//')
+#}
+#
+#------------------------------------------------------------------------------
+# : List most frequently used commands (from shell history)
+# Arguments: none;          Return: List of commands and % of use
+# for FILE in $(ls -1); do
+#     # :r takes filename and removes extension
+#     # :e takes extension without filename
+#     # :l lowercases text
+#     mv ${FILE} ${FILE:r}.${FILE:e:l}
+# done
+#
+## _is_installed() { [ "$(command -v "${1}")" != '' ] && return 0 || return 1; }
+#
+
+
+function it2_profile() {
+    it2profile -s "$1"
+}
+
+function sfax() {
+    # shellcheck source=/dev/null
+    source "$DOTDIR"/exports;
+    # shellcheck source=/dev/null
+    source "$DOTDIR"/aliases;
+    # shellcheck source=/dev/null
+    source "$DOTDIR"/functions
+}
+
+function cl() {
+    clear
+    echo
+	echo
+    hr _
+    echo
+    tree -alFAC -L 5 --dirsfirst --noreport
+    echo
+    hr _
+    echo
+    echo
+}

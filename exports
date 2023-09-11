@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+###############################################################################%
+# shellcheck disable=SC2034
+set -a
+
+# Determine OS and Shell Info
+#############################################
+
+case $(uname | tr '[:upper:]' '[:lower:]') in
+  linux*)
+    _OS=linux
+    ;;
+  darwin*)
+    _OS=macos
+    ;;
+  msys*)
+    _OS=windows
+    ;;
+  *)
+    _OS=notset
+    ;;
+esac
+
+# Env Vars for terminal and OS/FS structure
+###########################################
+
+## Cross-platform ##
+
+# File System and references
+
+XDG_DATA_HOME="$HOME/.local/share"
+XDG_CONFIG_HOME="$HOME/.config"
+XDG_STATE_HOME="$HOME/.local/state"
+XDG_CACHE_HOME="$HOME/.cache"
+XDG_RUNTIME_DIR="$HOME/.local/bin/run"
+
+SSH_CONFIG_DIR="HOME/.ssh"
+SCRATCH_DIR="$HOME/.local/scratch"
+SECRETS_DIR="$HOME/.config/secrets"
+
+PKG_MANAGER_PREFIX="/opt/homebrew"
+LIB_SCRIPTS_DIR="$HOME/Library/Scripts"
+LIB_RESOURCES_DIR="$HOME/Library/Resources"
+DEV_PROJECT_DIR="$HOME/00/01_projects/dev/sites/tsm"
+
+EDITOR="micro"
+ED_CONFIG_DIR="${XDG_CONFIG_HOME}/micro"
+VISUAL="$EDITOR"
+SUDO_EDITOR="$EDITOR"
+
+MANCOLOR=1
+MANPAGER="less -sR"
+# State controls
+
+HISTFILE="$XDG_STATE_HOME/.bash_history"   # History filepath
+HISTSIZE=100000                            # Maximum events for internal history
+SAVEHIST=100000                            # Maximum events in history file
+HISTFILESIZE=10000
+HISTCONTROL=ignoredups:ignorespace
+LESSHISTFILE="$HOME/CACHE/less/history"
+
+
+# App Specific
+
+PYTHONSTARTUP="$XDG_CONFIG_HOME/python3/pythonrc.py"
+MICRO_CONFIG_HOME="$XDG_CONFIG_HOME/micro"
+PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
+DOCKER_CLI_HINTS=false
+BREW_NO_ENV_HINTS=1
+BREW_NO_EMOJI=1
+GOPATH="$HOME/.local/go"
+GOBIN="$HOME/.local/go/bin"
+PKG_MANAGER="brew"
+# STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/starship.toml"
+
+
+# Secrets
+SAM_AUTH_TOKEN=$(cat "$XDG_CONFIG_HOME"/ts/sam.pw)
+
+
+
+
+set +a

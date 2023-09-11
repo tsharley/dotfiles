@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+declare -a paths
+
+_pathstring=''
+
+function _build_path() {
+    paths=("${PKG_MANAGER_PREFIX}/bin"
+          "${PKG_MANAGER_PREFIX}/sbin"
+					"$HOME/.cargo/bin"
+                    "$HOME/.local/bin"
+                     "/usr/local/sbin"
+                      "/usr/local/bin"
+                           "/usr/sbin"
+                            "/usr/bin"
+                               "/sbin"
+                                "/bin"
+)
+    for d in "${paths[@]}"; do
+        if [ "${_pathstring}" == '' ]; then
+            _pathstring="${d}"
+            continue
+        else
+            _pathstring="${_pathstring}:${d}"
+        fi
+    done
+    export PATH="${_pathstring}"
+}
+
+_build_path
+

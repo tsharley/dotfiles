@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+###############################################################################%
+_name="$1"
+_app_name="${2:-$_name}"
+
+main() {
+    set -v
+    mkdir ./"${_name}"
+    cd ./"${_name}" || exit
+    set +v
+    python3 -m venv venv_"${_name}" --prompt=" ** ${_name} ** "
+    . venv_"${_name}"/bin/activate
+    set -v
+    touch README.md
+    cp "${LIB_RESOURCES_DIR}"/LICENSE ./LICENSE
+    touch setup.py
+    touch requirements.txt
+    mkdir "${_app_name}"
+    touch "${_app_name}"/__init__.py
+    touch "${_app_name}"/main.py
+    touch "${_app_name}"/utils.py
+    mkdir docs
+    touch docs/index.md
+    touch docs/conf.py
+    mkdir tests
+    touch tests/test.py
+    cat <<-'EOF' >> tests/context.py
+    import os
+    import sys
+    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+    
+	EOF
+    echo import "${_app_name}" >> tests/context.py
+    echo from .context import "${_app_name}" >> tests.py
+    cat <<-'EOF' >> Makefile
+    init:
+    	pip install -r requirements.txt
+    
+    test:
+    	py.test tests
+    
+    .PHONY: init test
+	EOF
+    set +v
+}
+
+main "$@"

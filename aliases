@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+
+# Cross-platform Aliases
+################################################
+
+# ls, file-ops and movement
+if [ "$(command -v exa)" != '' ]; then
+    alias la='exa -aF'
+#   alias l="exa -aFlTh -L=1 --no-time --group-directories-first --sort=name --color=always"
+	alias l='lsd'
+#   alias ll="exa -aFlTh -L=2 --no-time --group-directories-first --sort=name --color=always"
+    alias ll='lsd -lAF'
+    alias lll="exa -aFlTh -L=4 --no-time --group-directories-first --sort=name --color=always"
+    function cdls() {
+      cd "$@" || return;
+      clear
+#     exa -F --group-directories-first --sort=name --color=always
+      lsd -F
+      echo
+    }
+else
+    alias l='ls'
+    alias la='ls -a'
+    alias ll="ls -lhAF --color=always"
+    function cdls() {
+      cd "$@" && ls
+    }
+fi
+alias cd=cdls
+# alias ll="exa -a --long --tree --level=2 --header --inode --icons --group-directories-first --sort=name --color=always"
+# alias lll="exa -a --long --tree --level=5 --header --inode --icons --group-directories-first --sort=name --color=always"
+
+# git
+alias gc='git clone'
+alias ga="git add ."
+
+# network and comms
+alias p8="prettyping -c 5 8.8.8.8"
+alias pubkey="pbcopy < ~/.ssh/id_rsa.pub && echo \"Public key copied to pasteboard.\""
+alias fssh='fast-ssh'
+
+# config edits
+# alias cfgd='code ${DOTDIR}'
+# alias cfgb='edit ${HOME}/.bashrc'
+# alias cfga='edit ${DOTDIR}/aliases'
+# alias cfgf='edit ${DOTDIR}/functions'
+# alias cfgx='edit ${DOTDIR}/exports'
+# alias cfgs='edit ${HOME}/.ssh/config'
+
+# docker
+alias dils='docker image ls'
+alias dcls='docker container ls'
+alias dpsa='docker ps -a'
+alias dcup='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml up -d'
+alias dcdn='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml stop'
+alias dcpull='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml pull'
+alias dclogs='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml logs -tf --tail=50'
+alias dtail='docker logs -tf --tail=50'
+
+# misc
+alias ss="sudo "
+alias c="clear"
+alias edit='micro'
+
+# macOS Aliases
+set_macos_aliases() {
+  alias kb='open ~/Downloads/kb_L0_4.png'
+  alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
+  alias nano="/opt/homebrew/bin/nano"
+  alias tssh="/Applications/Tailscale.app/Contents/MacOS/Tailscale up --ssh"
+  alias python="python3.11"
+# alias flushdns="dscacheutil -flushcache"
+# alias mtr="sudo mtr"
+# alias bsearch="brew search"
+# alias binfo="brew info"
+# alias binstall="brew install"
+# alias bsl='brew services list'
+}
+
+[[ $(uname) == Darwin ]] &&  set_macos_aliases
