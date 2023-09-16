@@ -75,7 +75,7 @@ PKG_MANAGER="brew"
 
 
 # Secrets
-SAM_AUTH_TOKEN=$(cat "$XDG_CONFIG_HOME"/ts/sam.pw)
+
 
 
 
