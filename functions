@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#shellcheck disable=SC2317
 ########################                               ########################
 ######################    Autoloaded Shell Functions    #######################
 ########################                               ########################
@@ -16,6 +16,17 @@ function ipa(){
 	cat ~/_info.yaml | yq .available."${1}"
 }
 
+#------------------------------------------------------------------------------
+# Add domain to hostname if not present
+# Arguments: none;          Return: hostname
+function _check_fqdn() {
+    pattern='^.*tsmetallic.com$'
+    if [[ "$(hostname -f)" =~ $pattern ]]; then
+        echo "$(hostname) correctly configured"
+    else
+        hostname "$(hostname).tsmetallic.com"
+    fi
+}
 
 #------------------------------------------------------------------------------
 # Abbreviation for pytest

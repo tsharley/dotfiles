@@ -17,7 +17,7 @@ shopt -s checkwinsize
 
 # Setup prompt
 . "$DOTDIR"/themes
-_set_theme red
+_set_theme green
 
 # Source utility configs
 [ -r "${DOTDIR}"/aliases ] && . "${DOTDIR}"/aliases
