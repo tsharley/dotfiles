@@ -1,9 +1,10 @@
 {
     "backup": false,
-    "colorscheme": "dukeubuntu-tc",
+    "colorcolumn": 80,
+    "colorscheme": "default-nb",
     "keepautoindent": true,
     "savecursor": true,
-    "scrollbar": true,
     "softwrap": true,
-    "wordwrap": true
+    "wordwrap": true,
+    "xterm": true
 }

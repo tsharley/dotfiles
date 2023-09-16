@@ -5,17 +5,29 @@ declare -a paths
 _pathstring=''
 
 function _build_path() {
-    paths=("${PKG_MANAGER_PREFIX}/bin"
-          "${PKG_MANAGER_PREFIX}/sbin"
-					"$HOME/.cargo/bin"
-                    "$HOME/.local/bin"
-                     "/usr/local/sbin"
-                      "/usr/local/bin"
-                           "/usr/sbin"
-                            "/usr/bin"
-                               "/sbin"
-                                "/bin"
-)
+
+    paths_macos=( "${PKG_MANAGER_PREFIX}/bin"
+                 "${PKG_MANAGER_PREFIX}/sbin"
+	                       "$HOME/.cargo/bin"
+                           "$HOME/.local/bin"
+                            "/usr/local/sbin"
+                             "/usr/local/bin"
+                                  "/usr/sbin"
+                                   "/usr/bin"
+                                      "/sbin"
+                                       "/bin" )
+
+    paths_linux=( "$HOME/.local/bin"
+                   "/usr/local/sbin"
+                    "/usr/local/bin"
+                         "/usr/sbin"
+                          "/usr/bin"
+                             "/sbin"
+                              "/bin" )
+
+    [ "${1}" == macos ] && paths=( "${paths_macos[@]}" )
+    [ "${1}" == linux ] && paths=( "${paths_linux[@]}" )
+
     for d in "${paths[@]}"; do
         if [ "${_pathstring}" == '' ]; then
             _pathstring="${d}"
@@ -27,5 +39,14 @@ function _build_path() {
     export PATH="${_pathstring}"
 }
 
-_build_path
 
+if [ "$_OS" == macos ]; then
+    _build_path macos
+elif [ "$_OS" == linux ]; then
+    _build_path linux
+else
+    echo "OS not supported"
+fi
+
+#echo "$PATH"
+#"${PKG_MANAGER_PREFIX}/bin":"${PKG_MANAGER_PREFIX}/sbin":"$HOME/cargo/bin":"$HOME/.local/bin":"/usr/local/sbin":"/usr/local/bin":"/usr/sbin":"/usr/bin":"/sbin":"/bin"

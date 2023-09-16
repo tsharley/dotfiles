@@ -5,6 +5,18 @@
 ########################                               ########################
 
 
+function ipl(){
+	clear; echo Available in "${1}":
+	cat ~/_info.yaml | yq .available."${1}"
+}
+function ipa(){
+	clear
+	echo Assignment: Group-"${1}" Item-"${2}"
+	echo Remaining in "${1}":
+	cat ~/_info.yaml | yq .available."${1}"
+}
+
+
 #------------------------------------------------------------------------------
 # Abbreviation for pytest
 # Arguments: testfile;          Return: results

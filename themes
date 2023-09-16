@@ -1,14 +1,58 @@
 #!/usr/bin/env bash
-
 # shellcheck source=/dev/null
-if [ "$(uname)" == Darwin ]; then
-    #. ~/.config/gbt/gbt.conf tsm
-    #PS1='\n$(gbt $?)'
-    #PS1="\[$(tput setaf 34)\]\u\[$(tput setaf 34)\]@\[$(tput setaf 33)\]\h \[$(tput setaf 197)\]\w \[$(tput sgr0)\]$ "
-    #export PS1="\[$(tput setaf 2)\]ts\[$(tput setaf 197)\]@\[$(tput setaf 33)\]m20 \[$(tput setaf 197)\]\W \[$(tput sgr0)\]$ "
-    #export PS1='\[\e[38;5;22;1m\]\@ \u@\h \W \$ \[\e[0m\]'
-    export PS1='\[\e[38;5;22;1m\]ts@m20 \W \$ \[\e[0m\]'
-else
-    PS1='\[\e[38;5;29;1;2m\]\u\[\e[0;1;38;5;33m\]@\[\e[38;5;29;2m\]\h \[\e[38;5;33;4m\]\w \[\e[24;38;5;29m\]\$ \[\e[0m\]'
-fi
-export PS1
+
+_set_theme(){
+	case "${1}" in
+		maroon)
+			PS1='\[\e[31;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+		green)
+			PS1='\[\e[32;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+		olive)
+			PS1='\[\e[33;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+		navy)
+			PS1='\[\e[34;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+		purple)
+			PS1='\[\e[35;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+		teal)
+			PS1='\[\e[36;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+		silver)
+			PS1='\[\e[37;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+		gray)
+			PS1='\[\e[90;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+		red)
+			PS1='\[\e[91;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+		lime)
+			PS1='\[\e[92;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+		yellow)
+			PS1='\[\e[93;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+		blue)
+			PS1='\[\e[94;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+		fuchsia)
+			PS1='\[\e[95;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+		aqua)
+			PS1='\[\e[96;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+		white)
+			PS1='\[\e[97;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+	    	*)
+	    	PS1='\[\e[97;1m\]\u@\h \W \$ \[\e[0m\]'
+			;;
+	esac
+	export PS1
+}
+
+_set_theme "$@"

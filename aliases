@@ -5,19 +5,16 @@
 ################################################
 
 # ls, file-ops and movement
-if [ "$(command -v exa)" != '' ]; then
-    alias la='exa -aF'
-#   alias l="exa -aFlTh -L=1 --no-time --group-directories-first --sort=name --color=always"
-	alias l='lsd'
-#   alias ll="exa -aFlTh -L=2 --no-time --group-directories-first --sort=name --color=always"
-    alias ll='lsd -lAF'
-    alias lll="exa -aFlTh -L=4 --no-time --group-directories-first --sort=name --color=always"
+if [ "$(command -v eza)" != '' ]; then
+    alias la='eza -aF'
+	alias l='eza -aFl --no-time --group-directories-first --sort=name'
+    alias ll="eza -aFlTh -L=2 --no-time --group-directories-first --sort=name --color=always" 
+    alias lll="eza -aFlTh -L=4 --no-time --group-directories-first --sort=name --color=always"
     function cdls() {
-      cd "$@" || return;
-      clear
-#     exa -F --group-directories-first --sort=name --color=always
-      lsd -F
-      echo
+        cd "$@" || return;
+        clear
+        eza -F --group-directories-first --sort=name --color=always
+        echo
     }
 else
     alias l='ls'
@@ -28,8 +25,6 @@ else
     }
 fi
 alias cd=cdls
-# alias ll="exa -a --long --tree --level=2 --header --inode --icons --group-directories-first --sort=name --color=always"
-# alias lll="exa -a --long --tree --level=5 --header --inode --icons --group-directories-first --sort=name --color=always"
 
 # git
 alias gc='git clone'
@@ -39,14 +34,6 @@ alias ga="git add ."
 alias p8="prettyping -c 5 8.8.8.8"
 alias pubkey="pbcopy < ~/.ssh/id_rsa.pub && echo \"Public key copied to pasteboard.\""
 alias fssh='fast-ssh'
-
-# config edits
-# alias cfgd='code ${DOTDIR}'
-# alias cfgb='edit ${HOME}/.bashrc'
-# alias cfga='edit ${DOTDIR}/aliases'
-# alias cfgf='edit ${DOTDIR}/functions'
-# alias cfgx='edit ${DOTDIR}/exports'
-# alias cfgs='edit ${HOME}/.ssh/config'
 
 # docker
 alias dils='docker image ls'
@@ -70,12 +57,28 @@ set_macos_aliases() {
   alias nano="/opt/homebrew/bin/nano"
   alias tssh="/Applications/Tailscale.app/Contents/MacOS/Tailscale up --ssh"
   alias python="python3.11"
+  alias kpc='keepassxc-cli '
+}
+
+[[ $(uname) == Darwin ]] &&  set_macos_aliases
+
+### Currently unused
+#alias ll='lsd -lAF'
+#lsd -F
+#   alias l="exa -aFlTh -L=1 --no-time --group-directories-first --sort=name --color=always"
+# alias ll="exa -a --long --tree --level=2 --header --inode --icons --group-directories-first --sort=name --color=always"
+# alias lll="exa -a --long --tree --level=5 --header --inode --icons --group-directories-first --sort=name --color=always"
+# config edits
+# alias cfgd='code ${DOTDIR}'
+# alias cfgb='edit ${HOME}/.bashrc'
+# alias cfga='edit ${DOTDIR}/aliases'
+# alias cfgf='edit ${DOTDIR}/functions'
+# alias cfgx='edit ${DOTDIR}/exports'
+# alias cfgs='edit ${HOME}/.ssh/config'
 # alias flushdns="dscacheutil -flushcache"
 # alias mtr="sudo mtr"
 # alias bsearch="brew search"
 # alias binfo="brew info"
 # alias binstall="brew install"
 # alias bsl='brew services list'
-}
-
-[[ $(uname) == Darwin ]] &&  set_macos_aliases
+alias mpw=/Users/tjsharley/.00/01_projects/rex/test.xlsx
