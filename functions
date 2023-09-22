@@ -6,12 +6,20 @@
 
 
 #------------------------------------------------------------------------------
-# Create and activate a python virtual environment based on the cwd
-# Arguments: none;          			Return: none
+# git add all (modified and untracked) and commit
+# Arguments: commit msg (optional);         	Return: none
 function commit_all() {
     git add .; git commit -m "${1:-'auto commit'}"
 }
 
+#------------------------------------------------------------------------------
+# DOTFILES - git add all (modified and untracked) and commit
+# Arguments: commit msg (optional);	         	Return: none
+function gcdot() {
+    cd ~/.dotfiles || true
+    commit_all "$@"
+    cd - || true
+}
 #------------------------------------------------------------------------------
 # Create and activate a python virtual environment based on the cwd
 # Arguments: none;          			Return: none
