@@ -5,7 +5,6 @@ set -a
 
 # Determine OS and Shell Info
 #############################################
-
 case $(uname | tr '[:upper:]' '[:lower:]') in
   linux*)
     _OS=linux
@@ -23,11 +22,8 @@ esac
 
 # Env Vars for terminal and OS/FS structure
 ###########################################
-
 ## Cross-platform ##
-
 # File System and references
-
 XDG_DATA_HOME="$HOME/.local/share"
 XDG_CONFIG_HOME="$HOME/.config"
 XDG_STATE_HOME="$HOME/.local/state"
@@ -41,7 +37,9 @@ SECRETS_DIR="$HOME/.config/secrets"
 PKG_MANAGER_PREFIX="/opt/homebrew"
 LIB_SCRIPTS_DIR="$HOME/Library/Scripts"
 LIB_RESOURCES_DIR="$HOME/Library/Resources"
-DEV_PROJECT_DIR="$HOME/00/01_projects/dev/sites/tsm"
+DEV_PROJECT_DIR="$HOME/.00/01_projects/dev/sites/tsm"
+PKG_MANAGER="brew"
+SEC_CONF_DIR="${XDG_CONFIG_HOME}/ts"
 
 EDITOR="micro"
 ED_CONFIG_DIR="${XDG_CONFIG_HOME}/micro"
@@ -50,19 +48,18 @@ SUDO_EDITOR="$EDITOR"
 
 MANCOLOR=1
 MANPAGER="less -sR"
-# State controls
 
+
+# State controls
 HISTFILE="$XDG_STATE_HOME/.bash_history"   # History filepath
-HISTSIZE=100000                            # Maximum events for internal history
-SAVEHIST=100000                            # Maximum events in history file
+HISTSIZE=100000                            # Max lines for internal history
+SAVEHIST=100000                            # Max lines in history file
 HISTFILESIZE=10000
 HISTCONTROL=ignoredups:ignorespace
 LESSHISTFILE="$HOME/CACHE/less/history"
 
 
 # App Specific
-
-PYTHONSTARTUP="$XDG_CONFIG_HOME/python3/pythonrc.py"
 MICRO_CONFIG_HOME="$XDG_CONFIG_HOME/micro"
 PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
 DOCKER_CLI_HINTS=false
@@ -70,13 +67,8 @@ BREW_NO_ENV_HINTS=1
 BREW_NO_EMOJI=1
 GOPATH="$HOME/.local/go"
 GOBIN="$HOME/.local/go/bin"
-PKG_MANAGER="brew"
-# STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/starship.toml"
-
 
 # Secrets
-
-
 
 
 

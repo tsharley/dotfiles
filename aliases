@@ -13,15 +13,15 @@ if [ "$(command -v eza)" != '' ]; then
     function cdls() {
         cd "$@" || return;
         clear
-        eza -F --group-directories-first --sort=name --color=always
+        eza -aFl --no-time --group-directories-first --sort=name
         echo
     }
 else
-    alias l='ls'
-    alias la='ls -a'
+    alias l='ls --color=always'
+    alias la='ls -a --color=always'
     alias ll="ls -lhAF --color=always"
     function cdls() {
-      cd "$@" && ls
+      cd "$@" && ls -F --color=always
     }
 fi
 alias cd=cdls
@@ -31,7 +31,7 @@ alias gc='git clone'
 alias ga="git add ."
 
 # network and comms
-alias p8="prettyping -c 5 8.8.8.8"
+alias p8="ping -c 5 8.8.8.8"
 alias pubkey="pbcopy < ~/.ssh/id_rsa.pub && echo \"Public key copied to pasteboard.\""
 alias fssh='fast-ssh'
 
@@ -62,23 +62,3 @@ set_macos_aliases() {
 
 [[ $(uname) == Darwin ]] &&  set_macos_aliases
 
-### Currently unused
-#alias ll='lsd -lAF'
-#lsd -F
-#   alias l="exa -aFlTh -L=1 --no-time --group-directories-first --sort=name --color=always"
-# alias ll="exa -a --long --tree --level=2 --header --inode --icons --group-directories-first --sort=name --color=always"
-# alias lll="exa -a --long --tree --level=5 --header --inode --icons --group-directories-first --sort=name --color=always"
-# config edits
-# alias cfgd='code ${DOTDIR}'
-# alias cfgb='edit ${HOME}/.bashrc'
-# alias cfga='edit ${DOTDIR}/aliases'
-# alias cfgf='edit ${DOTDIR}/functions'
-# alias cfgx='edit ${DOTDIR}/exports'
-# alias cfgs='edit ${HOME}/.ssh/config'
-# alias flushdns="dscacheutil -flushcache"
-# alias mtr="sudo mtr"
-# alias bsearch="brew search"
-# alias binfo="brew info"
-# alias binstall="brew install"
-# alias bsl='brew services list'
-alias mpw=/Users/tjsharley/.00/01_projects/rex/test.xlsx

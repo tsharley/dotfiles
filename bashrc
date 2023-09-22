@@ -17,7 +17,7 @@ shopt -s checkwinsize
 
 # Setup prompt
 . "$DOTDIR"/themes
-_set_theme green
+_set_theme orange
 
 # Source utility configs
 [ -r "${DOTDIR}"/aliases ] && . "${DOTDIR}"/aliases
@@ -25,6 +25,7 @@ _set_theme green
 
 
 # Run any available common startup scripts or local-only scripts
+. "${DOTDIR}"/pyvewrc 
 #_run_scripts "${DOTDIR}"/bashrc.d
 #_run_scripts "${HOME}"/.local/bashrc.d
 
@@ -77,4 +78,3 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
