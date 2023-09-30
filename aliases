@@ -1,26 +1,33 @@
 #!/usr/bin/env bash
 
-
 # Cross-platform Aliases
 ################################################
 
 # ls, file-ops and movement
 if [ "$(command -v eza)" != '' ]; then
-    alias la='eza -aF'
-	alias l='eza -aFl --no-time --group-directories-first --sort=name'
-    alias ll="eza -aFlTh -L=2 --no-time --group-directories-first --sort=name --color=always" 
-    alias lll="eza -aFlTh -L=4 --no-time --group-directories-first --sort=name --color=always"
-    function cdls() {
+    EZA_OPTIONS=(
+    	-F
+    	--group-directories-first
+    	-I='Library|Downloads|Desktop|Movies|Music|Pictures'
+    	--no-time
+		-s=name
+		--color=always
+		--no-icons
+	)
+    alias l='eza -TF -L=2 ${EZA_OPTIONS[@]}'
+    alias ll='eza -aFlTh -L=2 ${EZA_OPTIONS[@]}' 
+    alias lll='eza -aFlTh -L=4 ${EZA_OPTIONS[@]}'
+    cdls() {
         cd "$@" || return;
         clear
-        eza -aFl --no-time --group-directories-first --sort=name
+        eza -F "${EZA_OPTIONS[@]}"
         echo
     }
 else
     alias l='ls --color=always'
     alias la='ls -a --color=always'
     alias ll="ls -lhAF --color=always"
-    function cdls() {
+    cdls() {
       cd "$@" && ls -F --color=always
     }
 fi
@@ -31,7 +38,8 @@ alias gc='git clone'
 alias ga="git add ."
 
 # network and comms
-alias p8="ping -c 5 8.8.8.8"
+alias ping='c; ping -c 5 '
+alias p8="c; ping -c 5 8.8.8.8"
 alias pubkey="pbcopy < ~/.ssh/id_rsa.pub && echo \"Public key copied to pasteboard.\""
 alias fssh='fast-ssh'
 
