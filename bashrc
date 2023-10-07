@@ -17,7 +17,8 @@ shopt -s checkwinsize
 
 # Setup prompt
 . "$DOTDIR"/themes
-_set_theme orange
+_set_theme green
+#. "$HOME/.local/bin/promptcraft"
 
 # Source utility configs
 [ -r "${DOTDIR}"/aliases ] && . "${DOTDIR}"/aliases
@@ -78,3 +79,4 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+

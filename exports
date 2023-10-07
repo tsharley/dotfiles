@@ -65,12 +65,13 @@ PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
 DOCKER_CLI_HINTS=false
 BREW_NO_ENV_HINTS=1
 BREW_NO_EMOJI=1
+HOMEBREW_NO_ENV_HINTS=1
 GOPATH="$HOME/.local/go"
 GOBIN="$HOME/.local/go/bin"
 ECLIPSE_HOME="$HOME/.config/eclipse"
 
 # Secrets
-AIRTABLE_PA_TOKEN='patVOjie1QzbM2Lkn.1d73fcc7cf01bcd19608e531aff927d3cd61dd4e2166f8280e3cc9c9d468e9d9'
+
 
 
 set +a

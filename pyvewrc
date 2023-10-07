@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 ###############################################################################%
+set -a
 
 # Environment
 PYTHONSTARTUP="$XDG_CONFIG_HOME/python3/pythonrc.py"
 VIRTUALENVWRAPPER_PYTHON="$(which python3)"
 WORKON_HOME="${HOME}/Envs"
 PROJECT_HOME="${HOME}/Projects"
+PROJECT_TYPE=PYTHON # default, mod at runtime with mkp function
 VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
 VIRTUALENVWRAPPER_WORKON_CD=1
 VIRTUALENVWRAPPER_HOOK_DIR=$WORKON_HOME/.hooks
@@ -23,5 +25,7 @@ alias cdve='cdvirtualenv'
 alias cdsite='cdsitepackages'
 alias lssite='lssitepackages'
 alias add2ve='add2virtualenv'
-alias mkp='mkproject'
 alias wo='workon'
+
+
+set +a

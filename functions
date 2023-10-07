@@ -7,6 +7,15 @@
 
 
 #------------------------------------------------------------------------------
+# Setup a default tasks.py for invoke
+# Arguments: none;          			Return: none
+function inv() {
+    if [ ! -e "$(pwd)/tasks.py" ]; then
+    	invoke --search-root="$HOME/.config/invoke" "$@"
+    fi
+}
+
+#------------------------------------------------------------------------------
 # git add all (modified and untracked) and commit
 # Arguments: commit msg (optional);         	Return: none
 function commit_all() {
@@ -21,6 +30,28 @@ function gcdot() {
     commit_all "$@"
     cd - || true
 }
+
+#------------------------------------------------------------------------------
+# venv and project scaffolding, python by default
+# Arguments: $1=name, flag (-b) to switch from default lang     Return: none
+function mkp() {
+    PROJECT_TYPE=PYTHON
+    case "${1}" in
+        -b | --bash)
+            PROJECT_TYPE=BASH
+            shift
+            ;;
+        -p | --python)
+            shift
+            ;;
+        *)
+            :
+            ;;
+    esac
+    export PROJECT_TYPE
+    mkproject "$@"
+}
+
 #------------------------------------------------------------------------------
 # Create and activate a python virtual environment based on the cwd
 # Arguments: none;          			Return: none
