@@ -30,7 +30,10 @@ XDG_STATE_HOME="$HOME/.local/state"
 XDG_CACHE_HOME="$HOME/.cache"
 XDG_RUNTIME_DIR="$HOME/.local/bin/run"
 
-SSH_CONFIG_DIR="HOME/.ssh"
+# User specific FS locations
+EXEC_DIR="$HOME/.local/bin"
+LOG_DIR="$HOME/.local/logs"
+SSH_CONFIG_DIR="$HOME/.ssh"
 SCRATCH_DIR="$HOME/.local/scratch"
 SECRETS_DIR="$HOME/.config/secrets"
 

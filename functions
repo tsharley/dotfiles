@@ -73,10 +73,10 @@ function _check_fqdn() {
 }
 
 #------------------------------------------------------------------------------
-# Abbreviation for pytest
-# Arguments: testfile;          Return: results
-function _pt() {
-    pytest "${@}"
+# Abbreviation for short prompt
+# Arguments: none;          				  Return: none
+function spt() {
+	OCAML_ENV=true _set_theme yellow
 }
 
 #------------------------------------------------------------------------------
@@ -159,7 +159,7 @@ function _run_scripts(){
   done
 }
 
-#'------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # Reads a file and returns content of a secret to stdout
 # Arguments: name of secret;          Return: prints to stdout
 function _get_secret() {
@@ -168,14 +168,61 @@ function _get_secret() {
     echo "${secret}"
 }
 
-#'------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# Get last two sections of cwd
+# Arguments: none;					          Return: none
+function pwdtail () {
+	pwd|awk -F/ '{nlast = NF -1;print $nlast"/"$NF}'
+}
+
+#------------------------------------------------------------------------------
+# Display network config info
+# Arguments: none;					          Return: none
+function netinfo () {
+	echo "--------------- Network Information ---------------"
+	/sbin/ifconfig | awk /'inet addr/ {print $2}'
+	echo ""
+	/sbin/ifconfig | awk /'Bcast/ {print $3}'
+	echo ""
+	/sbin/ifconfig | awk /'inet addr/ {print $4}'
+
+	/sbin/ifconfig | awk /'HWaddr/ {print $4,$5}'
+	echo "---------------------------------------------------"
+}
+
+#------------------------------------------------------------------------------
 # Start Uvicorn as a dev server watching $1 or default main.py
 # Arguments: file to watch (optional);          Return: none
 function uc() {
 	uvicorn "${1:-main}":app --reload
 }
 
-#'------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# Common extract methods
+# Arguments: target file;     			     Return: none
+function extract() {
+	for arc in "$@"; do
+		if [ -f "$arc" ] ; then
+			case "$arc" in
+				*.tar.bz2)   tar xvjf "$arc"             ;;
+				*.tar.gz)    tar xvzf "$arc"             ;;
+				*.bz2)       bunzip2 "$arc"              ;;
+				*.rar)       rar x "$arc"                ;;
+				*.gz)        gunzip "$arc"               ;;
+				*.tar)       tar xvf "$arc"              ;;
+				*.tbz2)      tar xvjf "$arc"             ;;
+				*.tgz)       tar xvzf "$arc"             ;;
+				*.zip)       unzip "$arc"                ;;
+				*.Z)         uncompress "$arc"           ;;
+				*.7z)        7z x "$arc"                 ;;
+				*)           echo "'$arc':unkown type"   ;;
+			esac
+		else
+			echo "'$arc': file not found or not valid"
+		fi
+	done
+}
+#------------------------------------------------------------------------------
 # Edit with designated text editor
 # Arguments: target file;          Return: none
 function edit() {
@@ -275,8 +322,15 @@ function nnx() {
 #------------------------------------------------------------------------------
 # MACNST: (Mac Netstat) List listening ports on localhost
 # Arguments: None;          Return: 0
-function macnst() {
+function macstat() {
     netstat -Watnlv | grep LISTEN | awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; print colred "proto: " colclr $1 colred " | addr.port: " colclr $4 colred " | pid: " colclr $9 colred " | name: " colclr procname;  }' | column -t -s "|"
+}
+
+#------------------------------------------------------------------------------
+# MACNST: (Mac Netstat) List listening ports on localhost
+# Arguments: None;          Return: 0
+function oports() {
+    netstat -Watnlv | grep LISTEN | awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; addr.port: " colclr $4 colred " | name: " colclr procname;  }' | column -t -s "|"
 }
 
 #------------------------------------------------------------------------------

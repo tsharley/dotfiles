@@ -5,20 +5,18 @@ DOTDIR=~/.dotfiles
 export DOTDIR
 . "${DOTDIR}"/exports
 . "${DOTDIR}"/paths
-#export PATH
 
 
 # Options
-#[ -r "/etc/bashrc_$TERM_PROGRAM" ] && . "/etc/bashrc_$TERM_PROGRAM"
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 shopt -s histappend
 shopt -s checkwinsize
 
 
 # Setup prompt
-. "$DOTDIR"/themes
+. "${DOTDIR}"/themes
 _set_theme green
-#. "$HOME/.local/bin/promptcraft"
+
 
 # Source utility configs
 [ -r "${DOTDIR}"/aliases ] && . "${DOTDIR}"/aliases
@@ -26,7 +24,7 @@ _set_theme green
 
 
 # Run any available common startup scripts or local-only scripts
-. "${DOTDIR}"/pyvewrc 
+. "${DOTDIR}"/pyenv
 #_run_scripts "${DOTDIR}"/bashrc.d
 #_run_scripts "${HOME}"/.local/bashrc.d
 

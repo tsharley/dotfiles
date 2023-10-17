@@ -8,6 +8,7 @@ function _build_path() {
 
     paths_macos=( "${PKG_MANAGER_PREFIX}/bin"
                  "${PKG_MANAGER_PREFIX}/sbin"
+                      "$HOME/.gem/ruby/2.6.0"
                         "$HOME/.local/go/bin"
 	                       "$HOME/.cargo/bin"
                            "$HOME/.local/bin"

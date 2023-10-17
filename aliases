@@ -32,6 +32,9 @@ else
     }
 fi
 alias cd=cdls
+alias rmr='trash -F '
+alias cdbin='cd $EXEC_DIR'
+alias lsbin='ls -lAhF --color=always $EXEC_DIR'
 
 # git
 alias gc='git clone'
@@ -53,6 +56,13 @@ alias dcpull='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml pull'
 alias dclogs='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml logs -tf --tail=50'
 alias dtail='docker logs -tf --tail=50'
 
+# services managed by Homebrew
+alias bls="brew services list"			# list all installed services
+alias bstart="brew services start"		# start and enable service
+alias bstop="brew services stop"		# stop and disable service
+alias brst="brew services restart"		# reload service (pickup new config)
+alias bsi="brew services info"			# show run/schedule status of service
+ 
 # misc
 alias ss="sudo "
 alias c="clear"

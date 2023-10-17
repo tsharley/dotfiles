@@ -1,7 +1,7 @@
 {
     "backup": false,
-    "colorcolumn": 80,
-    "colorscheme": "default-nb",
+    "colorscheme": "monokai-dark",
+    "cursorline": false,
     "keepautoindent": true,
     "savecursor": true,
     "softwrap": true,

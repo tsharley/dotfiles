@@ -110,7 +110,11 @@ _set_theme(){
 			;;
 	esac
 #	PS1+='$_p_user@$_p_host \W \$ '
-	PS1+='\u@\h \w \$ '
+	if [ "${OCAML_ENV}" == true ]; then
+		PS1='\[\e[38;5;220;1m\]\$ '
+	else
+		PS1+='\u@\h \w \$ '
+	fi	
 	PS1+='\[\e[0m\]'
 	export PS1
 }
