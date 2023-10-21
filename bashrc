@@ -24,7 +24,7 @@ _set_theme green
 
 
 # Run any available common startup scripts or local-only scripts
-. "${DOTDIR}"/pyenv
+. "${DOTDIR}"/pyvenvw
 #_run_scripts "${DOTDIR}"/bashrc.d
 #_run_scripts "${HOME}"/.local/bashrc.d
 

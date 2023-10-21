@@ -49,6 +49,3 @@ elif [ "$_OS" == linux ]; then
 else
     echo "OS not supported"
 fi
-
-#echo "$PATH"
-#"${PKG_MANAGER_PREFIX}/bin":"${PKG_MANAGER_PREFIX}/sbin":"$HOME/cargo/bin":"$HOME/.local/bin":"/usr/local/sbin":"/usr/local/bin":"/usr/sbin":"/usr/bin":"/sbin":"/bin"

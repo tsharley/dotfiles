@@ -12,10 +12,10 @@ if [ "$(command -v eza)" != '' ]; then
     	--no-time
 		-s=name
 		--color=always
-		--no-icons
+		--icons=never
 	)
     alias l='eza -TF -L=2 ${EZA_OPTIONS[@]}'
-    alias ll='eza -aFlTh -L=2 ${EZA_OPTIONS[@]}' 
+    alias ll='eza -aFlTh -L=2 ${EZA_OPTIONS[@]}'
     alias lll='eza -aFlTh -L=4 ${EZA_OPTIONS[@]}'
     cdls() {
         cd "$@" || return;
@@ -62,7 +62,7 @@ alias bstart="brew services start"		# start and enable service
 alias bstop="brew services stop"		# stop and disable service
 alias brst="brew services restart"		# reload service (pickup new config)
 alias bsi="brew services info"			# show run/schedule status of service
- 
+
 # misc
 alias ss="sudo "
 alias c="clear"
@@ -75,7 +75,6 @@ set_macos_aliases() {
   alias nano="/opt/homebrew/bin/nano"
   alias tssh="/Applications/Tailscale.app/Contents/MacOS/Tailscale up --ssh"
   alias python="python3.11"
-  alias kpc='keepassxc-cli '
 }
 
 [[ $(uname) == Darwin ]] &&  set_macos_aliases

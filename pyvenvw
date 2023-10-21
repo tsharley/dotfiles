@@ -11,7 +11,7 @@ PROJECT_TYPE=PYTHON # default, mod at runtime with mkp function
 VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
 VIRTUALENVWRAPPER_WORKON_CD=1
 VIRTUALENVWRAPPER_HOOK_DIR=$WORKON_HOME/.hooks
-. "$(command -v virtualenvwrapper.sh)"
+
 
 # Aliases
 alias mkve='mkvirtualenv'
@@ -29,3 +29,6 @@ alias wo='workon'
 
 
 set +a
+
+
+. "$(command -v virtualenvwrapper.sh)"
