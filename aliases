@@ -50,18 +50,13 @@ alias fssh='fast-ssh'
 alias dils='docker image ls'
 alias dcls='docker container ls'
 alias dpsa='docker ps -a'
-alias dcup='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml up -d'
-alias dcdn='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml stop'
-alias dcpull='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml pull'
-alias dclogs='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml logs -tf --tail=50'
-alias dtail='docker logs -tf --tail=50'
-
-# services managed by Homebrew
-alias bls="brew services list"			# list all installed services
-alias bstart="brew services start"		# start and enable service
-alias bstop="brew services stop"		# stop and disable service
-alias brst="brew services restart"		# reload service (pickup new config)
-alias bsi="brew services info"			# show run/schedule status of service
+if [ -e "${DOCKER_FILE_DIR}" ]; then
+    alias dcup='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml up -d'
+    alias dcdn='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml stop'
+    alias dcpull='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml pull'
+    alias dclogs='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml logs -tf --tail=50'
+    alias dtail='docker logs -tf --tail=50'
+fi
 
 # misc
 alias ss="sudo "
@@ -75,6 +70,14 @@ set_macos_aliases() {
   alias nano="/opt/homebrew/bin/nano"
   alias tssh="/Applications/Tailscale.app/Contents/MacOS/Tailscale up --ssh"
   alias python="python3.11"
+  # services managed by Homebrew
+  alias bls="brew services list"			# list all installed services
+  alias bstart="brew services start"		# start and enable service
+  alias bstop="brew services stop"		# stop and disable service
+  alias brst="brew services restart"		# reload service (pickup new config)
+  alias bsi="brew services info"			# show run/schedule status of service
+  
+  
 }
 
 [[ $(uname) == Darwin ]] &&  set_macos_aliases
