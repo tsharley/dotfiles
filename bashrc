@@ -15,8 +15,11 @@ shopt -s checkwinsize
 
 # Setup prompt
 . "${DOTDIR}"/themes
-_set_theme green
-
+if [[ -n $SSH_CLIENT ]]; then
+    _set_theme green
+else
+    _set_theme maroon
+fi
 
 # Source utility configs
 [ -r "${DOTDIR}"/aliases ] && . "${DOTDIR}"/aliases

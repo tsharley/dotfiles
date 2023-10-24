@@ -3,8 +3,10 @@
     "colorscheme": "monokai-dark",
     "cursorline": false,
     "keepautoindent": true,
+    "ruler": false,
     "savecursor": true,
     "softwrap": true,
+    "tabstospaces": true,
     "wordwrap": true,
     "xterm": true
 }
