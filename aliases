@@ -35,6 +35,7 @@ alias cd=cdls
 alias rmr='trash -F '
 alias cdbin='cd $EXEC_DIR'
 alias lsbin='ls -lAhF --color=always $EXEC_DIR'
+alias hq='hishtory query'
 
 # git
 alias gc='git clone'
