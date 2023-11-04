@@ -39,7 +39,6 @@ SECRETS_DIR="$HOME/.config/secrets"
 LIB_SCRIPTS_DIR="$HOME/Library/Scripts"
 LIB_RESOURCES_DIR="$HOME/Library/Resources"
 DEV_PROJECT_DIR="$HOME/.00/01_projects/dev/sites/tsm"
-PKG_MANAGER="brew"
 SEC_CONF_DIR="${XDG_CONFIG_HOME}/ts"
 EDITOR="micro"
 ED_CONFIG_DIR="${XDG_CONFIG_HOME}/micro"
@@ -56,20 +55,5 @@ HISTFILESIZE=10000
 HISTCONTROL=ignoredups:ignorespace
 LESSHISTFILE="$HOME/CACHE/less/history"
 
-# App Specific
-if [ "$(uname)" == 'Darwin' ]; then
-    PKG_MANAGER_PREFIX="/opt/homebrew"
-    MICRO_CONFIG_HOME="$XDG_CONFIG_HOME/micro"
-    PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
-    DOCKER_CLI_HINTS=false
-    BREW_NO_ENV_HINTS=1
-    HOMRBREW_NO_EMOJI=1
-    BREW_NO_EMOJI=1
-    HOMEBREW_NO_ENV_HINTS=1
-    GOPATH="$HOME/.local/go"
-    GOBIN="$HOME/.local/go/bin"
-    ECLIPSE_HOME="$HOME/.config/eclipse"
-fi
-# Secrets
 
 set +a

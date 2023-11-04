@@ -1,31 +1,41 @@
 #!/usr/bin/env bash
 #shellcheck disable=SC2317
 
-########################                               ########################
-######################    Autoloaded Shell Functions    #######################
-########################                               ########################
-
+###############################################################################
+#                                                                             #
+#   ----------==========  Autoloaded Shell Functions  ==========----------    #
+#                                                                             #
+#                                                 Copyright © 2023 TJ Sharley #
+###############################################################################
 
 #------------------------------------------------------------------------------
 # Setup a default tasks.py for invoke
 # Arguments: none;          			Return: none
-function inv() {
+inv() {
     if [ ! -e "$(pwd)/tasks.py" ]; then
     	invoke --search-root="$HOME/.config/invoke" "$@"
     fi
 }
 
 #------------------------------------------------------------------------------
+# Stop all docker containers, delete them and reclaim space.
+# Arguments: none;          			Return: none
+docker_killall() {
+    docker stop "$(docker ps -aq)" && docker rm "$(docker ps -aq)" && \
+    docker system prune -a
+}
+
+#------------------------------------------------------------------------------
 # git add all (modified and untracked) and commit
 # Arguments: commit msg (optional);         	Return: none
-function commit_all() {
+commit_all() {
     git add .; git commit -m "${1:-'auto commit'}"
 }
 
 #------------------------------------------------------------------------------
 # DOTFILES - git add all (modified and untracked) and commit
 # Arguments: commit msg (optional);	         	Return: none
-function gcdot() {
+gcdot() {
     cd ~/.dotfiles || true
     commit_all "$@"
     cd - || true
@@ -34,7 +44,7 @@ function gcdot() {
 #------------------------------------------------------------------------------
 # venv and project scaffolding, python by default
 # Arguments: $1=name, flag (-b) to switch from default lang     Return: none
-function mkp() {
+mkp() {
     PROJECT_TYPE=PYTHON
     case "${1}" in
         -b | --bash)
@@ -55,7 +65,7 @@ function mkp() {
 #------------------------------------------------------------------------------
 # Create and activate a python virtual environment based on the cwd
 # Arguments: none;          			Return: none
-function mkvenv() {
+mkvenv() {
     virtualenv -p python3 "$(basename "$(pwd)")"
     source env/bin/activate
 }
@@ -63,7 +73,7 @@ function mkvenv() {
 #------------------------------------------------------------------------------
 # Add domain to hostname if not present
 # Arguments: none;          Return: hostname
-function _check_fqdn() {
+_check_fqdn() {
     pattern='^.*tsmetallic.com$'
     if [[ "$(hostname -f)" =~ $pattern ]]; then
         echo "$(hostname) correctly configured"
@@ -73,23 +83,16 @@ function _check_fqdn() {
 }
 
 #------------------------------------------------------------------------------
-# Abbreviation for short prompt
-# Arguments: none;          				  Return: none
-function spt() {
-	OCAML_ENV=true _set_theme yellow
-}
-
-#------------------------------------------------------------------------------
 # Add a new user is sudo group (debian)
 # Arguments: username (default: ts);          Return: none
-function mkuser() {
+mkuser() {
     adduser --ingroup sudo --shell /bin/bash --verbose "${1:-ts}"
 }
 
 #------------------------------------------------------------------------------
 # Display bash test operators
 # Arguments: none;          Return: none
-function sts() {
+sts() {
 	cat << 'EOF'
 
      ----------------------------------------------------
@@ -116,43 +119,10 @@ function sts() {
 EOF
 }
 
-#'------------------------------------------------------------------------------
-# Edit specified config file and source dotfiles
-# Arguments: See case statement;          Return: 0; 1 on err
-function cfg(){
-  case "${1}" in
-    b)
-      _target="${HOME}"/bashrc
-      ;;
-    a)
-      _target="${DOTDIR}"/aliases
-      ;;
-    x)
-      _target="${DOTDIR}"/exports
-      ;;
-    f)
-      _target="${DOTDIR}"/functions
-      ;;
-    s)
-      _target="${SSH_CONFIG_DIR}"/config
-      ;;
-    p)
-      _target="${DOTDIR}"/setprompt
-      ;;
-    e)
-      _target="${ED_CONFIG_DIR}"/settings.json
-      ;;
-    *)
-      echo Unknown target && return 1
-  esac
-  edit "${_target}"
-  . "${HOME}"/.bashrc
-}
-
 #------------------------------------------------------------------------------
 # Run all executable files in a directory
 # Arguments: Path to dir;          Return: none
-function _run_scripts(){
+_run_scripts(){
   for script in "${1}"/*; do
     [ -x "${script}" ] || continue
     . "${script}"
@@ -162,7 +132,7 @@ function _run_scripts(){
 #------------------------------------------------------------------------------
 # Reads a file and returns content of a secret to stdout
 # Arguments: name of secret;          Return: prints to stdout
-function _get_secret() {
+_get_secret() {
 	local secret_file="$1"
     read -r secret < "${secret_file}"
     echo "${secret}"
@@ -171,14 +141,14 @@ function _get_secret() {
 #------------------------------------------------------------------------------
 # Get last two sections of cwd
 # Arguments: none;					          Return: none
-function pwdtail () {
+pwdtail () {
 	pwd|awk -F/ '{nlast = NF -1;print $nlast"/"$NF}'
 }
 
 #------------------------------------------------------------------------------
 # Display network config info
 # Arguments: none;					          Return: none
-function netinfo () {
+netinfo () {
 	echo "--------------- Network Information ---------------"
 	/sbin/ifconfig | awk /'inet addr/ {print $2}'
 	echo ""
@@ -193,14 +163,14 @@ function netinfo () {
 #------------------------------------------------------------------------------
 # Start Uvicorn as a dev server watching $1 or default main.py
 # Arguments: file to watch (optional);          Return: none
-function uc() {
+uc() {
 	uvicorn "${1:-main}":app --reload
 }
 
 #------------------------------------------------------------------------------
 # Common extract methods
 # Arguments: target file;     			     Return: none
-function extract() {
+extract() {
 	for arc in "$@"; do
 		if [ -f "$arc" ] ; then
 			case "$arc" in
@@ -222,32 +192,11 @@ function extract() {
 		fi
 	done
 }
-#------------------------------------------------------------------------------
-# Edit with designated text editor
-# Arguments: target file;          Return: none
-function edit() {
-	micro "${@}"
-}
-
-#------------------------------------------------------------------------------
-# RELOAD: Source sub-rc files (aliases, exports, functions) to reinitialize
-# most properties of the shell.  Does not rerun bashrc.
-# Arguments: none;          Return: none
-function xaf() {
-    set -v
-	local _element
-	for _element in exports aliases functions ; do
-		# shellcheck source=/dev/null
-        . "${XDG_CONFIG_HOME}/${_element}"
-	done
-	echo "User exports, aliases and functions reloaded"
-	set +v
-}
 
 #------------------------------------------------------------------------------
 # TMPNAME: Create a time-based name for a temp file or directory
 # Arguments: $1='f' (file) or 'd' (dir)         Return: "tmp########"
-function tmpname() {
+tmpname() {
     str_time='tmp'"$(date +%s)"
     if [[ "$1" == '-d' ]]
     then
@@ -265,7 +214,7 @@ function tmpname() {
 #------------------------------------------------------------------------------
 # GG (get git): clone a git hub repository and cd to it
 # Arguments: $1 -> ghuser, ghrepo;      Return: none
-function gg() {
+gg() {
     if [ $# == 2 ]; then
         ghuser=$1
         ghrepo=$2
@@ -281,24 +230,9 @@ function gg() {
 }
 
 #------------------------------------------------------------------------------
-# COPI_CURL_CERT: View target SSL certificate and save to file
-# Arguments: $1 -> hostname;      Return: Text of certificate and local copy
-function copi_curl-cert() {
-	openssl s_client -showcerts -connect "${1}":443 -servername "${1}" \
-    </dev/null 2>/dev/null | openssl x509 -outform PEM | tee "${1}".pem
-}
-
-#------------------------------------------------------------------------------
-# CURL_CERT: View target's SSL certificate
-# Arguments: $1 -> hostname;      Return: Text of certificate (single or chain)
-function curl-cert() {
-	openssl s_client -showcerts -connect "${1}":443 -servername "${1}"
-}
-
-#------------------------------------------------------------------------------
 # MCD: Make directory, including any intermediate directories, and cd to it
 # Arguments: $1 -> dir name/path;        Return: 0
-function mcd() {
+mcd() {
 	mkdir -p "$1"
 	cd "$1" || return
 }
@@ -306,37 +240,21 @@ function mcd() {
 #------------------------------------------------------------------------------
 # CMX: Make file executable
 # Arguments: $1 -> filename;          Return: 0
-function cmx() {
+cmx() {
     chmod +x "$1"
 }
 
 #------------------------------------------------------------------------------
-# NNX: Create file, make it executable and open in nano
-# Arguments: $1 -> filename;          Return: 0
-function nnx() {
-    filename="$1"
-    touch "$filename"
-    chmod +x "$filename"
-}
-
-#------------------------------------------------------------------------------
 # MACNST: (Mac Netstat) List listening ports on localhost
 # Arguments: None;          Return: 0
-function macstat() {
+macstat() {
     netstat -Watnlv | grep LISTEN | awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; print colred "proto: " colclr $1 colred " | addr.port: " colclr $4 colred " | pid: " colclr $9 colred " | name: " colclr procname;  }' | column -t -s "|"
-}
-
-#------------------------------------------------------------------------------
-# MACNST: (Mac Netstat) List listening ports on localhost
-# Arguments: None;          Return: 0
-function oports() {
-    netstat -Watnlv | grep LISTEN | awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; addr.port: " colclr $4 colred " | name: " colclr procname;  }' | column -t -s "|"
 }
 
 #------------------------------------------------------------------------------
 # PYSERV: Stand up a web server from the current dir, port optional
 # Arguments: $1 -> port, default 8080;          Return: 0
-function pyserv() {
+pyserv() {
     port=${1:-8080}
     python3 -m http.server "$port"
 }
@@ -345,7 +263,7 @@ function pyserv() {
 #------------------------------------------------------------------------------
 # Load .env
 # Arguments: none								  ;          Return: 0
-function _env_() {
+_env_() {
     # shellcheck source=/dev/null
     . ~/.config/secrets/.env
 }
@@ -353,7 +271,7 @@ function _env_() {
 #------------------------------------------------------------------------------
 # Web Page
 # Arguments: path								  ;          Return: 0
-function _webpage() {
+_webpage() {
     target_path="${1:-.}"
     cat << EOF >> "${target_path}/index.html"
     <html>
@@ -368,7 +286,7 @@ EOF
 #------------------------------------------------------------------------------
 # UP: cd up n levels
 # Arguments: $1 -> levels (default=1);				         Return: 0
-function up(){
+up(){
   if [[ "$#" -ne 1 ]]; then
     cd ..
   elif ! [[ $1 =~ ^[0-9]+$ ]]; then
@@ -385,71 +303,12 @@ function up(){
   fi
 }
 
-#####  TODO:  Past this point are functions I have not yet tested or cleaned up.
-
-# Lists every executable in PATH
-#  $ print -l ${^path}/*(-*N)
-
-# recursive chmod
-#  $ chmod 700 **/(.) # Only files
-#  $ chmod 700 **/(/) # Only directories
-
-#------------------------------------------------------------------------------
-# MULTICOLOR: Customize each element of an array with color
-# Arguments: $1 -> color, $2 -> characters to echo;          Return: 0
-#RunService ()
-#{
-#    case $1 in
-#      start  ) StartService   ;;
-#      stop   ) StopService    ;;
-#      restart) RestartService ;;
-#      *      ) echo "$0: unknown argument: $1";;
-#    esac
-#}
-#
-## Remove a trailing pathname component, leaving the head. This works like
-## `dirname'.
-#  $ echo =ls(:h)
-#  /bin
-#
-## Remove all leading pathname components, leaving the tail. This works
-## like `basename'.
-#  $ echo =ls(:t)
-#  ls
-#
-## Remove the suffix from each file (*.sh in this example)
-#   $f:e is $f file extension
-#   :h --> head (dirname)
-#   :t --> tail (basename)
-#   :r --> rest (extension removed)
-#  $ for f (*.sh) mv $f $f:r
-#
-## Remove a filename extension of the form `.xxx', leaving the root name.
-#  $ echo $PWD
-#  /usr/src/linux
-#  $ echo $PWD:t
-#  linux
-#
-## Remove all but the extension.
-#  $ foo=23.42
-#  $ echo $foo
-#  23.42
-#  $ echo $foo:e
-#  42
-#
 ## Print the new command but do not execute it. Only works with history
 ## expansion.
 #  $ echo =ls(:h)
 #  /bin
 #  $ !echo:p
 #  $ echo =ls(:h)
-#
-## Quote the substituted words, escaping further substitutions.
-#  $ bar="23'42"
-#  $ echo $bar
-#  23'42
-#  $ echo $bar:q
-#  23\'42
 #
 ## Convert the words to all lowercase.
 #  $ bar=FOOBAR
@@ -469,51 +328,3 @@ function up(){
 #  $ foo="one two three four"
 #  $ print -r -- "${(C)foo}"
 #  One Two Three Four
-
-#------------------------------------------------------------------------------
-# FH: List most frequently used commands (from shell history)
-# Arguments: none;          Return: List of commands and % of use
-#function fh() {
-#    eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | \
-#    fzf +s --tac | sed 's/ *[0-9]* *//')
-#}
-#
-#------------------------------------------------------------------------------
-# : List most frequently used commands (from shell history)
-# Arguments: none;          Return: List of commands and % of use
-# for FILE in $(ls -1); do
-#     # :r takes filename and removes extension
-#     # :e takes extension without filename
-#     # :l lowercases text
-#     mv ${FILE} ${FILE:r}.${FILE:e:l}
-# done
-#
-## _is_installed() { [ "$(command -v "${1}")" != '' ] && return 0 || return 1; }
-#
-
-
-function it2_profile() {
-    it2profile -s "$1"
-}
-
-function sfax() {
-    # shellcheck source=/dev/null
-    source "$DOTDIR"/exports;
-    # shellcheck source=/dev/null
-    source "$DOTDIR"/aliases;
-    # shellcheck source=/dev/null
-    source "$DOTDIR"/functions
-}
-
-function cl() {
-    clear
-    echo
-	echo
-    hr _
-    echo
-    tree -alFAC -L 5 --dirsfirst --noreport
-    echo
-    hr _
-    echo
-    echo
-}

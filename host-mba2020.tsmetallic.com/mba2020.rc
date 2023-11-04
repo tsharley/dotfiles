@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+###############################################################################%
+
+## Host-specific configs for mba2020
+
+_vivid_colors(){
+#	_cs=alabaster_dark
+#	_cs=ayu
+#	_cs=catppuccin-frappe
+#	_cs=catppuccin-latte
+#	_cs=catppuccin-macchiato
+#	_cs=catppuccin-mocha
+#	_cs=dracula
+#	_cs=gruvbox-dark
+#	_cs=gruvbox-dark-hard
+#	_cs=gruvbox-dark-soft
+#	_cs=gruvbox-light
+#	_cs=gruvbox-light-hard
+#	_cs=gruvbox-light-soft
+#	_cs=iceberg-dark
+#	_cs=jellybeans
+#	_cs=lava
+#	_cs=modus-operandi
+#	_cs=molokai
+#	_cs=nord
+#	_cs=one-dark
+#	_cs=one-light
+#	_cs=snazzy
+	_cs=solarized-dark
+#	_cs=solarized-light
+	LS_COLORS="$(vivid generate "${_cs}")"
+	export LS_COLORS
+}
+
+[ "$(command -v vivid)" != '' ] && _vivid_colors
+
+# Aliases
+alias u='gunits '
+alias rmr='trash -F '
+alias hq='hishtory query'
+alias kb='open ~/Downloads/kb_L0_4.png'
+alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resourcesapp/bin/code"
+alias nano="/opt/homebrew/bin/nano"
+alias tssh="/Applications/Tailscale.app/Contents/MacOS/Tailscale up--ssh"
+alias python="python3.11"
+# services managed by Homebrew
+alias bls="brew services list"			# list all installed services
+alias bstart="brew services start"		# start and enable service
+alias bstop="brew services stop"		# stop and disable service
+alias brst="brew services restart"		# reload service (pickup newconfig)
+alias bsi="brew services info"			# show run/schedule status of service
+
+# Exports
+PKG_MANAGER="brew"
+PKG_MANAGER_PREFIX="/opt/homebrew"
+MICRO_CONFIG_HOME="$XDG_CONFIG_HOME/micro"
+PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
+DOCKER_CLI_HINTS=false
+BREW_NO_ENV_HINTS=1
+HOMEBREW_NO_EMOJI=1
+BREW_NO_EMOJI=1
+HOMEBREW_NO_ENV_HINTS=1
+GOPATH="$HOME/.local/go"
+GOBIN="$HOME/.local/go/bin"
+ECLIPSE_HOME="$HOME/.config/eclipse"

@@ -32,10 +32,9 @@ else
     }
 fi
 alias cd=cdls
-alias rmr='trash -F '
 alias cdbin='cd $EXEC_DIR'
 alias lsbin='ls -lAhF --color=always $EXEC_DIR'
-alias hq='hishtory query'
+
 
 # git
 alias gc='git clone'
@@ -64,22 +63,5 @@ alias ss="sudo "
 alias c="clear"
 alias edit='micro'
 
-# macOS Aliases
-set_macos_aliases() {
-  alias kb='open ~/Downloads/kb_L0_4.png'
-  alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
-  alias nano="/opt/homebrew/bin/nano"
-  alias tssh="/Applications/Tailscale.app/Contents/MacOS/Tailscale up --ssh"
-  alias python="python3.11"
-  # services managed by Homebrew
-  alias bls="brew services list"			# list all installed services
-  alias bstart="brew services start"		# start and enable service
-  alias bstop="brew services stop"		# stop and disable service
-  alias brst="brew services restart"		# reload service (pickup new config)
-  alias bsi="brew services info"			# show run/schedule status of service
-  
-  
-}
 
-[[ $(uname) == Darwin ]] &&  set_macos_aliases
 

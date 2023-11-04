@@ -1,6 +1,6 @@
 COPY_ALWAYS="ssh/id_*"
 DOTFILES_DIRS="${HOME}/.dotfiles"
-EXCLUDES="irbrc *:*emacs* *config/micro/syntax* *config/micro/buffers* *config/micro/backups*"
+EXCLUDES="*config/micro/syntax* *config/micro/buffers* *config/micro/backups*"
 HOSTNAME="mba2020.tsmetallic.com"
 TAGS="bootstrap build macos-only linux-only"
 SYMLINK_DIRS=""
