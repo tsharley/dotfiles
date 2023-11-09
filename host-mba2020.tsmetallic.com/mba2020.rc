@@ -39,10 +39,10 @@ alias u='gunits '
 alias rmr='trash -F '
 alias hq='hishtory query'
 alias kb='open ~/Downloads/kb_L0_4.png'
-alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resourcesapp/bin/code"
+alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
 alias nano="/opt/homebrew/bin/nano"
-alias tssh="/Applications/Tailscale.app/Contents/MacOS/Tailscale up--ssh"
 alias python="python3.11"
+alias cfal='$EDITOR ${HOME}/.config/alacritty/alacritty.yml'
 # services managed by Homebrew
 alias bls="brew services list"			# list all installed services
 alias bstart="brew services start"		# start and enable service

@@ -20,10 +20,10 @@ shopt -s checkwinsize
 if [[ -n $SSH_CLIENT ]]; then
     _set_theme maroon
 else
-    _set_theme green
+    _set_theme orange
 fi
-
-. ~/.config/bash/theme/frost.theme
+#
+#. ~/.config/bash/theme/frost.theme
 
 # Source utility configs
 [ -r "${DOTDIR}"/aliases ] && . "${DOTDIR}"/aliases
@@ -55,5 +55,8 @@ if ! shopt -oq posix; then
 fi
 
 # Hishtory Config:
-export PATH="$PATH:/Users/tjsharley/.hishtory"
-source /Users/tjsharley/.hishtory/config.sh
+# export PATH="$PATH:/Users/tjsharley/.hishtory"
+# source /Users/tjsharley/.hishtory/config.sh
+
+#eval "$(starship init bash)"
+#. "${HOME}/.config/gbt/gbt.conf" tsm
