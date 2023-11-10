@@ -1,11 +1,12 @@
 {
     "backup": false,
-    "colorscheme": "monokai-dark",
+    "colorscheme": "default-nb",
     "cursorline": false,
+    "infobar": false,
     "keepautoindent": true,
-    "ruler": false,
     "savecursor": true,
     "softwrap": true,
+    "statusline": false,
     "tabstospaces": true,
     "wordwrap": true,
     "xterm": true

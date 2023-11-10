@@ -58,5 +58,5 @@ fi
 # export PATH="$PATH:/Users/tjsharley/.hishtory"
 # source /Users/tjsharley/.hishtory/config.sh
 
-#eval "$(starship init bash)"
-#. "${HOME}/.config/gbt/gbt.conf" tsm
+# eval "$(starship init bash)"
+# . "${HOME}/.config/gbt/gbt.conf" tsm

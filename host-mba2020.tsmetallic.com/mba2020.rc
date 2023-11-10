@@ -37,7 +37,7 @@ _vivid_colors(){
 # Aliases
 alias u='gunits '
 alias rmr='trash -F '
-alias hq='hishtory query'
+#alias hq='hishtory query'
 alias kb='open ~/Downloads/kb_L0_4.png'
 alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
 alias nano="/opt/homebrew/bin/nano"
@@ -51,6 +51,7 @@ alias brst="brew services restart"		# reload service (pickup newconfig)
 alias bsi="brew services info"			# show run/schedule status of service
 
 # Exports
+set -a
 PKG_MANAGER="brew"
 PKG_MANAGER_PREFIX="/opt/homebrew"
 MICRO_CONFIG_HOME="$XDG_CONFIG_HOME/micro"
@@ -63,3 +64,4 @@ HOMEBREW_NO_ENV_HINTS=1
 GOPATH="$HOME/.local/go"
 GOBIN="$HOME/.local/go/bin"
 ECLIPSE_HOME="$HOME/.config/eclipse"
+set +a
