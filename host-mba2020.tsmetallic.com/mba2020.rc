@@ -31,7 +31,7 @@ _vivid_colors(){
 	LS_COLORS="$(vivid generate "${_cs}")"
 	export LS_COLORS
 }
-
+set -a
 [ "$(command -v vivid)" != '' ] && _vivid_colors
 
 # Aliases
@@ -49,9 +49,10 @@ alias bstart="brew services start"		# start and enable service
 alias bstop="brew services stop"		# stop and disable service
 alias brst="brew services restart"		# reload service (pickup newconfig)
 alias bsi="brew services info"			# show run/schedule status of service
+alias vv='basename ${VIRTUAL_ENV}'
+
 
 # Exports
-set -a
 PKG_MANAGER="brew"
 PKG_MANAGER_PREFIX="/opt/homebrew"
 MICRO_CONFIG_HOME="$XDG_CONFIG_HOME/micro"
@@ -64,4 +65,5 @@ HOMEBREW_NO_ENV_HINTS=1
 GOPATH="$HOME/.local/go"
 GOBIN="$HOME/.local/go/bin"
 ECLIPSE_HOME="$HOME/.config/eclipse"
+AIRFLOW_HOME="$HOME/Public/airflow"
 set +a

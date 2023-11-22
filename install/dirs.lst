@@ -1,0 +1,9 @@
+.cache
+.config
+.config/micro
+.local
+.local/share
+.local/data
+.local/state
+.local/lib
+.local/bin

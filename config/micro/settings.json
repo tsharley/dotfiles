@@ -1,13 +1,11 @@
 {
     "backup": false,
-    "colorscheme": "default-nb",
+    "colorscheme": "gruvbox",
     "cursorline": false,
-    "infobar": false,
+    "fakecursor": true,
     "keepautoindent": true,
     "savecursor": true,
     "softwrap": true,
-    "statusline": false,
-    "tabstospaces": true,
     "wordwrap": true,
     "xterm": true
 }

@@ -9,6 +9,14 @@
 ###############################################################################
 
 #------------------------------------------------------------------------------
+# YS - init yabai and skhd
+# Arguments: none; 						Return: none
+ys() {
+	yabai --start-service
+	skhd --start-service
+}
+
+#------------------------------------------------------------------------------
 # Setup a default tasks.py for invoke
 # Arguments: none;          			Return: none
 inv() {
