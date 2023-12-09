@@ -20,9 +20,11 @@ case $(uname | tr '[:upper:]' '[:lower:]') in
     ;;
 esac
 
+
 # Env Vars for terminal and OS/FS structure
 ###########################################
-## Cross-platform ##
+
+
 # File System and references
 XDG_DATA_HOME="$HOME/.local/share"
 XDG_CONFIG_HOME="$HOME/.config"
@@ -30,7 +32,8 @@ XDG_STATE_HOME="$HOME/.local/state"
 XDG_CACHE_HOME="$HOME/.cache"
 XDG_RUNTIME_DIR="$HOME/.local/bin/run"
 
-# User specific FS locations
+
+# Locations and command preferences
 EXEC_DIR="$HOME/.local/bin"
 LOG_DIR="$HOME/.local/logs"
 SSH_CONFIG_DIR="$HOME/.ssh"
@@ -45,8 +48,20 @@ ED_CONFIG_DIR="${XDG_CONFIG_HOME}/micro"
 VISUAL="$EDITOR"
 SUDO_EDITOR="$EDITOR"
 MANCOLOR=1
-MANPAGER="less -sR"
+MANPAGER='most -s'
+PAGER='most -s'
 GIT_PAGER=/opt/homebrew/bin/delta
+
+
+# Automation monorepo
+TOOLS_ROOT="/Users/tjsharley/Tools"
+TOOLS_CONFIG_DIR="${TOOLS_ROOT}/config"
+TOOLS_DATA_DIR="${TOOLS_ROOT}/data"
+TOOLS_SCRIPTS_DIR="${TOOLS_ROOT}/scripts"
+TOOLS_RESOURCE_DIR="${TOOLS_ROOT}/resources"
+TOOLS_BACKUP_DIR="${TOOLS_ROOT}/backup"
+TOOLS_LOG_DIR="${TOOLS_ROOT}/logs"
+
 
 # State controls
 HISTFILE="$XDG_STATE_HOME/.bash_history"   # History filepath
@@ -56,6 +71,11 @@ HISTFILESIZE=10000
 HISTCONTROL=ignoreboth:erasedups
 LESSHISTFILE="$HOME/CACHE/less/history"
 GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+
+# Personal env vars (omit from source control)
+[[ -r ~/.config/.personalrc ]] && . ~/.config/.personalrc
+
 
 set +a
 

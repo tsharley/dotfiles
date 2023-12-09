@@ -3,27 +3,23 @@
 # Cross-platform Aliases
 ################################################
 
-# ls, file-ops and movement
+
+# ----- ls, file-ops and movement ---------------
+alias c="clear"
 if [[ "$(command -v eza)" != '' ]]; then
     EZA_OPTIONS=(
     	-F
     	--group-directories-first
-    	-I='Library|Downloads|Desktop|Movies|Music|Pictures|.DS_Store|__pycache__|.pytest_cache'
+    	-I='Library|Downloads|Desktop|Movies|Music|Pictures|.DS_Store|__pycache__|.pytest_cache|.git'
     	--no-time
 		-s=name
 		--color=always
 		--icons=never
 	)
-    alias l='eza -TF -L=2 ${EZA_OPTIONS[@]}'
+    alias l='eza -F ${EZA_OPTIONS[@]}'
     alias ll='eza -aFlTh -L=2 ${EZA_OPTIONS[@]}'
     alias lll='eza -aFlTh -L=4 ${EZA_OPTIONS[@]}'
-    cdls() {
-        cd "$@" || return;
-        clear
-        eza -F "${EZA_OPTIONS[@]}"
-        echo
-    }
-elif [[ "$(command -v eza)" != '' ]]; then
+elif [[ "$(command -v exa)" != '' ]]; then
 	EXA_OPTIONS=(
 		--classify
 		--color=always
@@ -35,51 +31,66 @@ elif [[ "$(command -v eza)" != '' ]]; then
 	alias l='exa ${EXA_OPTIONS[@]}'
 	alias l='exa --tree --level=2 ${EXA_OPTIONS[@]}'
 	alias l='exa --tree --level=3 --long ${EXA_OPTIONS[@]}'
-	cdls() {
-		cd "$@" || return;
-		clear
-        exa "${EXA_OPTIONS[@]}"
-		echo
-	}
 else
     alias l='ls --color=always'
     alias la='ls -a --color=always'
     alias ll="ls -lhAF --color=always"
-    cdls() {
-      cd "$@" && ls -F --color=always
-    }
 fi
-alias cd=cdls
+cd() {
+	builtin cd "$@" || return
+	c; l
+}
 alias cdbin='cd $EXEC_DIR'
 alias lsbin='ls -lAhF --color=always $EXEC_DIR'
 
-# git
-alias gc='git clone'
-alias ga="git add ."
 
-# network and comms
-alias ping='c; ping -c 5 '
-alias p8="c; ping -c 5 8.8.8.8"
-alias pubkey="pbcopy < ~/.ssh/id_rsa.pub && echo \"Public key copied to pasteboard.\""
-alias fssh='fast-ssh'
+# ----- git -------------------------------------
+alias gs='git status '
+alias gc='git clone '
+alias ga='git add . '
+alias gcm='git commit -m '
 
-# docker
+
+# ----- network and comms -----------------------
+if [[ "$(uname)" == Darwin ]]; then
+	HOSTSFILE=/private/etc/hosts
+else
+	HOSTSFILE=/etc/hosts
+fi
+export HOSTSFILE
+alias edhosts='sudo nano $HOSTSFILE'
+alias ping='grc ping -c 5 '
+alias pping='clear; grc ping -c 5 '
+alias p8="clear; grc ping -c 5 8.8.8.8"
+# Pipe my public key to my clipboard.
+alias pubkey="more ~/.ssh/id_ed25519.pub | \
+xclip -selection clipboard | \
+echo 'Key ed25519 copied to pasteboard.'"
+# Pipe my private key to my clipboard.
+alias privkey="more ~/.ssh/id_ed25519 | \
+xclip -selection clipboard | \
+echo 'Key ed25519 (priv) copied to pasteboard.'"
+
+
+# ----- docker ----------------------------------
 alias dils='docker image ls'
 alias dcls='docker container ls'
 alias dpsa='docker ps -a'
-if [ -e "${DOCKER_FILE_DIR}" ]; then
-    alias dcup='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml up -d'
-    alias dcdn='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml stop'
-    alias dcpull='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml pull'
-    alias dclogs='docker compose -f ${DOCKER_FILE_DIR}/docker-compose.yml logs -tf --tail=50'
+DFDIR=''
+if [ -e "${DFDIR}" ]; then
+    alias dcup='docker compose -f ${DFDIR}/docker-compose.yml up -d'
+    alias dcdn='docker compose -f ${DFDIR}/docker-compose.yml stop'
+    alias dcpull='docker compose -f ${DFDIR}/docker-compose.yml pull'
+    alias dclogs='docker compose -f ${DFDIR}/docker-compose.yml logs \
+    -tf --tail=50'
     alias dtail='docker logs -tf --tail=50'
 fi
 
-# misc
+
+# ----- misc ------------------------------------
 alias ss="sudo "
-alias c="clear"
-alias edit='micro'
+alias edit='micro '
 alias cb='$EDITOR ${HOME}/.bashrc'
 alias sb='. ${HOME}/.bashrc'
-
-
+alias brewups='brew update; brew upgrade'
+alias minff='c; fastfetch -c ~/.config/fastfetch/modules.min.jsonc'

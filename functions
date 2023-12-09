@@ -8,18 +8,11 @@
 #                                                 Copyright © 2023 TJ Sharley #
 ###############################################################################
 
-#------------------------------------------------------------------------------
-# YS - init yabai and skhd
-# Arguments: none; 						Return: none
-ys() {
-	yabai --start-service
-	skhd --start-service
-}
 
 #------------------------------------------------------------------------------
 # Setup a default tasks.py for invoke
 # Arguments: none;          			Return: none
-inv() {
+__inv() {
     if [ ! -e "$(pwd)/tasks.py" ]; then
     	invoke --search-root="$HOME/.config/invoke" "$@"
     fi
@@ -28,7 +21,7 @@ inv() {
 #------------------------------------------------------------------------------
 # Stop all docker containers, delete them and reclaim space.
 # Arguments: none;          			Return: none
-docker_killall() {
+__docker_killall() {
     docker stop "$(docker ps -aq)" && docker rm "$(docker ps -aq)" && \
     docker system prune -a
 }
@@ -36,14 +29,14 @@ docker_killall() {
 #------------------------------------------------------------------------------
 # git add all (modified and untracked) and commit
 # Arguments: commit msg (optional);         	Return: none
-commit_all() {
+__commit_all() {
     git add .; git commit -m "${1:-'auto commit'}"
 }
 
 #------------------------------------------------------------------------------
 # DOTFILES - git add all (modified and untracked) and commit
 # Arguments: commit msg (optional);	         	Return: none
-gcdot() {
+__gcdot() {
     cd ~/.dotfiles || true
     commit_all "$@"
     cd - || true
@@ -81,7 +74,7 @@ mkvenv() {
 #------------------------------------------------------------------------------
 # Add domain to hostname if not present
 # Arguments: none;          Return: hostname
-_check_fqdn() {
+__check_fqdn() {
     pattern='^.*tsmetallic.com$'
     if [[ "$(hostname -f)" =~ $pattern ]]; then
         echo "$(hostname) correctly configured"
@@ -130,7 +123,7 @@ EOF
 #------------------------------------------------------------------------------
 # Run all executable files in a directory
 # Arguments: Path to dir;          Return: none
-_run_scripts(){
+__run_scripts(){
   for script in "${1}"/*; do
     [ -x "${script}" ] || continue
     . "${script}"
@@ -140,7 +133,7 @@ _run_scripts(){
 #------------------------------------------------------------------------------
 # Reads a file and returns content of a secret to stdout
 # Arguments: name of secret;          Return: prints to stdout
-_get_secret() {
+__get_secret() {
 	local secret_file="$1"
     read -r secret < "${secret_file}"
     echo "${secret}"
@@ -149,14 +142,14 @@ _get_secret() {
 #------------------------------------------------------------------------------
 # Get last two sections of cwd
 # Arguments: none;					          Return: none
-pwdtail () {
+__pwdtail () {
 	pwd|awk -F/ '{nlast = NF -1;print $nlast"/"$NF}'
 }
 
 #------------------------------------------------------------------------------
 # Display network config info
 # Arguments: none;					          Return: none
-netinfo () {
+__netinfo () {
 	echo "--------------- Network Information ---------------"
 	/sbin/ifconfig | awk /'inet addr/ {print $2}'
 	echo ""
@@ -222,7 +215,7 @@ tmpname() {
 #------------------------------------------------------------------------------
 # GG (get git): clone a git hub repository and cd to it
 # Arguments: $1 -> ghuser, ghrepo;      Return: none
-gg() {
+__gg() {
     if [ $# == 2 ]; then
         ghuser=$1
         ghrepo=$2
@@ -255,14 +248,14 @@ cmx() {
 #------------------------------------------------------------------------------
 # MACNST: (Mac Netstat) List listening ports on localhost
 # Arguments: None;          Return: 0
-macstat() {
+__macstat() {
     netstat -Watnlv | grep LISTEN | awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; print colred "proto: " colclr $1 colred " | addr.port: " colclr $4 colred " | pid: " colclr $9 colred " | name: " colclr procname;  }' | column -t -s "|"
 }
 
 #------------------------------------------------------------------------------
 # PYSERV: Stand up a web server from the current dir, port optional
 # Arguments: $1 -> port, default 8080;          Return: 0
-pyserv() {
+__pyserv() {
     port=${1:-8080}
     python3 -m http.server "$port"
 }
@@ -271,7 +264,7 @@ pyserv() {
 #------------------------------------------------------------------------------
 # Load .env
 # Arguments: none								  ;          Return: 0
-_env_() {
+__env() {
     # shellcheck source=/dev/null
     . ~/.config/secrets/.env
 }
@@ -279,16 +272,23 @@ _env_() {
 #------------------------------------------------------------------------------
 # Web Page
 # Arguments: path								  ;          Return: 0
-_webpage() {
+__webpage() {
+    
     target_path="${1:-.}"
-    cat << EOF >> "${target_path}/index.html"
-    <html>
-      <header></header>
+    
+    cat <<-EOF >> "${target_path}/index.html"
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <title>title</title>
+            <link rel="stylesheet" href="https://unpkg.com/mvp.css"> 
+        </head>
         <body>
-          <h1>TEST PAGE</h1>
+            <!-- page content -->
         </body>
     </html>
-EOF
+	EOF
 }
 
 #------------------------------------------------------------------------------
@@ -311,28 +311,123 @@ up(){
   fi
 }
 
-## Print the new command but do not execute it. Only works with history
-## expansion.
-#  $ echo =ls(:h)
-#  /bin
-#  $ !echo:p
-#  $ echo =ls(:h)
-#
-## Convert the words to all lowercase.
-#  $ bar=FOOBAR
-#  $ echo $bar
-#  FOOBAR
-#  $ echo $bar:l
-#  foobar
-#
-## Convert the words to all uppercase.
-#  $ bar=foobar
-#  $ echo $bar
-#  foobar
-#  $ echo $bar:u
-#  FOOBAR
-#
-## convert 1st char of a word to uppercase
-#  $ foo="one two three four"
-#  $ print -r -- "${(C)foo}"
-#  One Two Three Four
+#------------------------------------------------------------------------------
+# # Usage: get term size
+# Arguments: flags -l (lines), -c (columns), -a (all);	   Return: {{ return }} 
+__get_term_size() {
+    shopt -s checkwinsize; (:;:) # (:;:) is a micro sleep to ensure export
+	case "$1" in
+		"-l")	printf '%s\n' "$LINES"			;;
+		"-c")	printf '%s\n' "$COLUMNS"		;;
+		*)		printf '%s\n' "$LINES $COLUMNS"	;;
+	esac
+}
+
+#------------------------------------------------------------------------------
+# {{ name }}
+# Arguments: {{ args }};          				Return: {{ return }} 
+__get_cursor_pos() {
+    # Usage: get_cursor_pos
+    IFS='[;' read -p $'\e[6n' -d R -rs _ y x _
+    printf '%s\n' "$x $y"
+}
+
+#------------------------------------------------------------------------------
+# {{ name }}
+# Arguments: {{ args }};          				Return: {{ return }} 
+__hex_to_rgb() {
+    # Usage: hex_to_rgb "#FFFFFF"
+    #        hex_to_rgb "000000"
+    : "${1/\#}"
+    ((r=16#${_:0:2},g=16#${_:2:2},b=16#${_:4:2}))
+    printf '%s\n' "$r $g $b"
+}
+
+#------------------------------------------------------------------------------
+# {{ name }}
+# Arguments: {{ args }};          				Return: {{ return }} 
+__rgb_to_hex() {
+    # Usage: rgb_to_hex "r" "g" "b"
+    printf '#%02x%02x%02x\n' "$1" "$2" "$3"
+}
+
+#------------------------------------------------------------------------------
+# {{ name }}
+# Arguments: {{ args }};          				Return: {{ return }} 
+__progbar() {
+    # Usage: bar 1 10
+    #            ^----- Elapsed Percentage (0-100).
+    #               ^-- Total length in chars.
+    elapsed_percent="$1"
+    ttl_len="$2"
+    ((elapsed=elapsed_percent*ttl_len/100))
+
+    # Create the bar with spaces.
+    printf -v prog  "%${elapsed}s"
+    printf -v total "%$(($2-elapsed))s"
+
+    printf '%s\r' "[${prog// /-}${total}]"
+}
+
+#------------------------------------------------------------------------------
+# {{ name }}
+# Arguments: {{ args }};          				Return: {{ return }} 
+__trim_string() {
+    # Usage: trim_string "   example   string    "
+    : "${1#"${1%%[![:space:]]*}"}"
+    : "${_%"${_##*[![:space:]]}"}"
+    printf '%s\n' "$_"
+}
+
+#------------------------------------------------------------------------------
+# {{ name }}
+# Arguments: {{ args }};          				Return: {{ return }} 
+__regex() {
+    # Usage: regex "string" "regex"
+    candidate_str="${1}"
+    pattern="${2}"
+    [[ "$candidate_str" =~ $pattern ]] && printf '%s\n' "${BASH_REMATCH[1]}"
+}
+
+#------------------------------------------------------------------------------
+# Reads file and gets an array of lines between two designated markers 
+# Arguments: marker_start marker_end;          Return: array of lines from file 
+extract_lines() {
+    # Usage: extract file "opening marker" "closing marker"
+    while IFS=$'\n' read -r line; do
+        [[ $extract && $line != "$3" ]] &&
+            printf '%s\n' "$line"
+
+        [[ $line == "$2" ]] && extract=1
+        [[ $line == "$3" ]] && extract=
+    done < "$1"
+}
+
+#------------------------------------------------------------------------------
+# {{ name }}
+# Arguments: {{ args }};          				Return: {{ return }} 
+#() {
+	
+#}
+
+#------------------------------------------------------------------------------
+# {{ name }}
+# Arguments: {{ args }};          				Return: {{ return }} 
+#() {
+	
+#}
+
+#------------------------------------------------------------------------------
+# {{ name }}
+# Arguments: {{ args }};          				Return: {{ return }} 
+#() {
+	
+#}
+
+#------------------------------------------------------------------------------
+# {{ name }}
+# Arguments: {{ args }};          				Return: {{ return }} 
+#() {
+	
+#}
+

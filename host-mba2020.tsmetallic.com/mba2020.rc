@@ -67,3 +67,4 @@ GOBIN="$HOME/.local/go/bin"
 ECLIPSE_HOME="$HOME/.config/eclipse"
 AIRFLOW_HOME="$HOME/Public/airflow"
 set +a
+export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
