@@ -2,7 +2,9 @@
 #shellcheck disable=SC2027,SC2046,SC2154
 ###############################################################################%
 INSTALL_DIR="$(dirname "${0}")"
-DOTDIR="${INSTALL_DIR}/.."
+cd "$INSTALL_DIR"; cd ..
+DOTDIR="$(pwd)"
+#echo $DOTDIR
 
 mk_dirs_from_file() {
     cat "${1}" | while read -r line; do
@@ -12,11 +14,16 @@ mk_dirs_from_file() {
 
 replace_dotfiles() {
     for f in "${DOTDIR}"/*; do
-	    if [[ ! -d "${f}" ]]; then
-		    [[ -e "${HOME}/.${f}" ]] && \
-            mv "${HOME}/.${f}" "${INSTALL_DIR}/backup/${f}"
-            ln -s "${DOTDIR}/${f}" "${HOME}/.${f}"
-	    fi
+        if [[ ! -d "${f}" ]]; then
+            file="$(basename "$f")"
+            if [[ -f "${HOME}/.${file}" ]]; then
+                mv "${HOME}/.${file}" "${INSTALL_DIR}/backup/"
+            fi
+            if [[ -h "${HOME}/.${file}" ]]; then
+                unlink "${HOME}/.${file}"
+            fi
+            ln -sf "${DOTDIR}/${file}" "${HOME}/.${file}"
+        fi
     done
 }
 

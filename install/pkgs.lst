@@ -10,14 +10,8 @@ gnupg
 zip
 unzip
 vim
-tldr
 xterm
-procps
-libnotify
 xdg-desktop-portal
 xdg-utils
-pkg-config
 python3-virtualenvwrapper
 units
-debian-goodies
-dh-python
