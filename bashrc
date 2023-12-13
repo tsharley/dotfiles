@@ -55,4 +55,7 @@ fi
 	tr ' ' '\n')" scp sftp ssh		# completions based on ssh config
 
 [[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
-c; fastfetch -c ~/.config/fastfetch/modules.min.jsonc
+if [[ $FF_SHOWN != 0 ]]; then
+	c; fastfetch -c ~/.config/fastfetch/modules.min.jsonc
+	FF_SHOWN=0; export FF_SHOWN
+fi

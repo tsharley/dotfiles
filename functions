@@ -246,10 +246,10 @@ cmx() {
 }
 
 #------------------------------------------------------------------------------
-# MACNST: (Mac Netstat) List listening ports on localhost
+# MACNST: (Mac Netstat) List listening ports on localhost ### Watnlv
 # Arguments: None;          Return: 0
 __macstat() {
-    netstat -Watnlv | grep LISTEN | awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; print colred "proto: " colclr $1 colred " | addr.port: " colclr $4 colred " | pid: " colclr $9 colred " | name: " colclr procname;  }' | column -t -s "|"
+    netstat -anv | grep LISTEN | awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; print colred "proto: " colclr $1 colred " | addr.port: " colclr $4 colred " | pid: " colclr $9 colred " | name: " colclr procname;  }' | column -t -s "|" | cut -c 1-129 | sed 's/proto://g' | sed 's/addr.//g'
 }
 
 #------------------------------------------------------------------------------
@@ -404,18 +404,32 @@ extract_lines() {
 }
 
 #------------------------------------------------------------------------------
-# {{ name }}
-# Arguments: {{ args }};          				Return: {{ return }} 
-#() {
-	
-#}
+# Wrapper taking output from my "loc" python script
+# Arguments: 1, 2, 3, 4 or 5;          			Return: cd to dir from list 
+lc() {
+	default='-l'
+	arg="${1:-$default}"
+	if [[ $arg == "-l" ]]; then
+		loc "$arg"
+	elif [[ $arg == "-c" ]]; then
+		edit ~/.local/bin/loc
+	else
+		cd "$(loc "$arg")" || return
+	fi
+}
 
 #------------------------------------------------------------------------------
-# {{ name }}
-# Arguments: {{ args }};          				Return: {{ return }} 
-#() {
-	
-#}
+# Source dotfiles
+# Arguments: none; 	    		 				Return: none
+d() {
+	source ~/.bashrc
+	source ~/.aliases
+	source ~/.functions
+	source ~/.exports
+	source ~/.themes
+	source ~/.paths
+	echo -e '\033[38;5;33;1mDotfiles Sourced\033[0m'
+}
 
 #------------------------------------------------------------------------------
 # {{ name }}
