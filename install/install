@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#shellcheck disable=SC2027,SC2046,SC2154,SC2164
+#shellcheck disable=SC2027,SC2046,SC2154,SC2164,SC2103
 ###############################################################################%
 
 INSTALL_DIR="$(dirname "${0}")"
