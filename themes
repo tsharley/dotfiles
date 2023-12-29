@@ -114,7 +114,7 @@ _set_theme(){
 		PS1='\[\e[38;5;220;1m\]\$ '
 	else
 		PS1+='\u@\h \w \$ '
-	fi	
+	fi
 	PS1+='\[\e[0m\]'
 	PS1='\n'$PS1
 	export PS1
@@ -141,15 +141,18 @@ virtualenv_prompt() {
 # Display a "we are in a virtualenv" indicator that works in child shells too
 
 #_set_theme "$@"
-if [[ -n $SSH_CLIENT ]]; then 
-	. mkPS1 236 63 245 190
-	PS1="$(echo "$PS1" | sed 's/@/- SSH -/g')"
-else 
-	. mkPS1 238 196 243 196
+if [[ -n $SSH_CLIENT ]]; then
+	  . mkPS1 236 63 245 190
+	  PS1="$(echo "$PS1" | sed 's/@/- SSH -/g')"
+else
+    if [[ -f "$HOME"/.config/prompt/host-specific ]]; then
+        primary="$(cat "$HOME"/.config/prompt/host-specific)"
+    fi
+    . mkPS1 238 "${primary:-196}" 243 "${primary:-196}"
 fi
 
 #if [[ -e $XDG_CONFIG_HOME/prompt/local.conf ]]; then
 #	 . "$XDG_CONFIG_HOME/prompt/local.conf"
 #fi
-	 
+
 #PS1=$'\n\\[\\e[91m\\]\uE0B6\\[\\e[97;101m\\] \uE711  \\[\\e[0;48;5;238m\\] \\u@\\h \\[\\e[37;47m\\]\\[\\e[38;5;236m\\] \\w \\[\\e[0;37m\\]\uE0B0\\[\\e[0m\\] '
