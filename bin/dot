@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+###############################################################################%
+
+PS3="Select configuration file to edit:  "
+list=(
+	bashrc
+	aliases
+	functions
+	exports
+	paths
+	themes
+)
+
+select df in "${list[@]}"; do
+
+	micro ~/."$df"
+	echo 
+	break
+
+done

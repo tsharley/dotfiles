@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+###############################################################################%
+
+declare -A color
+color["black"]="30"
+color["maroon"]="31"
+color["green"]="32"
+color["olive"]="33"
+color["navy"]="34"
+color["purple"]="35"
+color["teal"]="36"
+color["silver"]="37"
+color["grey"]="90"
+color["red"]="91"
+color["lime"]="92"
+color["yellow"]="93"
+color["blue"]="94"
+color["fuchsia"]="95"
+color["aqua"]="96"
+color["white"]="97"
+
+
+color_echo() {
+	if [[ "${1}" == '-n' ]]; then
+		_n_=""
+		shift
+	else
+		_n_="\n"
+	fi
+	key="${1}"						# e.g. 'blue'
+	shift
+	declare -a content=( "${@}" )	# e.g. 'Some blue text'
+	cstart="\033[${color[$key]}m"
+	cstop="\033[0m"
+	echo -ne "${cstart}${content[@]}${cstop}${_n_}"
+}
+
+#color_echo maroon "plain test message"
+
+#color_echo -n green "test message"
+#color_echo blue " in two colors"
+
+color_echo "$@"
