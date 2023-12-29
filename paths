@@ -9,7 +9,6 @@ function _build_path() {
     paths_macos=( "/nix/var/nix/profiles/default/bin"
                          "${PKG_MANAGER_PREFIX}/sbin"
                           "${PKG_MANAGER_PREFIX}/bin"
-                              "$HOME/.gem/ruby/2.6.0"
                                 "$HOME/.local/go/bin"
 	                               "$HOME/.cargo/bin"
                                    "$HOME/.local/bin"

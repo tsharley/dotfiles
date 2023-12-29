@@ -52,10 +52,10 @@ MANCOLOR=1
 MANPAGER='most -s'
 PAGER='most -s'
 GIT_PAGER=/opt/homebrew/bin/delta
-
+INPUTRC="${XDG_CONFIG_HOME}/.inputrc"
 
 # Automation monorepo
-TOOLS_ROOT="/Users/tjsharley/Tools"
+TOOLS_ROOT="${HOME}/Tools"
 TOOLS_CONFIG_DIR="${TOOLS_ROOT}/config"
 TOOLS_DATA_DIR="${TOOLS_ROOT}/data"
 TOOLS_SCRIPTS_DIR="${TOOLS_ROOT}/scripts"

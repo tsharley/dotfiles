@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2001
 
 _set_theme(){
     _p_user='ts'
@@ -142,9 +142,14 @@ virtualenv_prompt() {
 
 #_set_theme "$@"
 if [[ -n $SSH_CLIENT ]]; then 
-	_set_theme maroon 
+	. mkPS1 236 63 245 190
+	PS1="$(echo "$PS1" | sed 's/@/- SSH -/g')"
 else 
-	_set_theme orange 
+	. mkPS1 238 196 243 196
 fi
 
+#if [[ -e $XDG_CONFIG_HOME/prompt/local.conf ]]; then
+#	 . "$XDG_CONFIG_HOME/prompt/local.conf"
+#fi
+	 
 #PS1=$'\n\\[\\e[91m\\]\uE0B6\\[\\e[97;101m\\] \uE711  \\[\\e[0;48;5;238m\\] \\u@\\h \\[\\e[37;47m\\]\\[\\e[38;5;236m\\] \\w \\[\\e[0;37m\\]\uE0B0\\[\\e[0m\\] '

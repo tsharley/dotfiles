@@ -25,8 +25,8 @@ _vivid_colors(){
 #	_cs=nord
 #	_cs=one-dark
 #	_cs=one-light
-#	_cs=snazzy
-	_cs=solarized-dark
+	_cs=snazzy
+#	_cs=solarized-dark
 #	_cs=solarized-light
 	LS_COLORS="$(vivid generate "${_cs}")"
 	export LS_COLORS
@@ -37,6 +37,7 @@ set -a
 # Aliases
 alias u='gunits '
 alias rmr='trash -F '
+alias nn='edit ~/Documents/Notes/todo'
 #alias hq='hishtory query'
 alias kb='open ~/Downloads/kb_L0_4.png'
 alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
@@ -68,3 +69,4 @@ ECLIPSE_HOME="$HOME/.config/eclipse"
 AIRFLOW_HOME="$HOME/Public/airflow"
 set +a
 export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
+

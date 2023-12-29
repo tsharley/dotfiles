@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#shellcheck disable=SC2264
 # Cross-platform Aliases
 ################################################
 
@@ -29,16 +29,17 @@ elif [[ "$(command -v exa)" != '' ]]; then
 		--group-directories-first
 	)
 	alias l='exa ${EXA_OPTIONS[@]}'
-	alias l='exa --tree --level=2 ${EXA_OPTIONS[@]}'
-	alias l='exa --tree --level=3 --long ${EXA_OPTIONS[@]}'
+	alias ll='exa --tree --level=2 ${EXA_OPTIONS[@]}'
+	alias lll='exa --tree --level=3 --long ${EXA_OPTIONS[@]}'
 else
     alias l='ls --color=always'
     alias la='ls -a --color=always'
     alias ll="ls -lhAF --color=always"
 fi
+
 cd() {
 	builtin cd "$@" || return
-	c; l
+	c; ls -F --color=always
 }
 alias cdbin='cd $EXEC_DIR'
 alias lsbin='ls -lAhF --color=always $EXEC_DIR'
