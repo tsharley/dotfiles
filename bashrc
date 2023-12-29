@@ -60,4 +60,7 @@ if [[ $FF_SHOWN != 0 && $(uname) == "Darwin" ]]; then
 	FF_SHOWN=0; export FF_SHOWN
 fi
 
-eval "$(rbenv init - bash)"
+if [[ $(rbenv version) ]]; then
+  eval "$(rbenv init - bash)"
+fi
+

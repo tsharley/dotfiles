@@ -33,6 +33,21 @@ replace_dotfiles() {
 }
 
 
+link_bin() {
+    for f in "${DOTDIR}/bin/"*; do
+        if [[ ! -d "${f}" ]]; then
+            file="$(basename "$f")"
+            if [[ -f "${HOME}/.local/bin/${file}" ]]; then
+                mv "${HOME}/.local/bin/${file}" "install/backup/"
+            fi
+            if [[ -h "${HOME}/.local/bin/${file}" ]]; then
+                unlink "${HOME}/.local/bin/${file}"
+            fi
+            ln -sf "${DOTDIR}/bin/${file}" "${HOME}/.local/bin/${file}"
+        fi
+    done
+}
+
 install_docker() {
     if [[ ! $(docker compose version) ]]; then
     	for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do
@@ -72,6 +87,8 @@ mk_dirs_from_file "install/dirs.lst"
 # Make symlinks
 replace_dotfiles
 success "Dotfiles linked to HOME"
+link_bin
+success "Binaries linked to '~/.local/bin'"
 # set +xv
 
 # Install packages

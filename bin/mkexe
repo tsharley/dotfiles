@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+###############################################################################%
+usage(){
+	cat <<-'EOF'
+	Usage: mkexe "NAME"
+	Creates executable ~/.local/bin/"NAME" (in $PATH) and opens it in $EDITOR.
+	EOF
+}
+
+main(){
+	local file="$1"
+	touch "$HOME/.local/bin/${file}"
+	chmod +x "$HOME/.local/bin/${file}"
+	"${EDITOR}" "$HOME/.local/bin/${file}"
+}
+
+if [[ "$#" !=  1 ]]; then
+	usage; exit
+fi 
+main "$@"

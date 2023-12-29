@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+#shellcheck disable=SC2025
+###############################################################################%
+
+askYN() {
+	PS3="$1"
+	while true; do
+		select response in Yes No ; do
+			if [[ $response == Yes ]]; then
+				return 0
+			elif [[ $response == No ]]; then
+				return 1
+			else
+				echo "1 or 2"
+			fi
+		done
+	done
+}
+
+get_selections() {
+	while true; do
+		clear; echo "Colors by index:"
+		colormap
+		echo; echo
+		
+		askYN "Include USER segment? " && {
+			read -rp "Enter color index for USER segment: " s1
+			echo; echo -e "\033[48;5;${s1};1m     \033[0m"; echo
+			c1="\033[38;5;${s1};1m"
+		}
+
+		askYN "Include HOST segment? " && {
+			read -rp "Enter color index for HOST segment: " s2
+			echo; echo -e "\033[48;5;${s2};1m     \033[0m"; echo
+			c2="\033[38;5;${s2};1m"
+		}
+		
+		askYN "Include CWD segment? " && {
+			read -rp "Enter color index for CWD segment:  " s3
+			echo; echo -e "\033[48;5;${s3};1m     \033[0m"; echo
+			c3="\033[38;5;${s3};1m"
+		}
+
+		askYN "Control punctuation color? " && {
+			read -rp "Color index for punctuation chars:  " e1
+			echo; echo -e "\033[48;5;${e1};1m     \033[0m"; echo
+			p1="\033[38;5;${e1};1m"
+		}
+
+		alloff="\033[0m"
+		
+		prompt_string="${c1}user${p1}@${c2}host ${c3}current/working/dir${p1}$ ${alloff}"
+		echo
+		echo -e "Prompt String = $prompt_string"
+		echo
+		echo
+		askYN "Confirm? " && break || continue
+	done
+}
+
+build_segment() {
+	PS1+='\[\033[38;5;'	# Start Ctrl Code
+	PS1+="${1}"			# Color for segment
+	PS1+=';1m\]'		# End Ctrl Code
+	PS1+="${2}"			# Value for segment	
+}
+
+build_PS1() {
+	
+	if [[ $1 == "-i" ]]; then
+		get_selections
+	elif [[ $1 == "-r" ]]; then
+		s1=$((17 + RANDOM % 215))
+		s2=$((17 + RANDOM % 215))
+		s3=$((17 + RANDOM % 215))
+		e1=$((17 + RANDOM % 215))
+	else
+		s1="${1}"
+		s2="${2}"
+		s3="${3}"
+		e1="${4}"
+	fi
+
+	PS1='\n'			# Leading new line
+
+	build_segment "$s1" '\u'
+	build_segment "$e1" '@'
+	build_segment "$s2" '\h '
+	build_segment "$s3" '\w'
+	build_segment "$e1" '\$ '
+
+	PS1+='\[\033[0m\]'	# Reset formatting
+#	echo "$PS1"
+}
+
+#echo "debug: $# params"
+[[ "$1" == "-i" || "$1" == "-r" || "$#" -eq 4 ]] && build_PS1 "$@"
