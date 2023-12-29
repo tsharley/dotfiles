@@ -55,7 +55,11 @@ fi
 	tr ' ' '\n')" scp sftp ssh		# completions based on ssh config
 
 [[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
+<<<<<<< HEAD
 if [[ $FF_SHOWN != 0 && $(uname) == "Darwin" ]]; then
+=======
+if [[ $FF_SHOWN != 0 && $(uname) == Darwin ]]; then
+>>>>>>> refs/remotes/origin/main
 	c; fastfetch -c ~/.config/fastfetch/modules.min.jsonc
 	FF_SHOWN=0; export FF_SHOWN
 fi
