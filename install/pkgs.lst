@@ -5,6 +5,7 @@ wget
 curl
 sudo
 exa
+most
 ca-certificates
 gnupg
 zip
@@ -14,4 +15,5 @@ xterm
 xdg-desktop-portal
 xdg-utils
 python3-virtualenvwrapper
+rbenv
 units

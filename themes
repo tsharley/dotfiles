@@ -148,7 +148,7 @@ else
     if [[ -f "$HOME"/.config/prompt/host-specific ]]; then
         primary="$(cat "$HOME"/.config/prompt/host-specific)"
     fi
-    . mkPS1 238 "${primary:-196}" 243 "${primary:-196}"
+    . mkPS1 238 "${primary:-196}" 249 "${primary:-196}"
 fi
 
 #if [[ -e $XDG_CONFIG_HOME/prompt/local.conf ]]; then

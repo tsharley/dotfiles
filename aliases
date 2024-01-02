@@ -13,7 +13,9 @@ if [[ "$(command -v eza)" != '' ]]; then
     	-I='Library|Downloads|Desktop|Movies|Music|Pictures|.DS_Store|__pycache__|.pytest_cache|.git'
     	--no-time
 		-s=name
-		--color=always
+		--color=auto
+		--color-scale
+		--color-scale-mode=gradient
 		--icons=never
 	)
     alias l='eza -F ${EZA_OPTIONS[@]}'
@@ -22,18 +24,18 @@ if [[ "$(command -v eza)" != '' ]]; then
 elif [[ "$(command -v exa)" != '' ]]; then
 	EXA_OPTIONS=(
 		--classify
-		--color=always
+		--color=auto
 		--color-scale
 		--no-icons
 		--sort=name
 		--group-directories-first
 	)
 	alias l='exa ${EXA_OPTIONS[@]}'
-	alias ll='exa --tree --level=2 ${EXA_OPTIONS[@]}'
-	alias lll='exa --tree --level=3 --long ${EXA_OPTIONS[@]}'
+	alias ll='exa --all --tree --level=2 ${EXA_OPTIONS[@]}'
+	alias lll='exa --all --tree --level=3 --long ${EXA_OPTIONS[@]}'
 else
     alias l='ls --color=always'
-    alias la='ls -a --color=always'
+    alias la='ls -A --color=always'
     alias ll="ls -lhAF --color=always"
 fi
 
@@ -71,7 +73,7 @@ echo 'Key ed25519 copied to pasteboard.'"
 alias privkey="more ~/.ssh/id_ed25519 | \
 xclip -selection clipboard | \
 echo 'Key ed25519 (priv) copied to pasteboard.'"
-
+alias pd="pbcopy < ~/.config/prompt/as.txt"
 
 # ----- docker ----------------------------------
 alias dils='docker image ls'

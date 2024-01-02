@@ -428,7 +428,7 @@ d() {
 # Arguments: filename;          				Return: abs path 
 fullpath() {
 	if [ -d "$(dirname "$1")" ]; then
-		echo "$(cd "$(dirname "$1")" || return; pwd)/$(basename "$1")"
+		echo "$(builtin cd "$(dirname "$1")" || return; pwd)/$(basename "$1")"
 	fi
 }
 
