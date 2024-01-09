@@ -65,13 +65,32 @@ BREW_NO_ENV_HINTS=1
 HOMEBREW_NO_EMOJI=1
 BREW_NO_EMOJI=1
 HOMEBREW_NO_ENV_HINTS=1
-GOPATH="$HOME/.local/go"
-GOBIN="$HOME/.local/go/bin"
 ECLIPSE_HOME="$HOME/.config/eclipse"
 AIRFLOW_HOME="$HOME/Public/airflow"
-set +a
-# export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
+#GOPATH="$HOME/.local/go"
+#GOBIN="$HOME/.local/go/bin"
 
-trash() {
-	mv "${1}" "${HOME}/.TheTrash"
+
+# Configure CDPATH
+#while read -r _path; do
+#	if [[ -z "$CDPATH" ]]; then
+#		CDPATH="$_path"
+#	else
+#		CDPATH="$CDPATH:$_path"
+#	fi
+#done <"${XDG_CONFIG_HOME}/cdpath/cdpath.list"
+CDPATH='.'
+while read -r _path; do
+	CDPATH="$CDPATH:$_path"
+done <"${XDG_CONFIG_HOME}/cdpath/cdpath.list"
+
+set +a
+
+configless() {
+	env -i HOME="$(mktemp -d)" bash --noprofile --norc
+	cd || exit
+}
+
+compact_whitespace() {
+	sed -r 's/[[:blank:]]+/ /g'
 }
