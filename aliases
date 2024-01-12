@@ -52,6 +52,7 @@ alias gs='git status '
 alias gc='git clone '
 alias ga='git add . '
 alias gcm='git commit -m '
+alias gcl='git config --list'
 
 
 # ----- network and comms -----------------------

@@ -1,22 +1,26 @@
 #!/usr/bin/env bash
 ###############################################################################%
 
-main() {
-_esc_="\033"
-_set_fg_="[38;5;"
-_set_bg_="[48;5;"
-_restore_="[0m"
+show_colormap() {
+	_esc_="\033"
+	_set_fg_="[38;5;"
+	_set_bg_="[48;5;"
+	_restore_="[0m"
+	
+	for i in {16..255}; do
+		[[ $(( $(( i + 2 )) % 12 )) -eq 0 ]] && echo
+	 	j=" $i"
+	 	while [[ "${#j}" -lt 5 ]]; do
+	 		j="$j "
+	 	done
+		echo -n ' '
+		echo -en "${_esc_}${_set_bg_}${i}m${_esc_}${_set_fg_}232m${j}${_esc_}${_restore_}"
+	done
+	echo
+}
 
-for i in {16..255}; do
-	[[ $(( $(( i + 2 )) % 12 )) -eq 0 ]] && echo
- 	j=" $i"
- 	while [[ "${#j}" -lt 5 ]]; do
- 		j="$j "
- 	done
-	echo -n ' '
-	echo -en "${_esc_}${_set_bg_}${i}m${_esc_}${_set_fg_}232m${j}${_esc_}${_restore_}"
-done
-echo
+main() {
+	show_colormap
 }
 
 main "$@"
