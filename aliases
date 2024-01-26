@@ -41,10 +41,12 @@ fi
 
 cd() {
 	builtin cd "$@" || return
-	c; ls -F --color=always
+#	c; ls -F --color=always
+	eza -F "${EZA_OPTIONS[@]}"
 }
 alias cdbin='cd $EXEC_DIR'
 alias lsbin='ls -lAhF --color=always $EXEC_DIR'
+alias vsub='bash --login -x'
 
 
 # ----- git -------------------------------------

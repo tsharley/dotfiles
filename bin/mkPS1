@@ -61,7 +61,7 @@ get_selections() {
 build_segment() {
 	PS1+='\[\033[38;5;'	# Start Ctrl Code
 	PS1+="${1}"			# Color for segment
-	PS1+=';1m\]'		# End Ctrl Code
+	PS1+=";1m\]"		# End Ctrl Code
 	PS1+="${2}"			# Value for segment	
 }
 
@@ -81,17 +81,25 @@ build_PS1() {
 		e1="${4}"
 	fi
 
-	PS1='\n'			# Leading new line
-
-	build_segment "$s1" '\u'
-	build_segment "$e1" '@'
-	build_segment "$s2" '\h '
-	build_segment "$s3" '\w'
-	build_segment "$e1" '\$ '
+	PS1='\n'
+	build_segment "$s3" "["
+	build_segment "$s2" "$(date +%y%m%d)"
+	build_segment "$s3" "] "
+	build_segment "$s1" '\u '
+	build_segment "$e1" '@ '
+	build_segment "$s2" '\H \n'
+	build_segment "$s3" "["
+	build_segment "$s2" "$(date +%H:%M) "
+	build_segment "$s3" "] "
+#	build_segment "$s2" "$(date +%y%m%d.%H:%M) "
+	build_segment "$s3" '\w '
+	build_segment "$e1" '--'
+	build_segment "$s2" '\$ '
 
 	PS1+='\[\033[0m\]'	# Reset formatting
 #	echo "$PS1"
 }
+
 
 #echo "debug: $# params"
 [[ "$1" == "-i" || "$1" == "-r" || "$#" -eq 4 ]] && build_PS1 "$@"

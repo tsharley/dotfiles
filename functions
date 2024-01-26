@@ -126,7 +126,7 @@ EOF
 run_scripts(){
   for script in "${1}"/*; do
     [ -x "${script}" ] || continue
-    . "${script}"
+    "${script}"
   done
 }
 
@@ -150,15 +150,23 @@ pwdtail () {
 # Display network config info
 # Arguments: none;					          Return: none
 netinfo () {
-	echo "--------------- Network Information ---------------"
-	/sbin/ifconfig | awk /'inet addr/ {print $2}'
-	echo ""
-	/sbin/ifconfig | awk /'Bcast/ {print $3}'
-	echo ""
-	/sbin/ifconfig | awk /'inet addr/ {print $4}'
+	printf '%s\n' "$(nstp -listallnetworkservices | grep -v 'An aster')" |
+	while IFS= read -r line; do
+		echo
+		printf '%s\n' "$line"
+		echo "=================================="
+		nstp -getinfo "$(sed 's/\*//' "$line")"
+		echo
+	done
+	#echo "--------------- Network Information ---------------"
+	#ifconfig | awk /'inet addr/ {print $2}'
+	#echo ""
+	#ifconfig | awk /'Bcast/ {print $3}'
+	#echo ""
+	#ifconfig | awk /'inet addr/ {print $4}'
 
-	/sbin/ifconfig | awk /'HWaddr/ {print $4,$5}'
-	echo "---------------------------------------------------"
+	#ifconfig | awk /'HWaddr/ {print $4,$5}'
+	#echo "---------------------------------------------------"
 }
 
 #------------------------------------------------------------------------------
@@ -287,20 +295,20 @@ webpage() {
 # UP: cd up n levels
 # Arguments: $1 -> levels (default=1);				         Return: 0
 up(){
-  if [[ "$#" -ne 1 ]]; then
-    cd ..
-  elif ! [[ $1 =~ ^[0-9]+$ ]]; then
-    echo "Error: up should be called with the number of directories to go up. The default is 1."
-  else
-    local d=""
-    limit=$1
-    for ((i=1 ; i <= limit ; i++))
-      do
-        d=$d/..
-      done
-    d=$(echo $d | sed 's/^\///')
-    cd "$d" || return
-  fi
+    if [[ "$#" -ne 1 ]]; then
+        cd ..
+    elif ! [[ $1 =~ ^[0-9]+$ ]]; then
+        echo "Error: up must be called with the number of directories to go up. "
+        echo "The default is 1."
+    else
+        local d=""
+        limit=$1
+        for ((i=1 ; i <= limit ; i++)); do
+        	d=$d/..
+        done
+        d=$(echo $d | sed 's/^\///')
+        cd "$d" || return
+    fi
 }
 
 #------------------------------------------------------------------------------
@@ -447,11 +455,20 @@ fcd() {
 }
 
 #------------------------------------------------------------------------------
-# {{ name }}
-# Arguments: {{ args }};          				Return: {{ return }} 
-#() {
-	
-#}
+# mtdir (empty directory) - verifies that the target exists, is a directory,
+# has permissions for the user to list its contents, and is empty
+# Arguments: path to target;  			Return: 0 if criteria are met 
+mtdir() {
+    if [[ -d "$1" && -r "$1" && -x "$1" ]]; then
+        if find -L -- "$1" -maxdepth 0 -type d -empty | grep -q .; then
+            return 0 	# empty directory
+        else
+            return 1 	# directory, but not empty
+        fi
+    else
+		return 2 		# not: a directory|readable|searchable
+    fi
+}
 
 #------------------------------------------------------------------------------
 # {{ name }}

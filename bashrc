@@ -1,39 +1,48 @@
 #!/usr/bin/env bash
-
+####################
 
 # Define dotfiles location, exports and command path
-
+#####################################################
 DOTDIR="${HOME}/.dotfiles"; export DOTDIR
 
-DotDirSrc(){
+dot_dir_src(){
 	for f in "${@}"; do
 		[[ -r "${DOTDIR}/${f}" ]] && . "${DOTDIR}/${f}"
 	done
 }
 
-DotDirSrc exports
+dot_dir_src exports
 
 
 # Source host-specific config if available
-
+###########################################
 [[ -r "${HOME}/.$(hostname -s).rc" ]] && \
 . "${HOME}/.$(hostname -s).rc"
 
 
-# Options
-
+# Basic Shell Options (history, globbing, etc.)
+################################################
 [[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
 
 shopt -s histappend
 shopt -s checkwinsize
 
 
-# Source remaining curated dotfiles
+# Source main dotfiles and setup function for overrides
+########################################################
+dot_dir_src paths themes aliases functions pyvenvw
 
-DotDirSrc paths themes aliases functions pyvenvw
+dolastrc() {
+	if ! mtdir ~/.local/init; then
+		for item in ~/.local/init/*; do
+			source "$item"
+		done
+	fi
+}
 
 
 # Customize tools, completions, etc.
+#####################################
 
 if [[ -x /usr/bin/dircolors ]]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || \
@@ -64,3 +73,6 @@ if [[ $(rbenv version) ]]; then
   eval "$(rbenv init - bash)"
 fi
 
+# Call function to enable local overrides if present
+#####################################################
+dolastrc

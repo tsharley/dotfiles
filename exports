@@ -41,20 +41,21 @@ SCRATCH_DIR="$HOME/.local/scratch"
 SECRETS_DIR="$HOME/.config/secrets"
 LIB_SCRIPTS_DIR="$HOME/Library/Scripts"
 LIB_RESOURCES_DIR="$HOME/Library/Resources"
-DEV_PROJECT_DIR="$HOME/.00/01_projects/dev/sites/tsm"
+PROJECT_PARENT_DIR="$HOME/Projects"
 SEC_CONF_DIR="${XDG_CONFIG_HOME}/ts"
 EDITOR="micro"
 ED_CONFIG_DIR="${XDG_CONFIG_HOME}/micro"
 VISUAL="$EDITOR"
 SUDO_EDITOR="$EDITOR"
 INITIALS='ts'
+GREP_COLORS='auto'
 MANCOLOR=1
 MANPAGER='most -s'
 PAGER='most -s'
-GIT_PAGER=/opt/homebrew/bin/delta
+GIT_PAGER='/opt/homebrew/bin/delta'
 INPUTRC="${XDG_CONFIG_HOME}/.inputrc"
 
-# Automation monorepo
+# Automation repo
 TOOLS_ROOT="${HOME}/Tools"
 TOOLS_CONFIG_DIR="${TOOLS_ROOT}/config"
 TOOLS_DATA_DIR="${TOOLS_ROOT}/data"
@@ -62,17 +63,20 @@ TOOLS_SCRIPTS_DIR="${TOOLS_ROOT}/scripts"
 TOOLS_RESOURCE_DIR="${TOOLS_ROOT}/resources"
 TOOLS_BACKUP_DIR="${TOOLS_ROOT}/backup"
 TOOLS_LOG_DIR="${TOOLS_ROOT}/logs"
+TOOLS_BASH_INCLUDES="$TOOLS_ROOT/includes/bash"
+TOOLS_PYTHON_INCLUDES="$TOOLS_ROOT/includes/python"
 
 
 # State controls
 HISTFILE="$XDG_STATE_HOME/.bash_history"   # History filepath
 HISTSIZE=100000                            # Max lines for internal history
-SAVEHIST=100000                            # Max lines in history file
+SAVEHIST=10000                             # Max lines in history file
 HISTFILESIZE=10000
+HISTTIMEFORMAT='%s'
 HISTCONTROL=ignoreboth:erasedups
 LESSHISTFILE="$HOME/CACHE/less/history"
 GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-PROMPT_DIRTRIM=
+PROMPT_DIRTRIM=3
 
 
 # Personal env vars (omit from source control)
