@@ -61,7 +61,7 @@ get_selections() {
 build_segment() {
 	PS1+='\[\033[38;5;'	# Start Ctrl Code
 	PS1+="${1}"			# Color for segment
-	PS1+=";1m\]"		# End Ctrl Code
+	PS1+="m\]"		# End Ctrl Code
 	PS1+="${2}"			# Value for segment	
 }
 
@@ -100,6 +100,56 @@ build_PS1() {
 #	echo "$PS1"
 }
 
+color_segment() {
+    cseg=
+    color="$1"
+    content="$2"
+    cseg="\[\033[38;5;${1}m\]${2}"
+    prompt_string+="$cseg"
+}
+
+build_PS1v2() {
+    prompt_string=''
+    color_segment "$1" 'ts'
+    color_segment "$2" '@'
+    color_segment "$1" '\h '
+    color_segment "$2" '\w '
+    color_segment "$1" '\$ '
+    PS1="\n$(date "+%H:%M") ${prompt_string}\[\033[0m\]"
+}
+
+favorites() {
+    if [[ $1 == 1 ]]; then
+        shift
+        case "$1" in
+            1) build_PS1 255 243 167 255;;
+            2) build_PS1 251 108 215 96;;
+            3) build_PS1 25 25 55 55;;
+            4) build_PS1 35 255 35 35;;
+            5) build_PS1 238 255 52 52;;
+            *);;
+        esac
+    elif [[ $1 == 2 ]]; then
+        shift
+        case "$1" in
+            1) build_PS1v2 24 255;;
+            2) build_PS1v2 243 167;;
+            3) build_PS1v2 55 25;;
+            4) build_PS1v2 35 255;;
+            5) build_PS1v2 52 238;;
+            *);;
+        esac
+    else
+        echo "Error: invalid argument"
+        exit 1    
+    fi
+}
 
 #echo "debug: $# params"
-[[ "$1" == "-i" || "$1" == "-r" || "$#" -eq 4 ]] && build_PS1 "$@"
+if [[ "$1" == "-i" || "$1" == "-r" || "$#" -eq 4 ]]; then 
+    build_PS1 "$@"
+elif [[ "$1" == '-f' ]]; then
+    shift; favorites "$@"
+else
+    echo "Error: invalid argument(s)"
+fi

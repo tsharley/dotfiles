@@ -43,6 +43,7 @@ cd() {
 	builtin cd "$@" || return
 #	c; ls -F --color=always
 	eza -F "${EZA_OPTIONS[@]}"
+	[[ -e ./.env ]] && . ./.env
 }
 alias cdbin='cd $EXEC_DIR'
 alias lsbin='ls -lAhF --color=always $EXEC_DIR'

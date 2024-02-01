@@ -50,8 +50,8 @@ SUDO_EDITOR="$EDITOR"
 INITIALS='ts'
 GREP_COLORS='auto'
 MANCOLOR=1
-MANPAGER='most -s'
-PAGER='most -s'
+MANPAGER='most -sdw'
+PAGER='most -sdw'
 GIT_PAGER='/opt/homebrew/bin/delta'
 INPUTRC="${XDG_CONFIG_HOME}/.inputrc"
 
