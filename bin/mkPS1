@@ -100,6 +100,13 @@ build_PS1() {
 #	echo "$PS1"
 }
 
+ftime(){
+    date "+%I:%M%p" |\
+    sed 's/PM/p/' |\
+    sed 's/AM/a/' |\
+    sed 's/^0//'
+}
+
 color_segment() {
     cseg=
     color="$1"
@@ -115,8 +122,24 @@ build_PS1v2() {
     color_segment "$1" '\h '
     color_segment "$2" '\w '
     color_segment "$1" '\$ '
-    PS1="\n$(date "+%H:%M") ${prompt_string}\[\033[0m\]"
+#    PS1='\n$(date "+%I:%M%p")'" ${prompt_string}\[\033[0m\]"
+    PS1='\n$(ftime)'" ${prompt_string}\[\033[0m\]"
 }
+
+build_PS1v3() {
+    prompt_string=''
+    #shellcheck disable=SC2016
+    color_segment "$1" '$(ftime) '
+    color_segment "$2" 'ts'
+    color_segment "$3" '@'
+    color_segment "$4" '\h '
+    color_segment "$3" '\w '
+    color_segment "$2" '\$ '
+#    PS1='\n$(date "+%I:%M%p")'" ${prompt_string}\[\033[0m\]"
+#    PS1='\n$(ftime)'" ${prompt_string}\[\033[0m\]"
+    PS1="\n${prompt_string}\[\033[0m\]"
+}
+
 
 favorites() {
     if [[ $1 == 1 ]]; then
@@ -133,10 +156,22 @@ favorites() {
         shift
         case "$1" in
             1) build_PS1v2 24 255;;
-            2) build_PS1v2 243 167;;
+            2) build_PS1v2 251 167;;
             3) build_PS1v2 55 25;;
             4) build_PS1v2 35 255;;
             5) build_PS1v2 52 238;;
+            *);;
+        esac
+    elif [[ $1 == 3 ]]; then
+        shift
+        case "$1" in
+            1) build_PS1v3 196 220 196 21;;
+            2) build_PS1v3 249 178 238 249;;
+            3) build_PS1v3 70 22 70 99;;
+            4) build_PS1v3 22 99 22 99;;
+            5) build_PS1v3 129 70 129 70;;
+            6) build_PS1v3 129 220 129 220;;
+            7) build_PS1v3 112 246 112 246;;
             *);;
         esac
     else

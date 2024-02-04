@@ -7,3 +7,4 @@
 .local/state
 .local/lib
 .local/bin
+.local/init

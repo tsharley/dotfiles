@@ -18,9 +18,9 @@ if [[ "$(command -v eza)" != '' ]]; then
 		--color-scale-mode=gradient
 		--icons=never
 	)
-    alias l='eza -F ${EZA_OPTIONS[@]}'
-    alias ll='eza -aFlTh -L=2 ${EZA_OPTIONS[@]}'
-    alias lll='eza -aFlTh -L=4 ${EZA_OPTIONS[@]}'
+    alias l='eza ${EZA_OPTIONS[@]}'
+    alias ll='eza -alTh -L=2 ${EZA_OPTIONS[@]}'
+    alias lll='eza -alTh -L=4 ${EZA_OPTIONS[@]}'
 elif [[ "$(command -v exa)" != '' ]]; then
 	EXA_OPTIONS=(
 		--classify
@@ -42,9 +42,16 @@ fi
 cd() {
 	builtin cd "$@" || return
 #	c; ls -F --color=always
-	eza -F "${EZA_OPTIONS[@]}"
+	if [[ "$(command -v eza)" != '' ]]; then
+        eza "${EZA_OPTIONS[@]}"
+    elif [[ "$(command -v exa)" != '' ]]; then
+        exa "${EXA_OPTIONS[@]}"
+    else
+        ls -F --color=always
+    fi
 	[[ -e ./.env ]] && . ./.env
 }
+
 alias cdbin='cd $EXEC_DIR'
 alias lsbin='ls -lAhF --color=always $EXEC_DIR'
 alias vsub='bash --login -x'
