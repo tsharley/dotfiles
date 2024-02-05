@@ -102,8 +102,8 @@ build_PS1() {
 
 ftime(){
     date "+%I:%M%p" |\
-    sed 's/PM/p/' |\
-    sed 's/AM/a/' |\
+    sed 's/PM/pm/' |\
+    sed 's/AM/am/' |\
     sed 's/^0//'
 }
 
