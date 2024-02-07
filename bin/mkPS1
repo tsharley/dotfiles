@@ -140,6 +140,21 @@ build_PS1v3() {
     PS1="\n${prompt_string}\[\033[0m\]"
 }
 
+build_PS1_nbm() {
+    prompt_string=''
+    #shellcheck disable=SC2016
+    color_segment "$1" '$(ftime)'
+    color_segment "$2" '['
+    color_segment "$3" '==== '
+    color_segment "$4" 'nb'
+    color_segment "$3" ' ===='
+    color_segment "$2" ']'
+    color_segment "$4" '--'
+    color_segment "$3" '> '
+#    PS1='\n$(date "+%I:%M%p")'" ${prompt_string}\[\033[0m\]"
+#    PS1='\n$(ftime)'" ${prompt_string}\[\033[0m\]"
+    PS1="\n${prompt_string}\[\033[0m\]"
+}
 
 favorites() {
     if [[ $1 == 1 ]]; then
@@ -172,6 +187,7 @@ favorites() {
             5) build_PS1v3 129 70 129 70;;
             6) build_PS1v3 129 220 129 220;;
             7) build_PS1v3 112 246 112 246;;
+            0) build_PS1_nbm 51 198 45 200;;
             *);;
         esac
     else
