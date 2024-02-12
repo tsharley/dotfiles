@@ -68,23 +68,27 @@ alias gcl='git config --list'
 # ----- network and comms -----------------------
 if [[ "$(uname)" == Darwin ]]; then
 	HOSTSFILE=/private/etc/hosts
+	alias ping='grc ping -c 5 '
+	alias pping='clear; grc ping -c 5 '
+	alias p8="clear; grc ping -c 5 8.8.8.8"
+	alias edhosts='sudo nano $HOSTSFILE'
+	# Pipe my public key to my clipboard.
+	alias pubkey="more ~/.ssh/id_ed25519.pub | \
+	xclip -selection clipboard | \
+	echo 'Key ed25519 copied to pasteboard.'"
+	# Pipe my private key to my clipboard.
+	alias privkey="more ~/.ssh/id_ed25519 | \
+	xclip -selection clipboard | \
+	echo 'Key ed25519 (priv) copied to pasteboard.'"
+	alias pd="pbcopy < ~/.config/prompt/as.txt"
 else
 	HOSTSFILE=/etc/hosts
+	alias ping='ping -c 5 '
+	alias pping='clear; ping -c 5 '
+	alias p8="clear; ping -c 5 8.8.8.8"
 fi
 export HOSTSFILE
-alias edhosts='sudo nano $HOSTSFILE'
-alias ping='grc ping -c 5 '
-alias pping='clear; grc ping -c 5 '
-alias p8="clear; grc ping -c 5 8.8.8.8"
-# Pipe my public key to my clipboard.
-alias pubkey="more ~/.ssh/id_ed25519.pub | \
-xclip -selection clipboard | \
-echo 'Key ed25519 copied to pasteboard.'"
-# Pipe my private key to my clipboard.
-alias privkey="more ~/.ssh/id_ed25519 | \
-xclip -selection clipboard | \
-echo 'Key ed25519 (priv) copied to pasteboard.'"
-alias pd="pbcopy < ~/.config/prompt/as.txt"
+
 
 # ----- docker ----------------------------------
 alias dils='docker image ls'
