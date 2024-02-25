@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+##############################################################################%
+
+_main_() {
+    _nl_='\n'
+    _r_=255
+    _g_=255
+    _b_=255
+    _bold_=
+    while (($# > 4)); do
+        case "$1" in 
+            -n)
+                _nl_=''; shift;;
+            -b)
+                _bold_=';1'; shift;;
+            *)
+                break;;
+        esac
+    done
+    if [[ $# -gt 3 ]]; then
+        _r_="$1"; shift
+        _g_="$1"; shift
+        _b_="$1"; shift
+    fi
+    content="$*"
+    echo -en "\033[38;2;${_r_};${_g_};${_b_}${_bold_}m${content}\033[0m${_nl_}" 
+}
+
+_main_ "$@"
