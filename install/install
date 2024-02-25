@@ -2,6 +2,12 @@
 #shellcheck disable=SC2027,SC2046,SC2154,SC2164,SC2103
 ###############################################################################%
 
+install_docker=0
+if [[ $1 == '-d' ]]; then
+    install_docker=1
+    shift
+fi
+
 INSTALL_DIR="$(dirname "${0}")"
 cd "$INSTALL_DIR"; cd ..
 DOTDIR="$(pwd)"
@@ -95,8 +101,12 @@ success "Binaries linked to '~/.local/bin'"
 cd "$DOTDIR"
 apt_uu
 apt_install_from_file "install/pkgs.lst"
-install_docker
-success "Docker installed"
-echo
+
+if [[ $install_docker == 1 ]]; then
+    install_docker
+    success "Docker installed"
+    echo
+fi
+
 success "Setup complete"
 echo
