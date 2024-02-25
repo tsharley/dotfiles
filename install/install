@@ -2,11 +2,7 @@
 #shellcheck disable=SC2027,SC2046,SC2154,SC2164,SC2103
 ###############################################################################%
 
-install_docker=0
-if [[ $1 == '-d' ]]; then
-    install_docker=1
-    shift
-fi
+require_docker=1
 
 INSTALL_DIR="$(dirname "${0}")"
 cd "$INSTALL_DIR"; cd ..
@@ -54,26 +50,26 @@ link_bin() {
     done
 }
 
-install_docker() {
-    if [[ ! $(docker compose version) ]]; then
-    	for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do
-    	    apt-get remove $pkg
-    	done
-    	# Add Docker's official GPG key
-    	apt-get update
-    	apt-get install -y ca-certificates curl gnupg
-    	install -m 0755 -d /etc/apt/keyrings
-    	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-    	chmod a+r /etc/apt/keyrings/docker.gpg
-    	# Add the repository to Apt sources
-    	echo \
-    	"deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-    	"$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-    	tee /etc/apt/sources.list.d/docker.list > /dev/null
-    	apt-get update
-    	apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-    fi
-}
+# install_docker() {
+#     if [[ ! $(docker compose version) ]]; then
+#     	for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do
+#     	    apt-get remove $pkg
+#     	done
+#     	# Add Docker's official GPG key
+#     	apt-get update
+#     	apt-get install -y ca-certificates curl gnupg
+#     	install -m 0755 -d /etc/apt/keyrings
+#     	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+#     	chmod a+r /etc/apt/keyrings/docker.gpg
+#     	# Add the repository to Apt sources
+#     	echo \
+#     	"deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+#     	"$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+#     	tee /etc/apt/sources.list.d/docker.list > /dev/null
+#     	apt-get update
+#     	apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+#     fi
+# }
 
 apt_uu() {
     apt-get update
@@ -103,8 +99,8 @@ apt_uu
 apt_install_from_file "install/pkgs.lst"
 
 if [[ $install_docker == 1 ]]; then
-    install_docker
-    success "Docker installed"
+    cd "$DOTDIR"
+    install/install_docker && success "Docker installed"
     echo
 fi
 
