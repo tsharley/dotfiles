@@ -98,9 +98,10 @@ cd "$DOTDIR"
 apt_uu
 apt_install_from_file "install/pkgs.lst"
 
-if [[ $install_docker == 1 ]]; then
+if [[ $require_docker == 1 ]]; then
     cd "$DOTDIR"
     install/install_docker && success "Docker installed"
+    cd -
     echo
 fi
 
