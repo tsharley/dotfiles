@@ -17,7 +17,8 @@ function _build_path() {
                                           "/usr/sbin"
                                            "/usr/bin"
                                               "/sbin"
-                                               "/bin" )
+                                               "/bin"
+                                                  "." )
 
     paths_linux=( "$HOME/.local/bin"
                    "/usr/local/sbin"
@@ -25,7 +26,8 @@ function _build_path() {
                          "/usr/sbin"
                           "/usr/bin"
                              "/sbin"
-                              "/bin" )
+                              "/bin"
+                                 "." )
 
 
     [ "${1}" == macos ] && paths=( "${paths_macos[@]}" )

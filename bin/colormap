@@ -8,7 +8,7 @@ show_colormap() {
 	_restore_="[0m"
 	
 	for i in {16..255}; do
-		[[ $(( $(( i + 2 )) % 12 )) -eq 0 ]] && echo
+		[[ $(( $(( i + 2 )) % 6 )) -eq 0 ]] && echo
 	 	j=" $i"
 	 	while [[ "${#j}" -lt 5 ]]; do
 	 		j="$j "

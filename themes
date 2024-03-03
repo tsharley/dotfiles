@@ -1,158 +1,22 @@
 #!/usr/bin/env bash
 # shellcheck source=/dev/null disable=SC2001
 
-_set_theme(){
-    _p_user='ts'
-    _p_host='m20'
-    _p_path='\W'
-	case "${1}" in
-		31)
-			PS1='\[\e[31;1m\]'
-			;;
-		32)
-			PS1='\[\e[32;1m\]'
-			;;
-		33)
-			PS1='\[\e[33;1m\]'
-			;;
-		34)
-			PS1='\[\e[34;1m\]'
-			;;
-		35)
-			PS1='\[\e[35;1m\]'
-			;;
-		36)
-			PS1='\[\e[36;1m\]'
-			;;
-		37)
-			PS1='\[\e[37;1m\]'
-			;;
-		90)
-			PS1='\[\e[90;1m\]'
-			;;
-		91)
-			PS1='\[\e[91;1m\]'
-			;;
-		92)
-			PS1='\[\e[92;1m\]'
-			;;
-		93)
-			PS1='\[\e[93;1m\]'
-			;;
-		94)
-			PS1='\[\e[94;1m\]'
-			;;
-		95)
-			PS1='\[\e[95;1m\]'
-			;;
-		96)
-			PS1='\[\e[96;1m\]'
-			;;
-		97)
-			PS1='\[\e[97;1m\]'
-			;;
-		maroon)
-			PS1='\[\e[38;5;52;1m\]'
-			;;
-		green)
-			PS1='\[\e[38;5;23;1m\]'
-			;;
-		olive)
-			PS1='\[\e[38;5;58;1m\]'
-			;;
-		navy)
-			PS1='\[\e[38;5;17;1m\]'
-			;;
-		purple)
-			PS1='\[\e[38;5;57;1m\]'
-			;;
-		teal)
-			PS1='\[\e[38;5;37;1m\]'
-			;;
-		silver)
-			PS1='\[\e[37;1m\]'
-			;;
-		gray)
-			PS1='\[\e[90;1m\]'
-			;;
-		red)
-			PS1='\[\e[38;5;124;1m\]'
-			;;
-		lime)
-			PS1='\[\e[38;5;40;1m\]'
-			;;
-		yellow)
-			PS1='\[\e[38;5;220;1m\]'
-			;;
-		blue)
-			PS1='\[\e[38;5;18;1m\]'
-			;;
-		fuchsia)
-			PS1='\[\e[38;5;99;1m\]'
-			;;
-		aqua)
-			PS1='\[\e[96;1m\]'
-			;;
-		white)
-			PS1='\[\e[97;1m\]'
-			;;
-		orange)
-			PS1='\[\e[38;5;202;1m\]'
-			;;
-		hotpink)
-			PS1='\[\e[38;5;198;1m\]'
-			;;
-		pink)
-			PS1='\[\e[38;5;213;1m\]'
-			;;
-	    	*)
-	    	PS1='\[\e[97;1m\]'
-			;;
-	esac
-#	PS1+='$_p_user@$_p_host \W \$ '
-	if [ "${OCAML_ENV}" == true ]; then
-		PS1='\[\e[38;5;220;1m\]\$ '
-	else
-		PS1+='\u@\h \w \$ '
-	fi
-	PS1+='\[\e[0m\]'
-	PS1='\n'$PS1
-	export PS1
-}
+# virtualenv_prompt() {
+#     [[ "$VIRTUAL_ENV" == "" ]] && return
+#     local venv_name="${VIRTUAL_ENV##*/}"
+#     if typeset -f deactivate >/dev/null; then
+#         echo "[${venv_name}] "
+#     else
+#         echo "<${venv_name}> "
+#     fi
+#     VIRTUAL_ENV_DISABLE_PROMPT=1
+#     PS1='$(virtualenv_prompt) \$ '
+# }
 
-virtualenv_prompt() {
-    # If not in a virtualenv, print nothing
-    [[ "$VIRTUAL_ENV" == "" ]] && return
+# default theme, if not overridden by dolastrc (~/.local/init/*)
+. mkPS1 -f 3 7
+if [[ -n $SSH_CLIENT ]]; then PS1="$(echo "$PS1" | sed 's/@/- SSH -/g')"; fi
 
-    # Distinguish between the shell where the virtualenv was activated
-    # and its children
-    local venv_name="${VIRTUAL_ENV##*/}"
-    if typeset -f deactivate >/dev/null; then
-        echo "[${venv_name}] "
-    else
-        echo "<${venv_name}> "
-    fi
-    VIRTUAL_ENV_DISABLE_PROMPT=1
-#   PS1='$(virtualenv_prompt)'"$PS1"
-    PS1='$(virtualenv_prompt) \$'
 
-}
-
-# Display a "we are in a virtualenv" indicator that works in child shells too
-
-#_set_theme "$@"
-if [[ -n $SSH_CLIENT ]]; then
-	  . mkPS1 236 63 245 190
-	  PS1="$(echo "$PS1" | sed 's/@/- SSH -/g')"
-else
-    if [[ -f "$HOME"/.config/prompt/host-specific ]]; then
-        primary="$(cat "$HOME"/.config/prompt/host-specific)"
-    fi
-    . mkPS1 238 "${primary:-196}" 249 "${primary:-196}"
-fi
-
-#if [[ -e $XDG_CONFIG_HOME/prompt/local.conf ]]; then
-#	 . "$XDG_CONFIG_HOME/prompt/local.conf"
-#fi
-
-#PS1=$'\n\\[\\e[91m\\]\uE0B6\\[\\e[97;101m\\] \uE711  \\[\\e[0;48;5;238m\\] \\u@\\h \\[\\e[37;47m\\]\\[\\e[38;5;236m\\] \\w \\[\\e[0;37m\\]\uE0B0\\[\\e[0m\\] '
+# added with ocaml installation
+#if [ "${OCAML_ENV}" == true ]; then PS1='\[\e[38;5;220;1m\]\$ '; fi
