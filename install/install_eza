@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+##############################################################################%
+
+ensure_gpg() {
+	if [[ ! "$(command -v gpg)" ]]; then
+		sudo apt update
+		sudo apt install -y gpg
+	fi
+}
+
+
+add_required_repo() {
+	sudo mkdir -p /etc/apt/keyrings
+	wget -qO- \
+		https://raw.githubusercontent.com/eza-community/eza/main/deb.asc |\
+		sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+	echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] \
+		http://deb.gierens.de stable main" | \
+		sudo tee /etc/apt/sources.list.d/gierens.list
+	sudo chmod 644 /etc/apt/keyrings/gierens.gpg \
+		/etc/apt/sources.list.d/gierens.list
+}
+
+main() {
+	distro_test=$(cat /etc/os-release | grep ID_LIKE | sed 's/ID_LIKE=//g')
+	if [[ $distro_test == debian ]]; then
+		ensure_gpg
+		add_required_repo
+		sudo apt update
+		sudo apt install -y eza
+	fi
+}
+
+
+main "$@"

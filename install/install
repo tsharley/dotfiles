@@ -82,6 +82,12 @@ apt_install_from_file() {
     done
 }
 
+apt_install_eza() {
+	cd $DOTDIR
+	./install_eza
+	cd -
+}
+
 # set -xv
 # Make directories
 mk_dirs_from_file "install/dirs.lst"
@@ -97,6 +103,7 @@ success "Binaries linked to '~/.local/bin'"
 cd "$DOTDIR"
 apt_uu
 apt_install_from_file "install/pkgs.lst"
+apt_install_eza
 
 if [[ $require_docker == 1 ]]; then
     cd "$DOTDIR"
