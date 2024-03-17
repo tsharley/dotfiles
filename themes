@@ -25,6 +25,7 @@ mk_required_dirs() {
 	done
 }
 
+mk_required_dirs
 THEME_NAME='basic'		# default theme "basic"
 active_prompt=~/.config/profiles/promptstyle/basic
 . $active_prompt
