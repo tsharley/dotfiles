@@ -27,7 +27,7 @@ generate_AUTOTHEME_FILE() {
 	local file="$1"
 	local filedir="$(dirname "$file")"
 	if [[ ! -d "$filedir" ]]; then
-		mkdir "$filedir"
+		mkdir -p "$filedir"
 	fi
 
 	THEME_COLORSEED="$((16 + SRANDOM % 215))"
