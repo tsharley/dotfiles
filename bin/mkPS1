@@ -129,6 +129,7 @@ build_PS1v2() {
 build_PS1v3() {
     prompt_string=''
     #shellcheck disable=SC2016
+    color_segment "$2" "$(if [[ $SHLVL != 1 ]]; then echo "[$SHLVL] "; fi)"
     color_segment "$1" '$(ftime) '
     color_segment "$2" 'ts'
     color_segment "$3" '@'
@@ -187,6 +188,7 @@ favorites() {
             5) build_PS1v3 129 70 129 70;;
             6) build_PS1v3 129 220 129 220;;
             7) build_PS1v3 112 246 112 246;;
+            8) build_PS1v3 "$THEME_C1" "$THEME_C4" "$THEME_C1" "$THEME_C4";;
             0) build_PS1_nbm 51 198 45 200;;
             *);;
         esac

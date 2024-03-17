@@ -250,6 +250,7 @@ mcd() {
 # CMX: Make file executable
 # Arguments: $1 -> filename;          Return: 0
 cmx() {
+	if [[ ! -e "$1" ]]; then touch "$1"; fi
     chmod +x "$1"
 }
 

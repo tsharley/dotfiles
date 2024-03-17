@@ -46,7 +46,7 @@ _vivid_colors(){
 # Aliases
 alias u='gunits '                       # conversion prog for units of measure
 alias rmr='trash -F '                   # avoid instant perma-delete
-alias nn='edit ~/Documents/Notes/todo'  # quick scratch nnotes
+#alias nn='edit ~/Documents/Notes/todo'  # quick scratch nnotes
 #alias hq='hishtory query'				# integrates history and fzf
 alias kb='open ~/Downloads/kb_L0_4.png' # show custom Keychron layout
 alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"

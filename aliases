@@ -49,7 +49,7 @@ cd() {
     else
         ls -F --color=always
     fi
-	[[ -e ./.env ]] && . ./.env
+	[[ -e ./.env ]] && . ./.env || :
 }
 
 alias cdbin='cd $EXEC_DIR'
