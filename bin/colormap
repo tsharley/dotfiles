@@ -1,50 +1,53 @@
 #!/usr/bin/env bash
 ###############################################################################%
 
-_set_fg_="38;5;"
-_set_bg_="48;5;"
-_esc_="\033["
-_restore_="0m"
+sfg="38;5;"
+sbg="48;5;"
+_x="\033["
+rstr="\033[0m"
 
-_background() {
+_bkgrd() {
     case "${1:0:1}" in
-        3) echo -en "${_esc_}${_set_bg_}236m";; 
+        3) echo -en "${_x}${sbg}236m";; 
         4) echo -en "";;
-        9) echo -en "${_esc_}${_set_bg_}239m";;
+        9) echo -en "${_x}${sbg}239m";;
         1) echo -en "";;
         *) return;;
     esac
 }
 
 show_colormap() {
-	
-	#echo -en "${_esc_}${_set_bg_}236m"
+	txtc="$1"
     for i in {30..37} {40..47} {90..97} {100..107}; do
     	if ((i < 100)); then
-        	echo -en "$(_background "$i")${_esc_}${i}m  ${i}  ${_esc_}${_restore_} "
+        	echo -en "$(_bkgrd "$i")${_x}${i}m   ${i}   ${rstr}"
         else
-#        	echo -en "${_esc_}${_set_fg_}0m${_esc_}${i}m  ${i} "
-        	echo -en "$(_background "$i")${_esc_}${_set_fg_}0m${_esc_}${i}m  ${i} ${_esc_}${_restore_} "
+        	echo -en "$(_bkgrd "$i")${_x}${sfg}0m${_x}${i}m  ${i}   ${rstr}"
         fi        
     	[[ $(($((i + 3)) % 10)) ==  0 ]] && echo
     done
-    echo -en "${_esc_}${_restore_}"
+    echo -en "${rstr}"
 
-	for i in {16..255}; do
-		[[ $(( $(( i + 2 )) % 6 )) -eq 0 ]] && echo
-	 	j=" $i"
+	colorline() {
+	 	j=" $1"
 	 	while [[ "${#j}" -lt 5 ]]; do
 	 		j="$j "
 	 	done
-		echo -n ' '
-		echo -en "${_esc_}${_set_bg_}${i}m${_esc_}${_set_fg_}232m${j}${_esc_}${_restore_}"
+		#txtc=0
+		#[[ $1 -lt 44 ]] && txtc=255
+		echo -en "${_x}${sfg}${txtc}m${_x}${sbg}${1}m   ${j}   ${rstr}"
+	}
+
+	for i in {16..255}; do
+		[[ $(( $(( $i + 2 )) % 6 )) -eq 0 ]] && echo
+		colorline $i
 	done
-	echo
 }
 
 main() {
     clear
 	show_colormap
+	echo; echo
 }
 
 main "$@"
