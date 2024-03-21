@@ -84,8 +84,14 @@ apt_install_from_file() {
 
 apt_install_eza() {
 	cd $DOTDIR
-	./install_eza
+	./install/install_eza
 	cd -
+}
+
+prep_sshd_config() {
+	sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
+	sed -i 's/#StrictModes yes/StrictModes no/g' /etc/ssh/sshd_config
+	systemctl restart sshd
 }
 
 # set -xv
@@ -98,7 +104,7 @@ success "Dotfiles linked to HOME"
 link_bin
 success "Binaries linked to '~/.local/bin'"
 # set +xv
-
+prep_sshd_config
 # Install packages
 cd "$DOTDIR"
 apt_uu
