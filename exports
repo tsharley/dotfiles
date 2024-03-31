@@ -54,6 +54,8 @@ MANPAGER='most -sdw'
 PAGER='most -sdw'
 GIT_PAGER='/opt/homebrew/bin/delta'
 INPUTRC="${XDG_CONFIG_HOME}/.inputrc"
+THEME_CONFIG="$HOME/Projects/theme/theme/theme.conf"
+
 
 # Automation repo
 TOOLS_ROOT="${HOME}/Tools"
