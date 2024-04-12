@@ -56,7 +56,7 @@ alias cfal='$EDITOR ${HOME}/.config/alacritty/alacritty.yml' # quick config
 
 
 # services managed by Homebrew
-alias bls="brew services list"			# list all installed services
+alias bsl="brew services list"			# list all installed services
 alias bstart="brew services start"		# start and enable service
 alias bstop="brew services stop"		# stop and disable service
 alias brst="brew services restart"		# reload service (pickup newconfig)
@@ -66,6 +66,7 @@ alias vv='basename ${VIRTUAL_ENV}'      # useful in scripts
 
 # Exports
 SOTDIR="$HOME/.homelab/hlconf/SOT"
+PYTHONPATH="$HOME/.config/python3/modules"
 PKG_MANAGER="brew"
 PKG_MANAGER_PREFIX="/opt/homebrew"
 MICRO_CONFIG_HOME="$XDG_CONFIG_HOME/micro"
@@ -73,8 +74,12 @@ PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
 DOCKER_CLI_HINTS=false
 BREW_NO_ENV_HINTS=1
 HOMEBREW_NO_EMOJI=1
+FING_APIKEY='fing_loc_api123'
 BREW_NO_EMOJI=1
 HOMEBREW_NO_ENV_HINTS=1
+ESPANSO_CONF_DIR=~/Library/Application\ Support/espanso
+ESPANSO_PKGS_DIR=~/Library/Application\ Support/espanso/match/packages
+ESPANSO_RTME_DIR=~/Library/Caches/espanso
 #ECLIPSE_HOME="$HOME/.config/eclipse"
 #AIRFLOW_HOME="$HOME/Public/airflow"
 #GOPATH="$HOME/.local/go"
@@ -112,3 +117,4 @@ nstp() {
 		networksetup "$@"
 	fi
 }
+

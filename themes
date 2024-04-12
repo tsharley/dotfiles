@@ -116,6 +116,13 @@
 #
 #if [[ -n $SSH_CLIENT ]]; then PS1="$(echo "$PS1" | sed 's/@/- SSH -/g')"; fi
 #
-. "$THEME_CONFIG"
-. "$THEME_ACTIVE_DIR/colors"
-. "$THEME_ACTIVE_DIR/prompt"
+if [[ -f "$THEME_CONFIG" ]]; then
+    . "$THEME_CONFIG"
+    . "$THEME_ACTIVE_DIR/colors"
+    . "$THEME_ACTIVE_DIR/prompt"
+else
+    THEMEROOT="$DOTDIR/default_theme"
+    THEME_ACTIVE_DIR="$THEMEROOT/active"
+    . "$THEME_ACTIVE_DIR/colors"
+    . "$THEME_ACTIVE_DIR/prompt"
+fi

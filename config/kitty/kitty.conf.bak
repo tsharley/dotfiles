@@ -6,10 +6,10 @@
 #: individual font faces and even specify special fonts for particular
 #: characters.
 
-font_family      MesloLGM Nerd Font Mono
-bold_font        auto
-italic_font      auto
-bold_italic_font auto
+font_family      MonaspiceXe Nerd Font Mono
+bold_font        MonaspiceXe Nerd Font Mono Bold
+italic_font      MonaspiceXe Nerd Font Mono Italic
+bold_italic_font MonaspiceXe Nerd Font Mono Bold Italic
 
 #: You can specify different fonts for the bold/italic/bold-italic
 #: variants. To get a full list of supported fonts use the `kitty
@@ -24,7 +24,7 @@ bold_italic_font auto
 #:     italic_font      Operator Mono Book Italic
 #:     bold_italic_font Operator Mono Medium Italic
 
-font_size 16.0
+font_size 13.0
 
 #: Font size (in pts)
 
@@ -254,6 +254,7 @@ disable_ligatures never
 #: background and foreground colors have very low contrast.
 
 # cursor_text_color #111111
+cursor_text_color background
 
 #: The color of text under the cursor. If you want it rendered with
 #: the background color of the cell underneath instead, use the
@@ -294,7 +295,7 @@ cursor_shape beam
 
 #: Scrollback {{{
 
-# scrollback_lines 2000
+scrollback_lines 10000
 
 #: Number of lines of history to keep in memory for scrolling back.
 #: Memory is allocated on demand. Negative numbers are (effectively)
@@ -363,7 +364,7 @@ cursor_shape beam
 
 #: Mouse {{{
 
-# mouse_hide_wait 3.0
+mouse_hide_wait 0
 
 #: Hide mouse cursor after the specified number of seconds of the
 #: mouse not being used. Set to zero to disable mouse cursor hiding.
@@ -372,7 +373,7 @@ cursor_shape beam
 #: robustly with the ever-changing sea of bugs that is Cocoa is too
 #: much effort.
 # url_color #0087bd
-url_style curly
+url_style double
 
 #: The color and style for highlighting URLs on mouse-over. url_style
 #: can be one of: none, straight, double, curly, dotted, dashed.
@@ -765,7 +766,7 @@ window_resize_step_lines 2
 #: start_resizing_window. The cells value is used for horizontal
 #: resizing, and the lines value is used for vertical resizing.
 
-window_border_width 0pt
+window_border_width 1pt
 
 #: The width of window borders. Can be either in pixels (px) or pts
 #: (pt). Values in pts will be rounded to the nearest number of pixels
@@ -773,14 +774,14 @@ window_border_width 0pt
 #: to be pts. Note that borders are displayed only when more than one
 #: window is visible. They are meant to separate multiple windows.
 
-draw_minimal_borders no
+draw_minimal_borders yes
 
 #: Draw only the minimum borders needed. This means that only the
 #: borders that separate the window from a neighbor are drawn. Note
 #: that setting a non-zero window_margin_width overrides this and
 #: causes all borders to be drawn.
 
-# window_margin_width 0
+#window_margin_width 1
 
 #: The window margin (in pts) (blank area outside the border). A
 #: single value sets all four sides. Two values set the vertical and
@@ -795,7 +796,7 @@ draw_minimal_borders no
 #: set the vertical and horizontal sides. Three values set top,
 #: horizontal and bottom. Four values set top, right, bottom and left.
 
-window_padding_width 24 14
+window_padding_width 5
 
 #: The window padding (in pts) (blank area between the text and the
 #: window border). A single value sets all four sides. Two values set
@@ -812,12 +813,13 @@ window_padding_width 24 14
 #: only at the bottom and right edges.
 
 # active_border_color #00ff00
-# active_border_color none
+active_border_color #F73859
 
 #: The color for the border of the active window. Set this to none to
 #: not draw borders around the active window.
 
 # inactive_border_color #cccccc
+inactive_border_color #927DCD
 
 #: The color for the border of inactive windows.
 
@@ -826,7 +828,7 @@ window_padding_width 24 14
 #: The color for the border of inactive windows in which a bell has
 #: occurred.
 
-inactive_text_alpha 0.8
+inactive_text_alpha 0.4
 
 #: Fade the text in inactive windows by the specified amount (a number
 #: between zero and one, with zero being fully faded).
@@ -843,7 +845,7 @@ hide_window_decorations titlebar-only
 #: placement_strategy to prevent the rounded corners from clipping
 #: text. Or use titlebar-and-corners.
 
-# window_logo_path none
+#window_logo_path ~/.config/tsm_logo/ggb_offset_logo.png
 
 #: Path to a logo image. Must be in PNG format. Relative paths are
 #: interpreted relative to the kitty config directory. The logo is
@@ -853,13 +855,13 @@ hide_window_decorations titlebar-only
 #: or the remote control <https://sw.kovidgoyal.net/kitty/remote-
 #: control/> facility.
 
-# window_logo_position bottom-right
+window_logo_position top-right
 
 #: Where to position the window logo in the window. The value can be
 #: one of: top-left, top, top-right, left, center, right, bottom-left,
 #: bottom, bottom-right.
 
-# window_logo_alpha 0.5
+# window_logo_alpha 0.1
 
 #: The amount the logo should be faded into the background. With zero
 #: being fully faded and one being fully opaque.
@@ -894,6 +896,7 @@ hide_window_decorations titlebar-only
 #: string of characters.
 
 # confirm_os_window_close -1
+confirm_os_window_close 0
 
 #: Ask for confirmation when closing an OS window or a tab with at
 #: least this number of kitty windows in it by window manager (e.g.
@@ -1075,12 +1078,15 @@ hide_window_decorations titlebar-only
 
 #: Color scheme {{{
 
-# foreground #dddddd
-# background #000000
+# foreground #ccccee
+foreground #FEFEFE
+# background #151A2A
+# background #222222
+background #010101
 
 #: The foreground and background colors.
 
-background_opacity 0.95
+background_opacity 1
 
 #: The opacity of the background. A number between zero and one, where
 #: one is opaque and zero is fully transparent. This will only work if
@@ -1104,7 +1110,7 @@ background_opacity 0.95
 #: this option when reloading the config will only work if
 #: dynamic_background_opacity was enabled in the original config.
 
-background_blur 8
+background_blur 12
 
 #: Set to a positive value to enable background blur (blurring of the
 #: visuals behind a transparent window) on platforms that support it.
@@ -1132,14 +1138,14 @@ background_blur 8
 #: When background image is scaled, whether linear interpolation
 #: should be used.
 
-# dynamic_background_opacity no
+dynamic_background_opacity yes
 
 #: Allow changing of the background_opacity dynamically, using either
 #: keyboard shortcuts (increase_background_opacity and
 #: decrease_background_opacity) or the remote control facility.
 #: Changing this option by reloading the config is not supported.
 
-# background_tint 0.0
+background_tint 0.85
 
 #: How much to tint the background image by the background color. This
 #: option makes it easier to read the text. Tinting is done using the
@@ -1147,14 +1153,14 @@ background_blur 8
 #: if background_opacity is set and transparent windows are supported
 #: or background_image is set.
 
-# background_tint_gaps 1.0
+# background_tint_gaps 0
 
 #: How much to tint the background image at the window gaps by the
 #: background color, after applying background_tint. Since this is
 #: multiplicative with background_tint, it can be used to lighten the
 #: tint over the window gaps for a *separated* look.
 
-# dim_opacity 0.4
+dim_opacity 0.5
 
 #: How much to dim text that has the DIM/FAINT attribute set. One
 #: means no dimming and zero means fully dimmed (i.e. invisible).
@@ -1176,43 +1182,43 @@ background_blur 8
 #: dull and bright version, for the first 16 colors. You can set the
 #: remaining 240 colors as color16 to color255.
 
-# color0 #000000
-# color8 #767676
+color0 #000000
+color8 #767676
 
 #: black
 
-# color1 #cc0403
-# color9 #f2201f
+color1 #cc0403
+color9 #f2201f
 
 #: red
 
-# color2  #19cb00
-# color10 #23fd00
+color2  #19cb00
+color10 #23fd00
 
 #: green
 
-# color3  #cecb00
-# color11 #fffd00
+color3  #cecb00
+color11 #fffd00
 
 #: yellow
 
-# color4  #0d73cc
-# color12 #1a8fff
+color4  #0d73cc
+color12 #1a8fff
 
 #: blue
 
-# color5  #cb1ed1
-# color13 #fd28ff
+color5  #cb1ed1
+color13 #fd28ff
 
 #: magenta
 
-# color6  #0dcdcd
-# color14 #14ffff
+color6  #0dcdcd
+color14 #14ffff
 
 #: cyan
 
-# color7  #dddddd
-# color15 #ffffff
+color7  #dddddd
+color15 #ffffff
 
 #: white
 
@@ -1312,7 +1318,7 @@ background_blur 8
 #: See rc_custom_auth <https://sw.kovidgoyal.net/kitty/remote-
 #: control/#rc-custom-auth> for details.
 
-# allow_remote_control no
+allow_remote_control yes
 
 #: Allow other programs to control kitty. If you turn this on, other
 #: programs can control all aspects of kitty, including sending text
@@ -1457,7 +1463,7 @@ background_blur 8
 #: special value of ask means that kitty will ask before opening the
 #: link when clicked.
 
-# shell_integration enabled
+shell_integration disabled
 
 #: Enable shell integration on supported shells. This enables features
 #: such as jumping to previous prompts, browsing the output of the
@@ -1468,7 +1474,7 @@ background_blur 8
 #: prompt-mark, no-complete. See Shell integration
 #: <https://sw.kovidgoyal.net/kitty/shell-integration/> for details.
 
-# allow_cloning ask
+allow_cloning ask
 
 #: Control whether programs running in the terminal can request new
 #: windows to be created. The canonical example is clone-in-kitty
@@ -1501,7 +1507,7 @@ background_blur 8
 #: This only source the first valid one in the above order.
 
 # term xterm-kitty
-term xterm-256color
+#term xterm-256color
 
 #: The value of the TERM environment variable to set. Changing this
 #: can break many terminal programs, only change it if you know what
@@ -1540,7 +1546,7 @@ term xterm-256color
 #: background_opacity. If you want to use both, you are probably
 #: better off just hiding the titlebar with hide_window_decorations.
 
-# macos_option_as_alt no
+macos_option_as_alt yes
 
 #: Use the Option key as an Alt key on macOS. With this set to no,
 #: kitty will use the macOS native Option+Key to enter Unicode
@@ -1561,13 +1567,13 @@ term xterm-256color
 #: Dock). Changing this option by reloading the config is not
 #: supported.
 
-# macos_quit_when_last_window_closed no
+macos_quit_when_last_window_closed no
 
 #: Have kitty quit when all the top-level windows are closed on macOS.
 #: By default, kitty will stay running, even with no open windows, as
 #: is the expected behavior on macOS.
 
-# macos_window_resizable yes
+macos_window_resizable yes
 
 #: Disable this if you want kitty top-level OS windows to not be
 #: resizable on macOS.
@@ -1603,7 +1609,7 @@ term xterm-256color
 #: the macOS global menu bar. Values less than one means that there is
 #: no maximum limit.
 
-# macos_custom_beam_cursor no
+macos_custom_beam_cursor yes
 
 #: Use a custom mouse cursor for macOS that is easier to see on both
 #: light and dark backgrounds. Nowadays, the default macOS cursor
@@ -1611,8 +1617,8 @@ term xterm-256color
 #: mouse cursor invisible on dual GPU machines. Changing this option
 #: by reloading the config is not supported.
 
-macos_colorspace srgb
-# macos_colorspace displayp3
+# macos_colorspace srgb
+macos_colorspace displayp3
 
 #: The colorspace in which to interpret terminal colors. The default
 #: of srgb will cause colors to match those seen in web browsers. The
@@ -2104,15 +2110,15 @@ macos_colorspace srgb
 # map kitty_mod+equal  change_font_size all +2.0
 # map kitty_mod+plus   change_font_size all +2.0
 # map kitty_mod+kp_add change_font_size all +2.0
-# map cmd+plus         change_font_size all +2.0
-# map cmd+equal        change_font_size all +2.0
+#map cmd+plus         change_font_size all +2.0
+map cmd+equal        change_font_size all +2.0
 # map shift+cmd+equal  change_font_size all +2.0
 
 #: Decrease font size
 
 # map kitty_mod+minus       change_font_size all -2.0
 # map kitty_mod+kp_subtract change_font_size all -2.0
-# map cmd+minus             change_font_size all -2.0
+map cmd+minus             change_font_size all -2.0
 # map shift+cmd+minus       change_font_size all -2.0
 
 #: Reset font size
@@ -2238,10 +2244,12 @@ macos_colorspace srgb
 #: Increase background opacity
 
 # map kitty_mod+a>m set_background_opacity +0.1
+map cmd+shift+up set_background_opacity +0.1
 
 #: Decrease background opacity
 
-# map kitty_mod+a>l set_background_opacity -0.1
+#map kitty_mod+a>l set_background_opacity -0.1
+map cmd+shift+down set_background_opacity -0.1
 
 #: Make background fully opaque
 
@@ -2394,6 +2402,6 @@ macos_colorspace srgb
 
 
 # BEGIN_KITTY_THEME
-# Japanesque
-include current-theme.conf
+# Kaolin Ocean
+#include current-theme.conf
 # END_KITTY_THEME
