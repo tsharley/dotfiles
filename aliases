@@ -105,6 +105,9 @@ if [ -e "${DFDIR}" ]; then
 fi
 
 
+# ----- docs ------------------------------------
+alias godocs='godoc -http :8000'
+
 # ----- misc ------------------------------------
 alias ss="sudo "
 alias edit='micro '

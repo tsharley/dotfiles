@@ -66,7 +66,7 @@ alias vv='basename ${VIRTUAL_ENV}'      # useful in scripts
 
 # Exports
 SOTDIR="$HOME/.homelab/hlconf/SOT"
-PYTHONPATH="$HOME/.config/python3/modules"
+PYTHONPATH="$HOME/.config/python3/modules:$HOME/.config/python3/pkg"
 PKG_MANAGER="brew"
 PKG_MANAGER_PREFIX="/opt/homebrew"
 MICRO_CONFIG_HOME="$XDG_CONFIG_HOME/micro"

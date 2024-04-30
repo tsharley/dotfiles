@@ -269,6 +269,18 @@ pyserv() {
     python3 -m http.server "$port"
 }
 
+#------------------------------------------------------------------------------
+# HXL: View 256 bytes of target in Hexyl (terminal hex viewer)
+# Arguments: $1 -> target, precede with -a for whole file      Return: 0
+hxl() {
+    if [[ $1 == '-a' ]]; then
+    	shift; hexyl "$1"
+    else
+    	hexyl -n 256 "$1"
+    fi
+}
+
+
 
 #------------------------------------------------------------------------------
 # Web Page
@@ -472,16 +484,17 @@ mtdir() {
 }
 
 #------------------------------------------------------------------------------
-# {{ name }}
-# Arguments: {{ args }};          				Return: {{ return }} 
-#() {
-	
-#}
+# SlowType - types out text one char at a time
+# Arguments: $1 = a file or body of text;      Return: none 
+slowtype() {
+	cat "$1" | pv -qL 10
+}
 
 #------------------------------------------------------------------------------
-# {{ name }}
-# Arguments: {{ args }};          				Return: {{ return }} 
-#() {
-	
-#}
+# git_my (repository)
+# Arguments: repo_name = $1;          				Return: status 
+git_my() {
+	name="$1"
+	git clone https://github.com/tsharley/"$name" "${2:-"$name"}"
+}
 
