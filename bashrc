@@ -49,3 +49,4 @@ if [[ $(rbenv version) ]]; then eval "$(rbenv init - bash)"; fi
 # Call function to enable local overrides if present
 ##############################################################################%
 dolastrc
+source "$RYE_HOME/env"

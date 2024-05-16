@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+##############################################################################%
+# ---------------------------------------------------------------------------
+# prms 0.1 - Display target's numeric unix permissions
+#
+# Copyright 2023-2024, TJ Sharley <tsharley@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License at <http://www.gnu.org/licenses/> for
+# more details.
+#
+# Usage: prms [-h|-v][path/to/target/file/or/dir]
+#
+#
+# Revision history:
+# 2024-02-14  First implementation and testing (0.1)
+# ---------------------------------------------------------------------------
+
+# Strict error handling
+set -euo pipefail
+
+# Constants
+PROGNAME=${0##*/}
+VERSION="0.1"
+
+
+usage() {
+	printf "%s\n" \
+		"Usage: ${PROGNAME} [-h|--help|-v|--version]"
+	printf "%s\n" \
+		"       ${PROGNAME} [path/to/target/file/or/dir]"
+}
+
+
+help_message() {
+	cat <<-  _EOF_
+
+	${PROGNAME} v${VERSION}
+	
+	Displays target's Unix file system permissions in numeric format
+
+	$(usage)
+
+	Options:
+		-h:    show this documentation
+		-v:    print program version
+
+	_EOF_
+}
+
+
+error_message() {
+	echo "Error: $1"
+	usage; exit 1
+}
+
+
+get_slice() {
+	echo "${1:"$2":1}"
+}
+
+
+sum_section() {
+	total=0
+	[[ $1 == 'r' ]] && total=$(( total + 4 ))
+	[[ $2 == 'w' ]] && total=$(( total + 2 ))
+	[[ $3 == 'x' ]] && total=$(( total + 1 ))
+	echo "$total"
+}
+
+
+main() {
+
+	if [[ $# -lt 1 || $# -gt 1 ]]; then
+		error_message "Unexpected number of arguments"
+	fi
+
+	case $1 in
+		-h | --help)
+			help_message
+			exit 0
+			;;
+		-v | --version)
+			echo "$VERSION"
+			exit 0
+			;;
+		*)
+			target="$1"
+			;;
+	esac
+	
+	permstring=$(stat -L "$target" | awk '{ print $3}')
+
+	dir_indicator="$(get_slice "$permstring" 0)"
+	user_r="$(get_slice "$permstring" 1)"
+	user_w="$(get_slice "$permstring" 2)"
+	user_x="$(get_slice "$permstring" 3)"
+	group_r="$(get_slice "$permstring" 4)"
+	group_w="$(get_slice "$permstring" 5)"
+	group_x="$(get_slice "$permstring" 6)"
+	other_r="$(get_slice "$permstring" 7)"
+	other_w="$(get_slice "$permstring" 8)"
+	other_x="$(get_slice "$permstring" 9)"
+
+	user_s=$(sum_section "$user_r" "$user_w" "$user_x")
+	group_s=$(sum_section "$group_r" "$group_w" "$group_x")
+	other_s=$(sum_section "$other_r" "$other_w" "$other_x")
+	
+	dir_s="0"
+	if [[ $dir_indicator == 'd' ]]; then
+		dir_s="1"
+	fi
+
+	echo "${dir_s}${user_s}${group_s}${other_s}"
+}
+
+
+
+main "$@"

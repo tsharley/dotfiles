@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+################################################################################
+
+## Repeatedly echo a character
+
+
+showhelp() {
+	cat <<-'EOHelp'
+
+	rchr: Repeatedly echo a character
+	The character "char" will be repeated "reps" times.  The command allows a \
+	prefix, suffix and/or color to be applied as well.  
+	
+	If the "reps" parameter is omitted, the default behavior is to fill the \
+	width of the terminal.
+	
+	Usage:
+	rchr [-p <prefix> ][-s <suffix> ][-c <ansi_color> ]	<char> [<reps>]
+	
+	Example:
+	rchr -p 1 -s 3 -c 166 2 8
+	EOHelp
+	main -p 1 -s 3 -c 166 2 8
+	echo
+}
+
+
+main() {
+	fcolor=
+	if [[ $1 ==  -h ]]; then showhelp ; exit 0 ; fi
+	if [[ $1 ==  -p ]]; then shift; prefix="$1"; shift; fi
+	if [[ $1 ==  -s ]]; then shift; suffix="$1"; shift; fi
+	if [[ $1 ==  -c ]]; then shift; fcolor="\033[38;5;${1}m"; shift; fi
+	rchar="$1"
+	reps="$2"
+	[[ -z "$reps" ]] && reps="$(($(tput cols) - (${#prefix} + ${#suffix})))"
+	echo -en "${fcolor}${prefix}"
+	while [[ $reps -gt 0 ]]; do
+		echo -en  "${rchar}"
+		reps=$((reps - 1))
+	done
+	echo -en "$suffix\033[m"
+
+}
+
+
+main "$@"

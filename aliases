@@ -109,9 +109,26 @@ fi
 alias godocs='godoc -http :8000'
 
 # ----- misc ------------------------------------
+vwimg() {
+	kitten icat "$@"
+}
+vact() {
+	if [[ -d .venv ]]; then
+		. .venv/bin/activate
+		for script in ~/.local/hooks/* ; do
+			[[ -x "$script" ]] && . "$script"
+		done
+	fi
+}
 alias ss="sudo "
 alias edit='micro '
-alias cb='$EDITOR ${HOME}/.bashrc'
-alias sb='. ${HOME}/.bashrc'
 alias brewups='brew update; brew upgrade'
 alias minff='c; fastfetch -c ~/.config/fastfetch/modules.min.jsonc'
+alias cfb='$EDITOR ${HOME}/.bashrc'
+alias cfa='$EDITOR ${HOME}/.aliases'
+alias cff='$EDITOR ${HOME}/.functions'
+alias cfp='$EDITOR ${HOME}/.paths'
+alias cft='$EDITOR ${HOME}/.themes'
+alias cfk='$EDITOR ${HOME}/.config/kitty/kitty.conf'
+alias cfs='$EDITOR ${HOME}/.ssh/config'
+alias sb='. ~/.bashrc'

@@ -498,3 +498,11 @@ git_my() {
 	git clone https://github.com/tsharley/"$name" "${2:-"$name"}"
 }
 
+#------------------------------------------------------------------------------
+# Add content to beginning of bash prompt
+# Arguments: content to add = $1;          				Return: status 
+prepend_to_PS1() {
+	content="$1"
+	PS1="\n${content}${PS1:2:${#PS1}}"
+}
+

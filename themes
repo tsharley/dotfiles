@@ -116,6 +116,16 @@
 #
 #if [[ -n $SSH_CLIENT ]]; then PS1="$(echo "$PS1" | sed 's/@/- SSH -/g')"; fi
 #
+
+refresh_kitty() {
+	include_bg=~/.config/kitty/bg.conf
+	touch "$include_bg"
+	echo "background $HEX_BG" > "$include_bg"
+	killall -SIGUSR1 kitty
+}
+
+
+
 if [[ -f "$THEME_CONFIG" ]]; then
     . "$THEME_CONFIG"
     . "$THEME_ACTIVE_DIR/colors"
@@ -125,4 +135,19 @@ else
     THEME_ACTIVE_DIR="$THEMEROOT/active"
     . "$THEME_ACTIVE_DIR/colors"
     . "$THEME_ACTIVE_DIR/prompt"
+fi
+
+if [[ -n $THEME_BG ]]; then refresh_kitty; fi
+
+if command -v theme.sh > /dev/null; then
+	theme.sh pop
+	[ -e ~/.theme_history ] && theme.sh "$(theme.sh -l|tail -n1)"
+	#Binds C-o to the previously active theme.
+	bind -x '"\C-o":"theme.sh $(theme.sh -l|tail -n2|head -n1)"'
+	alias th='theme.sh -i'           # Interactively load a theme
+	alias thl='theme.sh --light -i'  # Interactively load a light theme
+	alias thd='theme.sh --dark -i'   # Interactively load a dark theme
+else
+	export THEMESH_CMD="sudo curl -Lo /usr/bin/theme.sh 'https://git.io/JM70M' \
+	&& sudo chmod +x /usr/bin/theme.sh"
 fi

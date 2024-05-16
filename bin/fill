@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+##############################################################################%
+
+
+_fill() {
+    fill_direction="$1" 
+    fill_char="$2"
+#    echo "fill_char = $fill_char"
+    input_string="$3"
+    field_length="$4"
+    
+    fill_str=''
+    fill_length="$(( field_length - ${#input_string} ))"
+    while [[ "$fill_length" -gt 0 ]]; do
+        fill_str+="$fill_char"
+        fill_length=$(( fill_length - 1 ))
+    done
+    [[ $fill_direction == right ]] && output="${input_string}${fill_str}" || \
+    output="${fill_str}${input_string}"
+    echo -n "$output"
+}
+
+
+handle_option() {
+    if [[ $1 == '-l' ]]; then
+        fill_direction=left
+    fi
+    if [[ $1 == '-0' ]]; then
+        fill_char=0
+    fi    
+}
+
+
+main() {
+    # defaults
+    fill_direction=right
+    fill_char=' '
+
+    while [[ ${1:0:1} == '-' ]]; do
+        handle_option "$1"
+        shift
+    done
+
+    # echo "FD: $fill_direction, FC: $fill_char, Args: $@"
+    input_string="$1"
+    field_length="$2"
+    _fill "$fill_direction" "$fill_char" "$input_string" "$field_length"
+}
+
+main "$@"

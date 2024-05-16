@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+##############################################################################%
+
+import sys
+
+def convert_h2rgb(hxval):
+    if hxval[0] == '#':
+        hxval = hxval[1:]
+    print(f"{int(hxval[0:2], 16)} {int(hxval[2:4], 16)} {int(hxval[4:], 16)}")
+
+
+def main():
+    input_value = sys.argv[1]
+    convert_h2rgb(input_value)
+
+
+if __name__ == "__main__":
+    main()

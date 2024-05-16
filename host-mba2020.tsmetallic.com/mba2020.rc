@@ -51,7 +51,9 @@ alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/co
 alias nano="/opt/homebrew/bin/nano"     # MacOS forces nano->pico. Fuck that.
 alias python="python3"                  # Don't use the OS's python interpreter
 alias cfal='$EDITOR ${HOME}/.config/alacritty/alacritty.yml' # quick config
-#alias nn='edit ~/Documents/Notes/todo'  # quick scratch nnotes
+alias kr='killall -SIGUSR1 kitty'
+alias darken='echo "#010101" > ~/.config/kitty/bg.conf; kr'
+#alias nn='edit ~/Documents/Notes/todo' # quick scratch nnotes
 #alias hq='hishtory query'				# integrates history and fzf
 
 
