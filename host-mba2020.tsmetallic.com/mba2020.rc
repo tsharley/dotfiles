@@ -46,13 +46,10 @@ set -a
 # Aliases
 alias u='gunits '                       # conversion prog for units of measure
 alias rmr='trash -F '                   # avoid instant perma-delete
-alias kb='open ~/Downloads/kb_L0_4.png' # show custom Keychron layout
+#alias kb='open ~/Downloads/kb_L0_4.png' # show custom Keychron layout
 alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
 alias nano="/opt/homebrew/bin/nano"     # MacOS forces nano->pico. Fuck that.
-alias python="python3"                  # Don't use the OS's python interpreter
-alias cfal='$EDITOR ${HOME}/.config/alacritty/alacritty.yml' # quick config
 alias kr='killall -SIGUSR1 kitty'
-alias darken='echo "#010101" > ~/.config/kitty/bg.conf; kr'
 #alias nn='edit ~/Documents/Notes/todo' # quick scratch nnotes
 #alias hq='hishtory query'				# integrates history and fzf
 
@@ -118,5 +115,31 @@ nstp() {
 	else
 		networksetup "$@"
 	fi
+}
+
+init_rye_project() {
+	vrt=""
+	req_file="${RYE_HOME}/ts/requirements.txt"
+	devreq_file="${RYE_HOME}/ts/dev_requirements.txt"
+	rye_init_options=(
+		--requirements "$req_file"
+		--dev-requirements "$devreq_file"
+	)
+	if [[ $1 == --virtual ]]; then 
+		vrt='--virtual '; shift
+	fi
+	project_name="$1"
+	rye_init_path="${TSM_PROJECT_HOME}/${project_name}"
+
+	echo -e "\033[38;5;99mrye init ${vrt}"${rye_init_options[@]} "${rye_init_path}\033[m"
+	rye init ${vrt}${rye_init_options[@]} "$rye_init_path"
+}
+
+new() {
+	subcommand="$1"
+	case $subcommand in
+		project) shift; init_rye_project "$@";;
+		*) return ;;
+	esac
 }
 

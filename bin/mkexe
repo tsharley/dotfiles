@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
+# Author: TJ Sharley <tsharley@gmail.com>, copyright 2024
+script_version=2.0
+debug_mode=false
 ###############################################################################%
+
 usage(){
 	cat <<-'EOF'
 	Usage: mkexe "NAME"
@@ -7,14 +11,43 @@ usage(){
 	EOF
 }
 
-main(){
-	local file="$1"
-	touch "$HOME/.local/bin/${file}"
-	chmod +x "$HOME/.local/bin/${file}"
-	"${EDITOR}" "$HOME/.local/bin/${file}"
+parse_flags() {
+	while [[ ${1:0:1} == - ]]; do
+		case "$1" in
+			-h)	usage; exit 0;;
+			-v) echo "Version $script_version"; exit 0;;
+			-d) debug_mode=true;;
+			-b) template_type="script_bash";;
+			-p) template_type="script_python";;
+			-*) echo "Invalid flag/option: $1"; exit 1;;
+		esac
+		shift
+	done
 }
 
-if [[ "$#" !=  1 ]]; then
+main(){
+	template_type="script_bash"    # default
+	if [[ ${1:0:1} == - ]]; then
+		parse_flags "$@"
+	fi
+
+	template="${TSM_TEMPLATE_DIR}/script/$template_type"
+	output_file="$HOME/.local/bin/$1"
+	
+	if [[ -e "$output_file" ]]; then
+		echo "Error: File already exists.  Opening..."
+		sleep 1
+	else
+		cp "$template" "$output_file"
+		chmod +x "$output_file"
+		sleep .5
+	fi
+	"$EDITOR" "$output_file"
+}
+
+if [[ "$#" ==  0 ]]; then
 	usage; exit
 fi 
+
+
 main "$@"

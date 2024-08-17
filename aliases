@@ -89,6 +89,9 @@ else
 fi
 export HOSTSFILE
 
+if [[ $TERM == xterm-kitty ]]; then
+	alias ssh='TERM=xterm ssh '
+fi
 
 # ----- docker ----------------------------------
 alias dils='docker image ls'
@@ -120,6 +123,7 @@ vact() {
 		done
 	fi
 }
+
 alias ss="sudo "
 alias edit='micro '
 alias brewups='brew update; brew upgrade'

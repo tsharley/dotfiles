@@ -125,7 +125,7 @@ refresh_kitty() {
 }
 
 
-
+echo "themeconfig = $THEME_CONFIG"
 if [[ -f "$THEME_CONFIG" ]]; then
     . "$THEME_CONFIG"
     . "$THEME_ACTIVE_DIR/colors"

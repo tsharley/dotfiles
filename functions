@@ -207,16 +207,11 @@ extract() {
 # Arguments: $1='f' (file) or 'd' (dir)         Return: "tmp########"
 tmpname() {
     str_time='tmp'"$(date +%s)"
-    if [[ "$1" == '-d' ]]
-    then
-        mkdir -p "$str_time"
-        echo "Created directory: $str_time"
-    elif [[ "$1" == '-f' ]]
-    then
-        touch "$str_time"
-        echo "Created file: $str_time"
-    else
-        return
+    if [[ "$1" == '-d' ]]; then 
+    	mkdir -p "$str_time"; echo "Created directory: $str_time"
+    elif [[ "$1" == '-f' ]]; then 
+    	touch "$str_time"; echo "Created file: $str_time"
+    else return
     fi
 }
 
@@ -225,14 +220,11 @@ tmpname() {
 # Arguments: $1 -> ghuser, ghrepo;      Return: none
 gg() {
     if [ $# == 2 ]; then
-        ghuser=$1
-        ghrepo=$2
+        ghuser=$1; ghrepo=$2
     elif [ $# == 1 ]; then
-        ghuser=tsharley
-        ghrepo=$1
+        ghuser=tsharley; ghrepo=$1
     else
-        echo 1 or 2 arguments required
-        return 1
+        echo 1 or 2 arguments required; return 1
     fi
 	git clone https://github.com/"${ghuser}"/"${ghrepo}".git
 	cd "${ghrepo}" || return
@@ -266,7 +258,10 @@ macstat() {
 # Arguments: $1 -> port, default 8080;          Return: 0
 pyserv() {
     port=${1:-8080}
-    python3 -m http.server "$port"
+    (python3 -m http.server "$port" &) # &>/dev/null; } &
+    pid="$!"
+    echo "Serving http traffic on:  http://localhost:8080"
+    echo "PID: $pid"
 }
 
 #------------------------------------------------------------------------------
@@ -506,3 +501,13 @@ prepend_to_PS1() {
 	PS1="\n${content}${PS1:2:${#PS1}}"
 }
 
+#------------------------------------------------------------------------------
+# Open Ansible Console
+# Arguments: inventory = $1;          				Return: - 
+acon() {
+	invfile="${1:-/etc/ansible/hosts.ini}"
+	ansible-console \
+		-i "$invfile"
+#		-K ~/.config/secrets/become.txt \
+#		-k ~/.config/secrets/ssh_conn.txt
+}

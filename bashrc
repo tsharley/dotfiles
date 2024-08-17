@@ -50,3 +50,15 @@ if [[ $(rbenv version) ]]; then eval "$(rbenv init - bash)"; fi
 ##############################################################################%
 dolastrc
 source "$RYE_HOME/env"
+if [[ -d ~/.config/kitty ]]; then
+	envfile=~/.config/kitty/envkitty.conf
+	touch "$envfile"
+	echo -e "shell                        $(command -v bash)"  >  "$envfile"
+	echo -e "editor                       $(command -v micro)" >> "$envfile"
+	unset envfile
+fi
+
+#if [ -f "/opt/homebrew/opt/bash-git-prompt/share/gitprompt.sh" ]; then
+#  __GIT_PROMPT_DIR="/opt/homebrew/opt/bash-git-prompt/share"
+#  source "/opt/homebrew/opt/bash-git-prompt/share/gitprompt.sh"
+#fi
